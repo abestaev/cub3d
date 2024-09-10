@@ -4,7 +4,8 @@ LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -lm -lX11 -lXext
 MLXLIB = mlx/libmlx_Linux.a 
 SRC = main.c \
-		src/parsing.c \
+src/my_pixel_put.c \
+
 
 OBJ = $(SRC:.c=.o)
 

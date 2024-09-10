@@ -31,8 +31,6 @@
 
 #define	MLX_H
 
-#include "../cub3d.h"
-
 void	*mlx_init();
 /*
 **  needed before everything else.
@@ -117,7 +115,6 @@ int	mlx_destroy_window(void *mlx_ptr, void *win_ptr);
 int	mlx_destroy_image(void *mlx_ptr, void *img_ptr);
 
 int	mlx_destroy_display(void *mlx_ptr);
-
 /*
 **  generic hook system for all events, and minilibX functions that
 **    can be hooked. Some macro and defines from X11/X.h are needed here.
@@ -136,5 +133,7 @@ int	mlx_mouse_hide(void *mlx_ptr, void *win_ptr);
 int	mlx_mouse_show(void *mlx_ptr, void *win_ptr);
 
 int	mlx_get_screen_size(void *mlx_ptr, int *sizex, int *sizey);
+
+
 
 #endif /* MLX_H */
