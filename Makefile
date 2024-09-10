@@ -1,10 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I.
 LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -lm -lX11 -lXext
 MLXLIB = mlx/libmlx_Linux.a 
 SRC = main.c \
-		src/parsing.c \
+		src/parsing/parsing.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -12,7 +12,7 @@ LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)libft.a
 
 
-NAME = cub3d
+NAME = cub3D
 
 all: $(NAME)
 
