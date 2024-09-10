@@ -4,11 +4,12 @@ LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -lm -lX11 -lXext
 MLXLIB = mlx/libmlx_Linux.a 
 SRC = main.c \
+		src/parsing.c \
 
 OBJ = $(SRC:.c=.o)
 
-# LIBFT_PATH = ./libft/
-# LIBFT = $(LIBFT_PATH)libft.a
+LIBFT_PATH = ./libft/
+LIBFT = $(LIBFT_PATH)libft.a
 
 
 NAME = cub3d
@@ -18,15 +19,16 @@ all: $(NAME)
 $(MLXLIB):
 	make -C mlx
 
-$(NAME): $(OBJ) $(MLXLIB)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MLXFLAGS) $(MLXLIB)
+$(NAME): $(OBJ) $(MLXLIB) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MLXFLAGS) $(MLXLIB) $(LIBFLAGS)
 
-# $(LIBFT):
-# 	$(MAKE) -C $(LIBFT) all
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_PATH) all bonus
 
 clean:
 	rm -f $(OBJ)
 	make -C mlx clean
+	make -C $(LIBFT_PATH) fclean
 
 fclean: clean
 	rm -f $(NAME)

@@ -8,6 +8,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+
+
 typedef struct s_data
 {
 	void	*img;
