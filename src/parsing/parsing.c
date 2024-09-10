@@ -6,12 +6,13 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/10 18:27:53 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/10 18:41:21 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Function to check if the number of arguments is valid
 int     arg_valid(int argc, char **argv)
 {
     if (argc != 2)
@@ -27,6 +28,7 @@ int     arg_valid(int argc, char **argv)
     return (0);
 }
 
+// Function to group all the parsing functions
 int     parsing(int argc, char **argv, t_textures *textures)
 {
     if (arg_valid(argc, argv))
@@ -36,5 +38,7 @@ int     parsing(int argc, char **argv, t_textures *textures)
         printf("Error\nCould not open file\n");
         return (1);
     }
+    // if (read_textures(textures))
+    //     return (1);
     return (0);
 }

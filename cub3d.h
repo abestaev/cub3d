@@ -19,27 +19,24 @@ typedef struct textures
 	char	*east;
 	int		floor;
 	int		ceiling;
-
 }			t_textures;
 
-typedef struct s_img
+typedef struct s_image
 {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}			t_img;
+}			t_image;
 
 typedef	struct s_data
 {
-	void		*mlx;
-	void		*win;
-	t_img		img;
+	t_image		img;
 	t_textures	textures;
 }				t_data;
 
-void		my_pixel_put(t_img *img, int x, int y, int color);
+void		my_pixel_put(t_image *img, int x, int y, int color);
 
 
 // PARSING FUNCTIONS
