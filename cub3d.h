@@ -13,8 +13,8 @@
 # include <unistd.h>
 
 # define PI 3.1415926535897
-# define S_WIDTH 1920
-# define S_HEIGHT 1080
+# define S_WIDTH 1000
+# define S_HEIGHT 600
 # define TILE_SIZE 20
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */

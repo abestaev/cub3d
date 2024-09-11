@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/11 17:47:35 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/11 18:28:03 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,31 @@ void	ft_clear_image(t_image *img, int color)
 	}
 }
 
+void ft_map_render()
+{
+	char map[5][5] = {
+    {'1', '1', '1', '1', '1'},
+    {'1', '0', '0', '0', '1'},
+    {'1', '0', '0', '0', '1'},
+    {'1', '0', '0', '0', '1'},
+    {'1', '1', '1', '1', '1'}
+};
+
+	
+while (x < start_x + TILE_SIZE / 3)
+	{
+		y = start_y;
+		map[i][j] =
+		while (y < start_y + TILE_SIZE / 3)
+		{
+			my_pixel_put(img, x, y, 0x00FF0000);
+			y++;
+		}
+		x++;
+	}
+	
+}
+
 void	ft_cub_render(t_player *p)
 {
 	t_image	*img;
@@ -45,10 +70,10 @@ void	ft_cub_render(t_player *p)
 	start_x = p->p_x - TILE_SIZE / 2;
 	start_y = p->p_y - TILE_SIZE / 2;
 	x = start_x;
-	while (x < start_x + TILE_SIZE)
+	while (x < start_x + TILE_SIZE / 3)
 	{
 		y = start_y;
-		while (y < start_y + TILE_SIZE)
+		while (y < start_y + TILE_SIZE / 3)
 		{
 			my_pixel_put(img, x, y, 0x00FF0000);
 			y++;
