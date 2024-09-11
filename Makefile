@@ -12,8 +12,7 @@ OBJ = $(SRC:.c=.o)
 LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)libft.a
 
-
-NAME = cub3d
+NAME = cub3D
 
 all: $(NAME)
 

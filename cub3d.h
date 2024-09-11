@@ -9,7 +9,7 @@
 # include <unistd.h>
 
 #define PI 3.1415926535897
-#define TILE_SIZE 1
+#define TILE_SIZE 100
 
 typedef struct s_player
 {
@@ -32,6 +32,6 @@ typedef struct s_image
 	int		endian;
 }			t_image;
 
-void		my_pixel_put(t_data *data, int x, int y, int color);
+void		my_pixel_put(t_image *data, int x, int y, int color);
 
 #endif
