@@ -15,7 +15,7 @@
 # define PI 3.1415926535897
 # define S_WIDTH 1000
 # define S_HEIGHT 600
-# define TILE_SIZE 20
+# define TILE_SIZE 10
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
 # define K_Right 65363 /* Move right, right arrow */
@@ -66,7 +66,8 @@ typedef struct s_data
 // EXEC FUNCTIONS
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
-int					ft_exit(void *param);
+// int					ft_exit(void *param);
+void	ft_draw_tile(t_image *img, int start_x, int start_y, int size, int color);
 void				ft_cub_render(t_player *p);
 void				ft_clear_image(t_image *img, int color);
 

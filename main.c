@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/11 18:28:03 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:36:42 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,71 @@ void	ft_clear_image(t_image *img, int color)
 	}
 }
 
-void ft_map_render()
+int	ft_count_columns(char map[3][3])
 {
-	char map[5][5] = {
-    {'1', '1', '1', '1', '1'},
-    {'1', '0', '0', '0', '1'},
-    {'1', '0', '0', '0', '1'},
-    {'1', '0', '0', '0', '1'},
-    {'1', '1', '1', '1', '1'}
-};
+	int	i;
 
-	
-while (x < start_x + TILE_SIZE / 3)
-	{
-		y = start_y;
-		map[i][j] =
-		while (y < start_y + TILE_SIZE / 3)
-		{
-			my_pixel_put(img, x, y, 0x00FF0000);
-			y++;
-		}
-		x++;
-	}
-	
+	i = 0;
+	while (map[0][i])
+		i++;
+	return (i);
 }
+
+void	ft_map_render(t_player *p)
+{
+	char	map[4][3] = {{'1', '1', '1'}, {'1', '0', '1'}, {'1', '0', '1'}, {'1', '1', '1'}};
+	int		y;
+	int		x;
+	int		tile_size;
+	int		index_x;
+	int		index_y;
+	int		columns;
+
+	index_x = 0;
+	index_y = 0;
+	columns = ft_count_columns(map);
+	tile_size = S_WIDTH / columns;
+	y = 0;
+	while (y < S_HEIGHT && index_y < columns)
+	{
+		x = 0;
+		index_x = 0;
+		while (x < S_WIDTH && map[index_y][index_x])
+		{
+			if (map[index_y][index_x] == '1')
+				ft_draw_tile(p->img, x, y, tile_size, 0x00FFFFFF);
+			else if (map[index_y][index_x] == '0')
+				ft_draw_tile(p->img, x, y, tile_size, 0x00000000);
+			x += tile_size;
+			index_x++;
+		}
+		y += tile_size;
+		index_y++;
+	}
+	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
+}
+
+
+// // char	map[5][5] = {{'1', '1', '1', '1', '1'}, {'1', '0', '0', '0', '1'},
+// // 		{'1', '0', '0', '0', '1'}, {'1', '0', '0', '0', '1'}, {'1', '1',
+// // 		'1', '1', '1'}};
+// int		y;
+// int		x;
+// int		tile_size;
+
+// tile_size =  TILE_SIZE/ 5 ;
+// x = 0;
+// while (x < S_HEIGHT)
+// {
+// 	y = 0;
+// 	while (y < S_WIDTH)
+// 	{
+// 		my_pixel_put(p->img->img, x, y, 0x0000000F);
+// 		// y += tile_size;
+// 		y++;
+// 	}
+// 	x++;
+// }
 
 void	ft_cub_render(t_player *p)
 {
@@ -70,10 +111,11 @@ void	ft_cub_render(t_player *p)
 	start_x = p->p_x - TILE_SIZE / 2;
 	start_y = p->p_y - TILE_SIZE / 2;
 	x = start_x;
-	while (x < start_x + TILE_SIZE / 3)
+	ft_map_render(p);
+	while (x < start_x + TILE_SIZE / 5)
 	{
 		y = start_y;
-		while (y < start_y + TILE_SIZE / 3)
+		while (y < start_y + TILE_SIZE / 5)
 		{
 			my_pixel_put(img, x, y, 0x00FF0000);
 			y++;

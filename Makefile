@@ -8,6 +8,7 @@ SRC = main.c \
 	src/my_pixel_put.c \
 	src/parsing/parsing.c \
 	src/exec/ft_mlx_event.c \
+	src/exec/utils.c \
 
 OBJ = $(SRC:.c=.o)
 
