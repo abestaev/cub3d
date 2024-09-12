@@ -6,52 +6,51 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 13:40:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:41:15 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include <string.h>
 
-void	ft_clear_image(t_image *img, int color)
+char	**allocate_map(int rows, int cols)
 {
-	int	x;
-	int	y;
+	char	**map;
+	int		i;
 
-	y = 0;
-	while (y < S_HEIGHT)
-	{
-		x = 0;
-		while (x < S_WIDTH)
-		{
-			my_pixel_put(img, x, y, color);
-			x++;
-		}
-		y++;
-	}
+	map = malloc(sizeof(char *) * rows);
+	if (!map)
+		return (NULL);
+	for (i = 0; i < rows; i++)
+		map[i] = malloc(sizeof(char) * (cols + 1));
+	strcpy(map[0], "111111");
+	strcpy(map[1], "101111");
+	strcpy(map[2], "101111");
+	strcpy(map[3], "101001");
+	strcpy(map[4], "101001");
+	strcpy(map[5], "101011");
+	strcpy(map[6], "100011");
+	strcpy(map[7], "111111");
+	map[8] = NULL;
+	return (map);
 }
 
-
-
-void	ft_map_render(t_player *p)
+void	ft_map_render(t_player *p, char **map)
 {
-	char	map[4][3] = {{'1', '1', '1'}, {'1', '0', '1'}, {'1', '0', '1'}, {'1', '1', '1'}};
-	int		y;
-	int		x;
+	double	y;
+	double	x;
 	int		tile_size;
 	int		index_x;
 	int		index_y;
-	int		columns;
 
-	index_x = 0;
+	tile_size = ft_resize_tiles(map);
 	index_y = 0;
-	columns = ft_count_columns(map);
-	tile_size = S_WIDTH / columns;
-	y = 0;
-	while (y < S_HEIGHT && index_y < columns)
+	y = (S_HEIGHT / 2) - (ft_count_lines(map) * tile_size) / 2;
+	while (index_y < ft_count_lines(map))
 	{
-		x = 0;
+		x = (S_WIDTH / 2) - (ft_count_columns(map) * tile_size) / 2;
 		index_x = 0;
-		while (x < S_WIDTH && map[index_y][index_x])
+		while (index_x < ft_count_columns(map) && map[index_y][index_x])
 		{
 			if (map[index_y][index_x] == '1')
 				ft_draw_tile(p->img, x, y, tile_size, 0x00FFFFFF);
@@ -73,19 +72,21 @@ void	ft_cub_render(t_player *p)
 	int		x;
 	int		start_x;
 	int		start_y;
+	char	**map;
 
+	map = allocate_map(8, 6);
 	img = p->img;
 	ft_clear_image(img, 0x00000000);
 	x = p->p_x;
 	y = p->p_y;
-	start_x = p->p_x - TILE_SIZE / 2;
-	start_y = p->p_y - TILE_SIZE / 2;
+	start_x = p->p_x - (ft_resize_tiles(map) / 2);
+	start_y = p->p_y - (ft_resize_tiles(map) / 2);
 	x = start_x;
-	ft_map_render(p);
-	while (x < start_x + TILE_SIZE / 5)
+	ft_map_render(p, map);
+	while (x < start_x + (ft_resize_tiles(map) / 2))
 	{
 		y = start_y;
-		while (y < start_y + TILE_SIZE / 5)
+		while (y < start_y + (ft_resize_tiles(map) / 2))
 		{
 			my_pixel_put(img, x, y, 0x00FF0000);
 			y++;
@@ -106,8 +107,8 @@ void	ft_mlx_init(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 	p.img = &img;
-	p.p_x = S_WIDTH / 2;
-	p.p_y = S_HEIGHT / 2;
+	p.p_x = (S_WIDTH / 2) - (TILE_SIZE / 2);
+	p.p_y = (S_HEIGHT / 2) - (TILE_SIZE / 2);
 	ft_cub_render(&p);
 	mlx_hook(img.win_ptr, KeyPress, KeyPressMask, ft_handle_hook, &p);
 	mlx_put_image_to_window(img.mlx, img.win_ptr, img.img, 0, 0);

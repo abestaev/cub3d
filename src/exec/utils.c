@@ -6,13 +6,23 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 13:40:22 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 17:41:25 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_count_columns(char map[3][3])
+int	ft_count_lines(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+		i++;
+	return (i);
+}
+
+int	ft_count_columns(char **map)
 {
 	int	i;
 
@@ -20,6 +30,20 @@ int	ft_count_columns(char map[3][3])
 	while (map[0][i])
 		i++;
 	return (i);
+}
+
+int	ft_resize_tiles(char **map)
+{
+	int	col;
+
+	if (ft_count_columns(map) > ft_count_lines(map))
+		col = ft_count_columns(map);
+	else
+		col = ft_count_lines(map);
+	if (S_WIDTH < S_HEIGHT)
+		return (S_WIDTH / col);
+	else
+		return (S_HEIGHT / col);
 }
 
 void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
@@ -41,7 +65,23 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		x++;
 	}
 }
+void	ft_clear_image(t_image *img, int color)
+{
+	int	x;
+	int	y;
 
+	y = 0;
+	while (y < S_HEIGHT)
+	{
+		x = 0;
+		while (x < S_WIDTH)
+		{
+			my_pixel_put(img, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
 // int	*ft_exit(void *param)
 // {
 // 	t_image *img;
