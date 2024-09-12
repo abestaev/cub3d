@@ -3,6 +3,7 @@
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
+# include <math.h>
 # include <X11/Xlib.h>
 # include <X11/Xutil.h>
 # include <fcntl.h>
@@ -15,7 +16,7 @@
 # define PI 3.1415926535897
 # define S_WIDTH 1000
 # define S_HEIGHT 600
-# define TILE_SIZE 10
+# define FOV 60
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
 # define K_Right 65363 /* Move right, right arrow */
@@ -25,6 +26,9 @@ typedef struct s_player
 {
 	double			p_x;
 	double			p_y;
+	double			p_agl;
+	double			p_dir_x;
+	double			p_dir_y;
 	struct s_image	*img;
 
 }					t_player;

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 17:41:15 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 18:45:05 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_map_render(t_player *p, char **map)
 		while (index_x < ft_count_columns(map) && map[index_y][index_x])
 		{
 			if (map[index_y][index_x] == '1')
-				ft_draw_tile(p->img, x, y, tile_size, 0x00FFFFFF);
+				ft_draw_tile(p->img, x, y, tile_size, 0xEF92EE);
 			else if (map[index_y][index_x] == '0')
 				ft_draw_tile(p->img, x, y, tile_size, 0x00000000);
 			x += tile_size;
@@ -65,24 +65,20 @@ void	ft_map_render(t_player *p, char **map)
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 
-void	ft_cub_render(t_player *p)
+void	ft_player_render(t_player *p, char **map)
 {
 	t_image	*img;
 	int		y;
 	int		x;
 	int		start_x;
 	int		start_y;
-	char	**map;
 
-	map = allocate_map(8, 6);
 	img = p->img;
-	ft_clear_image(img, 0x00000000);
 	x = p->p_x;
 	y = p->p_y;
 	start_x = p->p_x - (ft_resize_tiles(map) / 2);
 	start_y = p->p_y - (ft_resize_tiles(map) / 2);
 	x = start_x;
-	ft_map_render(p, map);
 	while (x < start_x + (ft_resize_tiles(map) / 2))
 	{
 		y = start_y;
@@ -96,6 +92,16 @@ void	ft_cub_render(t_player *p)
 	mlx_put_image_to_window(img->mlx, img->win_ptr, img->img, 0, 0);
 }
 
+void	ft_cub_render(t_player *p)
+{
+	char	**map;
+
+	map = allocate_map(8, 6);
+	// ft_clear_image(p->img, 0x00000000);
+	ft_map_render(p, map);
+	ft_player_render(p, map);
+}
+
 void	ft_mlx_init(void)
 {
 	t_player	p;
@@ -107,8 +113,11 @@ void	ft_mlx_init(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 	p.img = &img;
-	p.p_x = (S_WIDTH / 2) - (TILE_SIZE / 2);
-	p.p_y = (S_HEIGHT / 2) - (TILE_SIZE / 2);
+	p.p_x = (S_WIDTH / 2);
+	p.p_y = (S_HEIGHT / 2);
+	p.p_agl = PI / 2;
+	p.p_dir_x = cos(p.p_agl * 5);
+	p.p_dir_y = sin(p.p_agl * 5);
 	ft_cub_render(&p);
 	mlx_hook(img.win_ptr, KeyPress, KeyPressMask, ft_handle_hook, &p);
 	mlx_put_image_to_window(img.mlx, img.win_ptr, img.img, 0, 0);
