@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/12 18:12:22 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:32:11 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int     arg_valid(int argc, char **argv)
     return (0);
 }
 
-static void     free_tab(char **tab)
+void     free_tab(char **tab)
 {
     int i;
 
@@ -42,7 +42,7 @@ static void     free_tab(char **tab)
 }
 
 // todo check if DOUBLONS
-static int compare_texture_line(char *s1, char *s2, t_textures *textures)
+int compare_texture_line(char *s1, char *s2, t_textures *textures)
 {
     if (ft_strncmp(s1, "NO", 2) == 0)
         textures->north = s2;
@@ -52,10 +52,12 @@ static int compare_texture_line(char *s1, char *s2, t_textures *textures)
         textures->west = s2;
     else if (ft_strncmp(s1, "EA", 2) == 0)
         textures->east = s2;
-    // else if (ft_strncmp(s1, "F", 1) == 0)
-    //     textures->floor = convert_rgb_to_hex(s2);
-    // else if (ft_strncmp(s1, "C", 1) == 0)
-    //     textures->ceiling = convert_rgb_to_hex(s2);
+    else if (ft_strncmp(s1, "F", 1) == 0)
+        textures->floor = s2;
+    //  textures->floor = parse_rgb(s2);
+    else if (ft_strncmp(s1, "C", 1) == 0)
+        textures->ceiling = s2;
+    //  textures->ceiling = parse_rgb(s2);
     else
     {
         printf("Error\nInvalid texture line\n");
@@ -72,14 +74,10 @@ int     parse_line(char *str, t_textures *textures)
     tab = ft_split(str, " ");
     i = 0;
     {
-        if (ft_count_tab(tab) != 2)
+        if (ft_count_tab(tab) != 2 || compare_texture_line(tab[0], tab[1], textures) == 1)
         {
             printf("Error\nInvalid line\n");
-            free_tab(tab);
-            return (1);
-        }
-        if (compare_texture_line(tab[0], tab[1], textures) == 1)
-        {
+            free(str);
             free_tab(tab);
             return (1);
         }
@@ -88,10 +86,7 @@ int     parse_line(char *str, t_textures *textures)
     free(tab);
     return (0);
 }
-
-// todo check if the file is well formated
-
-
+// todo check if textures path are well formated
 // todo check if rbv values are between 0 and 255 + well formated
 
 
@@ -111,10 +106,13 @@ int     read_file(t_textures *textures)
             if (i++ < 6)
             {
                 if (parse_line(line, textures))
-                    break ;
+                    return (1);
             }
             else
-                parse_map(line, textures);
+            {
+                printf("Line:%s\n", line);
+                get_map_line(line, textures);
+            }
             free(line);
         }
         line = get_next_line(textures->fd);
@@ -124,21 +122,8 @@ int     read_file(t_textures *textures)
     return (0);
 }
 
-//todo
-// step 1 get map
-// trim spaces
-// get longest
-// copy in new clean tab
-// parse flood fill
-// fill space with 1
-int    parse_map(char *str, t_data *data)
-{
-    printf("map:%s\n", str);
-    return (0);
-}
-
 // Function to group all the parsing functions
-int     parsing(int argc, char **argv, t_textures *textures)
+int     parsing(int argc, char **argv, t_textures *textures)//, t_data *data)
 {
     if (arg_valid(argc, argv))
         return (1);
@@ -148,6 +133,8 @@ int     parsing(int argc, char **argv, t_textures *textures)
         return (1);
     }
     if (read_file(textures))
+        return (1);
+    if (parse_map(textures))//, data))
         return (1);
     return (0);
 }

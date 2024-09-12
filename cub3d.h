@@ -17,8 +17,10 @@ typedef struct textures
 	char		*south;
 	char		*west;
 	char		*east;
-	int			floor;
-	int			ceiling;
+	char		*floor;
+	char		*ceiling;
+	char		*map_str_tmp;
+	char		**map_tab_tmp;
 }				t_textures;
 
 typedef struct s_image
@@ -40,10 +42,17 @@ typedef struct s_data
 void			my_pixel_put(t_image *img, int x, int y, int color);
 
 // PARSING FUNCTIONS
-int				parsing(int argc, char **argv, t_textures *textures);
+int				parsing(int argc, char **argv, t_textures *textures);//t_data *data);
 int				arg_valid(int argc, char **argv);
 int				read_file(t_textures *textures);
 int				parse_line(char *str, t_textures *textures);
-int				parse_map(char *str, t_textures *textures);
+int				compare_texture_line(char *s1, char *s2, t_textures *textures);
+
+int				get_map_line(char *str, t_textures *textures);
+int				parse_map(t_textures *textures); //, t_data *data);
+void			free_tab(char **tab);
+
+// debug functions
+void			print_map(char **map);
 
 #endif
