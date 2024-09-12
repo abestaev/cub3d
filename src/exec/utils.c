@@ -6,11 +6,21 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 13:37:59 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:40:22 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	ft_count_columns(char map[3][3])
+{
+	int	i;
+
+	i = 0;
+	while (map[0][i])
+		i++;
+	return (i);
+}
 
 void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		int color)

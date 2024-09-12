@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 13:36:42 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 13:40:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,7 @@ void	ft_clear_image(t_image *img, int color)
 	}
 }
 
-int	ft_count_columns(char map[3][3])
-{
-	int	i;
 
-	i = 0;
-	while (map[0][i])
-		i++;
-	return (i);
-}
 
 void	ft_map_render(t_player *p)
 {
@@ -73,28 +65,6 @@ void	ft_map_render(t_player *p)
 	}
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
-
-
-// // char	map[5][5] = {{'1', '1', '1', '1', '1'}, {'1', '0', '0', '0', '1'},
-// // 		{'1', '0', '0', '0', '1'}, {'1', '0', '0', '0', '1'}, {'1', '1',
-// // 		'1', '1', '1'}};
-// int		y;
-// int		x;
-// int		tile_size;
-
-// tile_size =  TILE_SIZE/ 5 ;
-// x = 0;
-// while (x < S_HEIGHT)
-// {
-// 	y = 0;
-// 	while (y < S_WIDTH)
-// 	{
-// 		my_pixel_put(p->img->img, x, y, 0x0000000F);
-// 		// y += tile_size;
-// 		y++;
-// 	}
-// 	x++;
-// }
 
 void	ft_cub_render(t_player *p)
 {

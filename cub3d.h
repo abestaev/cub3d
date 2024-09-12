@@ -67,7 +67,9 @@ typedef struct s_data
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
 // int					ft_exit(void *param);
-void	ft_draw_tile(t_image *img, int start_x, int start_y, int size, int color);
+int					ft_count_columns(char map[3][3]);
+void				ft_draw_tile(t_image *img, int start_x, int start_y,
+						int size, int color);
 void				ft_cub_render(t_player *p);
 void				ft_clear_image(t_image *img, int color);
 
