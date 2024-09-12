@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 18:40:26 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:10:49 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	ft_go_left(t_player *p)
 
 void	ft_turn_right(t_player *p)
 {
-	p->p_agl -= 0.1;
-	if (p->p_agl < 0)
-		p->p_agl = PI * 2;
-	p->p_dir_x = cos(p->p_agl * 5);
-	p->p_dir_y = sin(p->p_agl * 5);
+	p->p_angl -= 0.1;
+	if (p->p_angl < 0)
+		p->p_angl = 0;
+	p->p_dir_x = cos(p->p_angl * 5);
+	p->p_dir_y = sin(p->p_angl * 5);
 }
 
 int	ft_handle_hook(int keycode, t_player *p)

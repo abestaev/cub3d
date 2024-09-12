@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 18:45:05 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:20:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	ft_player_render(t_player *p, char **map)
 	int		start_y;
 
 	img = p->img;
-	x = p->p_x;
-	y = p->p_y;
 	start_x = p->p_x - (ft_resize_tiles(map) / 2);
 	start_y = p->p_y - (ft_resize_tiles(map) / 2);
 	x = start_x;
@@ -97,9 +95,15 @@ void	ft_cub_render(t_player *p)
 	char	**map;
 
 	map = allocate_map(8, 6);
-	// ft_clear_image(p->img, 0x00000000);
+	ft_clear_image(p->img, 0x00000000);
 	ft_map_render(p, map);
+	ft_clear_image(p->img, 0x00000000);
+
 	ft_player_render(p, map);
+	ft_clear_image(p->img, 0x00000000);
+	// ft_clear_image(p->img, 0x00000000);
+	// visualize the player angle
+	
 }
 
 void	ft_mlx_init(void)
@@ -113,11 +117,12 @@ void	ft_mlx_init(void)
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 			&img.endian);
 	p.img = &img;
+	img.p = &p;
 	p.p_x = (S_WIDTH / 2);
 	p.p_y = (S_HEIGHT / 2);
-	p.p_agl = PI / 2;
-	p.p_dir_x = cos(p.p_agl * 5);
-	p.p_dir_y = sin(p.p_agl * 5);
+	p.p_angl = PI / 2;
+	p.p_dir_x = cos(p.p_angl);
+	p.p_dir_y = sin(p.p_angl);
 	ft_cub_render(&p);
 	mlx_hook(img.win_ptr, KeyPress, KeyPressMask, ft_handle_hook, &p);
 	mlx_put_image_to_window(img.mlx, img.win_ptr, img.img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 18:46:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/12 19:13:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ void	ft_clear_image(t_image *img, int color)
 		x = 0;
 		while (x < S_WIDTH)
 		{
-			my_pixel_put(img, x, y, color);
+			if (x == img->p->p_dir_x || y == img->p->p_dir_y)
+				my_pixel_put(img, x, y, 0xFFFF00FF);
+			else 
+				my_pixel_put(img, x, y, color);
 			x++;
 		}
 		y++;

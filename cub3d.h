@@ -26,7 +26,7 @@ typedef struct s_player
 {
 	double			p_x;
 	double			p_y;
-	double			p_agl;
+	double			p_angl;
 	double			p_dir_x;
 	double			p_dir_y;
 	struct s_image	*img;
