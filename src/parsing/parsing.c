@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/12 19:32:11 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/14 04:38:00 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,15 @@ int     parse_line(char *str, t_textures *textures)
     tab = ft_split(str, " ");
     i = 0;
     {
-        if (ft_count_tab(tab) != 2 || compare_texture_line(tab[0], tab[1], textures) == 1)
+        if (ft_count_tab(tab) != 2)
         {
             printf("Error\nInvalid line\n");
+            free(str);
+            free_tab(tab);
+            return (1);
+        }
+        if (compare_texture_line(tab[0], tab[1], textures) == 1)
+        {
             free(str);
             free_tab(tab);
             return (1);
@@ -109,10 +115,7 @@ int     read_file(t_textures *textures)
                     return (1);
             }
             else
-            {
-                printf("Line:%s\n", line);
                 get_map_line(line, textures);
-            }
             free(line);
         }
         line = get_next_line(textures->fd);
@@ -123,7 +126,7 @@ int     read_file(t_textures *textures)
 }
 
 // Function to group all the parsing functions
-int     parsing(int argc, char **argv, t_textures *textures)//, t_data *data)
+int     parsing(int argc, char **argv, t_textures *textures, t_data *data)
 {
     if (arg_valid(argc, argv))
         return (1);
@@ -132,10 +135,15 @@ int     parsing(int argc, char **argv, t_textures *textures)//, t_data *data)
         printf("Error\nCould not open file\n");
         return (1);
     }
+    textures->nb_lines = 0;
+    textures->longest_line = 0;
     if (read_file(textures))
         return (1);
-    if (parse_map(textures))//, data))
+    if (invalid_char(textures))
         return (1);
+    if (parse_map(textures, data))
+        return (1);
+    dprintf(2, "Parsing done\n");
     return (0);
 }
 
