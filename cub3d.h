@@ -61,6 +61,10 @@ int				is_map_open(t_data *data, t_textures *textures);
 int				is_surrounded(int i, int j, t_textures *t);
 int				check_top_bottom(t_data *data, t_textures *textures);
 int				check_sides(t_data *data, t_textures *textures);
+int				is_image_png(char *path);
+int				missing_textures(t_textures *textures);
+int				parse_rgb(t_textures *textures);
+
 
 // debug functions
 void			print_map(char **map);

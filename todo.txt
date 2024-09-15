@@ -1,0 +1,6 @@
+TODO:
+
+[] parse RGB; check avec Melanie comment stocker les couleurs FLOOR et CEILING
+[] check if rbv values are between 0 and 255 + well formated
+[] comment all function
+[] escalidraw the parsing

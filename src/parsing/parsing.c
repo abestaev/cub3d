@@ -6,149 +6,102 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/15 02:59:36 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/15 06:42:37 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Function to check if the number of arguments is valid
-int     arg_valid(int argc, char **argv)
+int	arg_valid(int argc, char **argv)
 {
-    if (argc != 2)
-    {
-        printf("Error\nInvalid number of arguments\n");
-        return (1);
-    }
-    if (ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 4))
-    {
-        printf("Error\nInvalid file extension\n");
-        return (1);
-    }
-    return (0);
+	if (argc != 2)
+	{
+		printf("Error\nInvalid number of arguments\n");
+		return (1);
+	}
+	if (ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 4))
+	{
+		printf("Error\nInvalid file extension\n");
+		return (1);
+	}
+	return (0);
 }
 
-void     free_tab(char **tab)
+int	compare_texture_line(char *s1, char *s2, t_textures *textures)
 {
-    int i;
-
-    i = 0;
-    while (tab[i])
-    {
-        free(tab[i]);
-        i++;
-    }
-    free(tab);
-}
-
-// todo check if DOUBLONS
-int compare_texture_line(char *s1, char *s2, t_textures *textures)
-{
-    if (ft_strncmp(s1, "NO", 2) == 0)
-        textures->north = s2;
-    else if (ft_strncmp(s1, "SO", 2) == 0)
-        textures->south = s2;
-    else if (ft_strncmp(s1, "WE", 2) == 0)
-        textures->west = s2;
-    else if (ft_strncmp(s1, "EA", 2) == 0)
-        textures->east = s2;
-    else if (ft_strncmp(s1, "F", 1) == 0)
+	if (textures->north == NULL && ft_strncmp(s1, "NO", 2) == 0)
+		textures->north = s2;
+	else if (textures->south == NULL && ft_strncmp(s1, "SO", 2) == 0)
+		textures->south = s2;
+	else if (textures->west == NULL && ft_strncmp(s1, "WE", 2) == 0)
+		textures->west = s2;
+	else if (textures->east == NULL && ft_strncmp(s1, "EA", 2) == 0)
+		textures->east = s2;
+	else if (textures->floor == NULL && ft_strncmp(s1, "F", 1) == 0)
         textures->floor = s2;
-    //  textures->floor = parse_rgb(s2);
-    else if (ft_strncmp(s1, "C", 1) == 0)
-        textures->ceiling = s2;
-    //  textures->ceiling = parse_rgb(s2);
-    else
+	else if (textures->ceiling == NULL && ft_strncmp(s1, "C", 1) == 0)
+    	textures->ceiling = s2;
+	else
+	{
+		printf("Error\nInvalid texture line\n");
+		return (1);
+	}
+    if (parse_rgb(textures))
+        return (1);
+    return (0);
+}
+
+int	init_parsing(t_textures *textures, char *str)
+{
+	textures->fd = open(str, O_RDONLY);
+	textures->north = NULL;
+	textures->south = NULL;
+	textures->west = NULL;
+	textures->east = NULL;
+	textures->floor = NULL;
+	textures->ceiling = NULL;
+	textures->map_str_tmp = NULL;
+	textures->map_tab_tmp = NULL;
+	textures->longest_line = 0;
+	textures->nb_lines = 0;
+	return (0);
+}
+
+int missing_textures(t_textures *textures)
+{
+    if (textures->north == NULL || textures->south == NULL || textures->west == NULL
+        || textures->east == NULL || textures->floor == NULL || textures->ceiling == NULL)
     {
-        printf("Error\nInvalid texture line\n");
+        printf("Error\nMissing texture\n");
+        return (1);
+    }
+    if (is_image_png(textures->north) || is_image_png(textures->south)
+        || is_image_png(textures->west) || is_image_png(textures->east))
+    {
+        printf("Error\nInvalid texture file extension\n");
         return (1);
     }
     return (0);
 }
 
-int     parse_line(char *str, t_textures *textures)
+int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
 {
-    char **tab;
-    int i;
-    
-    tab = ft_split(str, " ");
-    i = 0;
-    {
-        if (ft_count_tab(tab) != 2)
-        {
-            printf("Error\nInvalid line\n");
-            free(str);
-            free_tab(tab);
-            return (1);
-        }
-        if (compare_texture_line(tab[0], tab[1], textures) == 1)
-        {
-            free(str);
-            free_tab(tab);
-            return (1);
-        }
-    }
-    free(tab[0]);
-    free(tab);
-    return (0);
-}
-// todo check if textures path are well formated
-// todo check if rbv values are between 0 and 255 + well formated
-
-
-int     read_file(t_textures *textures)
-{
-    char    *line;
-    int i;
-    
-    i = 0;
-    line = get_next_line(textures->fd);
-    while (line)
-    {
-        if (line[0] == '\n')
-            free(line);
-        else
-        {
-            if (i++ < 6)
-            {
-                if (parse_line(line, textures))
-                    return (1);
-            }
-            else
-                get_map_line(line, textures);
-            free(line);
-        }
-        line = get_next_line(textures->fd);
-    }
-    free(line);
-    close(textures->fd);
-    return (0);
-}
-
-// Function to group all the parsing functions
-int     parsing(int argc, char **argv, t_textures *textures, t_data *data)
-{
-    if (arg_valid(argc, argv))
-        return (1);
-    if ((textures->fd = open(argv[1], O_RDONLY)) == -1)
-    {
-        printf("Error\nCould not open file\n");
-        return (1);
-    }
-    textures->nb_lines = 0;
-    textures->longest_line = 0;
-    textures->map_str_tmp = NULL;
-    if (read_file(textures))
-        return (1);
+	if (arg_valid(argc, argv))
+		return (1);
+	init_parsing(textures, argv[1]);
+	if (textures->fd == -1)
+	{
+		printf("Error\nCould not open file\n");
+		return (1);
+	}
+	if (read_file(textures))
+		return (1);
+    if (missing_textures(textures))
+        return  (1);
     if (invalid_char(textures))
         return (1);
     if (parse_map(textures, data))
-        return (1);
-    dprintf(2, "Parsing done\n");
-    return (0);
+		return (1);
+	dprintf(2, "Parsing done\n");
+	return (0);
 }
-
-// todo Function to convert a string of rgb values to an int
-
-
-
