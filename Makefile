@@ -1,10 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I.
+CFLAGS = -I. #-Wall -Wextra -Werror -I.
 LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -lm -lX11 -lXext
 MLXLIB = mlx/libmlx_Linux.a 
 SRC = main.c \
-		src/parsing/parsing.c src/parsing/parse_map.c\
+		src/parsing/parsing.c src/parsing/parse_map.c src/parsing/check_walls.c \
 
 OBJ = $(SRC:.c=.o)
 

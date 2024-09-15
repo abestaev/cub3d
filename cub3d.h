@@ -50,17 +50,17 @@ int				arg_valid(int argc, char **argv);
 int				read_file(t_textures *textures);
 int				parse_line(char *str, t_textures *textures);
 int				compare_texture_line(char *s1, char *s2, t_textures *textures);
-
 int				get_map_line(char *str, t_textures *textures);
 int				parse_map(t_textures *textures, t_data *data);
 void			free_tab(char **tab);
 void			ft_strcpy(char *dest, const char *src);
 int				copy_and_check_walls(t_textures *textures, t_data *data);
-int				is_map_open(t_data *data);
-int				is_surrounded(int i, int j, t_textures *t);
 int				invalid_char(t_textures *textures);
 int				map_size(t_textures *textures);
+int				is_map_open(t_data *data, t_textures *textures);
 int				is_surrounded(int i, int j, t_textures *t);
+int				check_top_bottom(t_data *data, t_textures *textures);
+int				check_sides(t_data *data, t_textures *textures);
 
 // debug functions
 void			print_map(char **map);

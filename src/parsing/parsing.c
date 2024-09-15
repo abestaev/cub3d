@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/14 04:38:00 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/15 02:59:36 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int     parsing(int argc, char **argv, t_textures *textures, t_data *data)
     }
     textures->nb_lines = 0;
     textures->longest_line = 0;
+    textures->map_str_tmp = NULL;
     if (read_file(textures))
         return (1);
     if (invalid_char(textures))

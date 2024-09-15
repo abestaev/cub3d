@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/14 06:28:34 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/15 03:01:28 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	get_map_line(char *str, t_textures *textures)
 	i = ft_strlen(str) - 1;
 	while (str && (str[i] == ' ' || str[i] == '\n'))
 		i--;
-	tmp = malloc(sizeof(char) * i + 3);
+	tmp = malloc(sizeof(char) * (i + 3));
+	if (tmp == NULL)
+		return (1);
 	ft_strlcpy(tmp, str, i + 2);
 	tmp[i + 1] = '\n';
 	tmp[i + 2] = '\0';
@@ -29,12 +31,11 @@ int	get_map_line(char *str, t_textures *textures)
 		textures->longest_line = ft_strlen(tmp);
 	if (textures->map_str_tmp == NULL)
 		textures->map_str_tmp = ft_strdup(tmp);
-	else
-		textures->map_str_tmp = ft_strjoin_free(textures->map_str_tmp, tmp);
+	else if (textures->map_str_tmp)
+		textures->map_str_tmp = ft_strjoin(textures->map_str_tmp, tmp);
 	free(tmp);
 	return (0);
 }
-// todo excalidraw avec les etapes du parsing dans le readme git
 
 int	invalid_char(t_textures *t)
 {
@@ -79,15 +80,13 @@ int	parse_map(t_textures *textures, t_data *data)
 			return (1);
 		ft_memset(data->map[i], ' ', textures->longest_line);
 		data->map[i][textures->longest_line - 1] = '\0';
-		printf("data->map[%d] = %s\n", i, data->map[i]);
 		i++;
 	}
 	data->map[i] = NULL;
 	textures->map_tab_tmp = ft_split(textures->map_str_tmp, "\n");
 	free(textures->map_str_tmp);
-    if (copy_and_check_walls(textures, data))
-        return (1);
-	print_map(data->map);
+	if (copy_and_check_walls(textures, data))
+		return (1);
 	return (0);
 }
 
@@ -95,31 +94,32 @@ int	parse_map(t_textures *textures, t_data *data)
 int	is_surrounded(int i, int j, t_textures *t)
 {
     if (t->map_tab_tmp[i - 1][j] == ' ')
-            return (1);
-	if ()
+        return (1);
+	else if (t->map_tab_tmp[i + 1][j] == ' ')
 		return (1);
-	if ()
+	else if (t->map_tab_tmp[i][j - 1] == ' ')
 		return (1);
-    if 
+	else if (t->map_tab_tmp[i][j + 1] == ' ')
+		return (1);
 	return (0);
 }
 
-int     is_map_open(t_data *data)
+int     is_map_open(t_data *data, t_textures *textures)
 {
     int i;
-    int j;
+    size_t j;
 
-    if (check_top(data) || check_bottom(data) || check_left(data) || check_right(data))
-        return (1);
+	if (check_top_bottom(data, textures) || check_sides(data, textures))
+		return (1);
     i = 1;
-    while (data->map[i])
+    while (i < (textures->nb_lines - 1))
     {
         j = 1;
-        while (data->map[i][j])
+        while (j < (textures->longest_line - 1))
         {
-            if (data->map[i][j] == ' ')
+            if (data->map[i][j] == '0')
             {
-                if (is_surrounded(i, j, &data->textures))
+                if (is_surrounded(i, j, textures))
                 {
                     printf("Error\nMap is not closed\n");
                     return (1);
@@ -170,9 +170,9 @@ int	copy_and_check_walls(t_textures *textures, t_data *data)
 		ft_strcpy(data->map[i], textures->map_tab_tmp[i]);
 		i++;
 	}
-    if (map_size(data))
+    if (map_size(textures))
         return (1);
-    if (is_map_open(data))
+    if (is_map_open(data, textures))
         return (1);
     return (0);
 }

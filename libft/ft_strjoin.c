@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:39:40 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 19:35:30 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/15 02:53:35 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,18 @@ char	*ft_strjoin(const char *s1, const char *s2)
 
 char	*ft_strjoin_free(char *s1, const char *s2)
 {
-	int		i;
-	int		j;
-	int		total;
+	size_t		i;
+	size_t		j;
+	size_t		total;
 	char	*s3;
 
 	if (!s1 || !s2)
 		return (NULL);
-	total = ft_strlen(s1) + ft_strlen(s2);
+	total = 0;
+	total = ft_strlen(s1);
+	dprintf(2, "total: %zu\n", total);
+	total += ft_strlen(s2);
+	dprintf(2, "total: %zu\n", total);
 	s3 = malloc(sizeof(char) * total + 1);
 	if (!s3)
 		return (NULL);
