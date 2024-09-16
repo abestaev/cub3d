@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 19:10:49 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/16 19:23:38 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	ft_go_left(t_player *p)
 
 void	ft_turn_right(t_player *p)
 {
-	p->p_angl -= 0.1;
-	if (p->p_angl < 0)
+	p->p_angl += 0.1;
+	printf("%f\n", p->p_angl);
+	if (p->p_angl > PI * 2)
 		p->p_angl = 0;
-	p->p_dir_x = cos(p->p_angl * 5);
-	p->p_dir_y = sin(p->p_angl * 5);
+	p->p_dir_x = p->p_x + 150 * cos(p->p_angl);
+	p->p_dir_y = p->p_y + 150 * sin(p->p_angl);
 }
 
 int	ft_handle_hook(int keycode, t_player *p)
@@ -53,8 +54,8 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_go_up(p);
 	if (keycode == 115)
 		ft_turn_right(p);
-	// if (keycode == 110)
-	// 	ft_turn_left(p);
-	ft_cub_render(p);
+	//if (keycode == 110)
+	 	//ft_turn_left(p);
+	ft_refresh(p);
 	return (0);
 }

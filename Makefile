@@ -9,6 +9,7 @@ SRC = main.c \
 	src/parsing/parsing.c \
 	src/exec/ft_mlx_event.c \
 	src/exec/utils.c \
+	src/exec/init.c \
 
 OBJ = $(SRC:.c=.o)
 

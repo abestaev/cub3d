@@ -3,11 +3,11 @@
 
 # include "libft/libft.h"
 # include "mlx/mlx.h"
-# include <math.h>
 # include <X11/Xlib.h>
 # include <X11/Xutil.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <math.h>
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -29,6 +29,7 @@ typedef struct s_player
 	double			p_angl;
 	double			p_dir_x;
 	double			p_dir_y;
+	char			**map;
 	struct s_image	*img;
 
 }					t_player;
@@ -68,9 +69,15 @@ typedef struct s_data
 }					t_data;
 
 // EXEC FUNCTIONS
+
+// init
+void				ft_player_init(t_player *p);
+t_image				*ft_mlx_init(void);
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
 // int					ft_exit(void *param);
+void				ft_draw_line(int x_start, int y_start, int x_end, int y_end,
+						t_image *img);
 int					ft_count_columns(char **map);
 int					ft_count_lines(char **map);
 int					ft_resize_tiles(char **map);
@@ -78,6 +85,7 @@ void				ft_draw_tile(t_image *img, int start_x, int start_y,
 						int size, int color);
 void				ft_cub_render(t_player *p);
 void				ft_clear_image(t_image *img, int color);
+void				ft_refresh(t_player *p);
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures);
