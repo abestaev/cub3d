@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I.
 LIBFLAGS = -L./libft/ -lft
-MLXFLAGS = -lm -lX11 -lXext
+MLXFLAGS = -Lmlx -lmlx -lm -lX11 -lXext -lXrandr -lXi
 MLXLIB = mlx/libmlx_Linux.a 
 
 SRC = main.c \

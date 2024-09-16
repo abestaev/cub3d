@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/12 19:20:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/16 00:25:32 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,60 @@ void	ft_cub_render(t_player *p)
 	ft_clear_image(p->img, 0x00000000);
 	ft_map_render(p, map);
 	ft_clear_image(p->img, 0x00000000);
-
 	ft_player_render(p, map);
 	ft_clear_image(p->img, 0x00000000);
 	// ft_clear_image(p->img, 0x00000000);
 	// visualize the player angle
-	
+}
+
+void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
+		t_image img)
+{
+	int	delta_x;
+	int	delta_y;
+	int	d;
+	int	temp;
+	int	y;
+	int	x;
+	int	y_inc;
+
+	delta_x = x_end - x_start;
+	delta_y = y_end - y_start;
+	d = 2 * delta_y - delta_x;
+	if (abs(delta_x) > abs(delta_y))
+	{
+		if (x_start > x_end)
+		{
+			temp = x_start;
+			x_start = x_end;
+			x_end = temp;
+			delta_x *= -1;
+			delta_y *= -1;
+		}
+	}
+	y_inc = 1;
+	if (delta_y < 0)
+	{
+		y_inc = -1;
+		delta_y *= -1;
+	}
+	y = y_start;
+	x = x_start;
+	while (x < x_end)
+	{
+		if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+			my_pixel_put(img.img, x, y, 0x00FF0000);
+		if (d < 0)
+		{
+			d += 2 * delta_y;
+		}
+		else 
+		{
+			d += 2 * (delta_y - delta_x);
+			y += y_inc;
+		}
+		x++;
+	}
 }
 
 void	ft_mlx_init(void)
@@ -118,6 +166,10 @@ void	ft_mlx_init(void)
 			&img.endian);
 	p.img = &img;
 	img.p = &p;
+	ft_draw_line(20, 20, 20, 20, img);
+	mlx_put_image_to_window(img.mlx, img.win_ptr, img.img, 0, 0);
+	mlx_loop(img.mlx);
+	exit(0);
 	p.p_x = (S_WIDTH / 2);
 	p.p_y = (S_HEIGHT / 2);
 	p.p_angl = PI / 2;
