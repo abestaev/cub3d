@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/15 05:43:05 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:55:02 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,31 @@ int	parse_line(char *str, t_textures *textures)
 	return (0);
 }
 
-int	read_file(t_textures *textures)
+static int	empty_line(t_textures *textures, char *line)
 {
-	char	*line;
-	int		i;
-
-	i = 0;
-	line = get_next_line(textures->fd);
 	if (!line)
 	{
 		printf("Error\nEmpty file\n");
 		close(textures->fd);
 		return (1);
 	}
+	return (0);
+}
+
+int	read_file(t_textures *textures)
+{
+	char	*line;
+
+	line = get_next_line(textures->fd);
+	if (empty_line(textures, line))
+		return (1);
 	while (line)
 	{
 		if (line[0] == '\n')
 			free(line);
 		else
 		{
-			if (i++ < 6)
+			if (textures->i++ < 6)
 			{
 				if (parse_line(line, textures))
 					return (1);
@@ -94,7 +99,7 @@ int	get_map_line(char *str, t_textures *textures)
 	if (textures->map_str_tmp == NULL)
 		textures->map_str_tmp = ft_strdup(tmp);
 	else if (textures->map_str_tmp)
-		textures->map_str_tmp = ft_strjoin(textures->map_str_tmp, tmp);
+		textures->map_str_tmp = ft_strjoin_free(textures->map_str_tmp, tmp);
 	free(tmp);
 	return (0);
 }

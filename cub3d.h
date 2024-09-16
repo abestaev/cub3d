@@ -19,10 +19,17 @@ typedef struct textures
 	char		*east;
 	char		*floor;
 	char		*ceiling;
+	int			floor_r;
+	int			floor_g;
+	int			floor_b;
+	int			ceiling_r;
+	int			ceiling_g;
+	int			ceiling_b;
 	char		*map_str_tmp;
 	char		**map_tab_tmp;
 	size_t		longest_line;
 	int			nb_lines;
+	int			i;
 }				t_textures;
 
 typedef struct s_image
@@ -58,13 +65,14 @@ int				copy_and_check_walls(t_textures *textures, t_data *data);
 int				invalid_char(t_textures *textures);
 int				map_size(t_textures *textures);
 int				is_map_open(t_data *data, t_textures *textures);
-int				is_surrounded(int i, int j, t_textures *t);
+int				is_surrounded(int i, int j, t_data *data);
 int				check_top_bottom(t_data *data, t_textures *textures);
 int				check_sides(t_data *data, t_textures *textures);
 int				is_image_png(char *path);
 int				missing_textures(t_textures *textures);
 int				parse_rgb(t_textures *textures);
-
+int				isplayer(char c);
+void			free_parsing(t_textures *textures, t_data *data);
 
 // debug functions
 void			print_map(char **map);

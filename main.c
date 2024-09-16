@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/15 02:38:50 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:42:05 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	//ft_mlx_init();
 	if (parsing(argc, argv, &data.textures, &data))
 		return (1);
-		
+	free_parsing(&data.textures, &data);
 	return (0);
 }
 

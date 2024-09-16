@@ -6,6 +6,7 @@ MLXLIB = mlx/libmlx_Linux.a
 SRC = main.c \
 		src/parsing/parsing.c src/parsing/parse_map.c src/parsing/check_walls.c \
 		src/parsing/parsing_utils.c src/parsing/parse_content.c src/parsing/read_file.c	\
+		src/parsing/free_parsing.c \
 
 
 OBJ = $(SRC:.c=.o)

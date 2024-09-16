@@ -6,26 +6,54 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/15 06:48:27 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/17 00:49:40 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int parse_rgb(t_textures *textures)
+static int	ft_arrlen(char **array)
 {
-    char **tmp;
+	int	i;
 
-    tmp = ft_split(textures->ceiling, ",");
-    return (0);
+	i = 0;
+	if (array == NULL)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
+}
+
+int	parse_rgb(t_textures *textures)
+{
+	char	**tmp1;
+	char	**tmp2;
+
+	tmp1 = ft_split(textures->ceiling, ",");
+	tmp2 = ft_split(textures->floor, ",");
+	if (ft_arrlen(tmp1) != 3 || ft_arrlen(tmp2) != 3)
+	{
+		printf("Error\nInvalid RGB format\n");
+		return (1);
+	}
+	free_tab(tmp1);
+	free_tab(tmp2);
+	return (0);
 }
 
 int	is_image_png(char *path)
 {
 	int	i;
 
-	i = ft_strlen(path) - 4;
+	i = ft_strlen(path) - 5;
 	if (ft_strncmp(path + i, ".png", 4))
+		return (1);
+	return (0);
+}
+
+int	isplayer(char c)
+{
+	if (c == 'N' || c == 'S' || c == 'W' || c == 'E')
 		return (1);
 	return (0);
 }
@@ -47,9 +75,9 @@ int	invalid_char(t_textures *t)
 			printf("Error\nInvalid character '%c' in map\n", t->map_str_tmp[i]);
 			return (1);
 		}
-		if ((t->map_str_tmp[i] == 'N' || t->map_str_tmp[i] == 'S'
-				|| t->map_str_tmp[i] == 'W' || t->map_str_tmp[i] == 'E')
-			&& count == 1)
+		if (isplayer(t->map_str_tmp[i]))
+			count++;
+		if (count > 1)
 		{
 			printf("Error\nToo many player positions\n");
 			return (1);

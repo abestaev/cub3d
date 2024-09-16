@@ -4,7 +4,7 @@ WE IMG/Wolfenstein/wood.png
 EA IMG/Wolfenstein/redbrick.png
 
 F 0,0,0
-C 0,0,0
+C 0,0,0,1
 
 1111111111111111111111111
 1000000001100000000000011
