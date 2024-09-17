@@ -1,13 +1,21 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I.
 LIBFLAGS = -L./libft/ -lft
-MLXFLAGS = -lm -lX11 -lXext
+MLXFLAGS = -Lmlx -lmlx -lm -lX11 -lXext -lXrandr -lXi
 MLXLIB = mlx/libmlx_Linux.a 
-SRC = main.c \
-		src/parsing/parsing.c src/parsing/parse_map.c src/parsing/check_walls.c \
-		src/parsing/parsing_utils.c src/parsing/parse_content.c src/parsing/read_file.c	\
-		src/parsing/free_parsing.c \
 
+SRC = main.c \
+	src/my_pixel_put.c \
+	src/parsing/parsing.c \
+	src/parsing/parse_map.c \
+	src/parsing/check_walls.c \
+	src/parsing/parsing_utils.c \
+	src/parsing/parse_content.c \
+	src/parsing/read_file.c	\
+	src/parsing/free_parsing.c \
+	src/exec/ft_mlx_event.c \
+	src/exec/utils.c \
+	src/exec/init.c \
 
 OBJ = $(SRC:.c=.o)
 
