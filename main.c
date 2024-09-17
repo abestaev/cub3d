@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/17 14:15:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:20:59 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,10 +134,13 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 			y_start = y_end;
 			y_end = temp;
 		}
-		y_inc = (y_end >= y_start) ? 1 : -1;
+		y_inc = -1;
+		if(y_end >= y_start)
+			y_inc = 1;
 		y = y_start;
+		x = x_start;
 		d = 2 * delta_y - delta_x;
-		for (x = x_start; x <= x_end; x++)
+		while (x <= x_end)
 		{
 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
 				my_pixel_put(img, x, y, 0x00FF0000);
@@ -147,6 +150,7 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 				d -= 2 * delta_x;
 			}
 			d += 2 * delta_y;
+			x++;
 		}
 	}
 	// Si l'axe Y domine
@@ -162,10 +166,13 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 			y_start = y_end;
 			y_end = temp;
 		}
-		x_inc = (x_end >= x_start) ? 1 : -1;
+		x_inc = -1;
+		if (x_end >= x_start)
+			x_inc = 1;
 		x = x_start;
+		y = y_start;
 		d = 2 * delta_x - delta_y;
-		for (y = y_start; y <= y_end; y++)
+		while(y <= y_end)
 		{
 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
 				my_pixel_put(img, x, y, 0x00FF0000);
@@ -175,6 +182,7 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 				d -= 2 * delta_y;
 			}
 			d += 2 * delta_x;
+			y++;
 		}
 	}
 }
