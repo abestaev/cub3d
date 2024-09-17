@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/16 19:20:35 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/17 13:29:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,35 +74,36 @@ void	ft_player_render(t_player *p, char **map)
 	start_x = p->p_x - (ft_resize_tiles(map) / 2);
 	start_y = p->p_y - (ft_resize_tiles(map) / 2);
 	x = start_x;
-	while (x < start_x + (ft_resize_tiles(map) / 2))
+	while (x < start_x + (ft_resize_tiles(map) / 2) && x >= 0 && x < S_WIDTH)
 	{
 		y = start_y;
-		while (y < start_y + (ft_resize_tiles(map) / 2))
+		while (y < start_y + (ft_resize_tiles(map) / 2) && y >= 0
+			&& y < S_HEIGHT)
 		{
 			my_pixel_put(p->img, x, y, 0x00FF0000);
 			y++;
 		}
 		x++;
 	}
+	p->p_dir_x = p->p_x + 50 * cos(p->p_angl); // resize the coordinate 2 of the vector player
+	p->p_dir_y = p->p_y + 50 * sin(p->p_angl);
 }
 
 void	ft_refresh(t_player *p)
 {
-	// ft_clear_image(p->img, 0x00000000);
-	// ft_map_render(p, p->map);
+	ft_clear_image(p->img, 0x00000000);
+	ft_map_render(p, p->map);
 	ft_player_render(p, p->map);
-	ft_draw_line(p->p_x, p->p_y, 700, 200, p->img);
+	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 
 void	ft_cub_render(t_player *p)
 {
-	//mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	ft_refresh(p);
 	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
 	mlx_loop(p->img->mlx);
 }
-
 void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 		t_image *img)
 {
@@ -115,12 +116,15 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 	int	y_inc;
 	int	x_inc;
 
-	//printf("x_start %d, y_start %d, x_end %d, y_end %d\n", x_start, y_start,
-	//	x_end, y_end);
-	delta_x = x_end - x_start;
-	delta_y = y_end - y_start;
-	if (abs(delta_x) > abs(delta_y))
+	// Debugging information
+	printf("x_start %d, y_start %d, x_end %d, y_end %d\n", x_start, y_start,
+		x_end, y_end);
+	delta_x = abs(x_end - x_start);
+	delta_y = abs(y_end - y_start);
+	// Si l'axe X domine
+	if (delta_x > delta_y)
 	{
+		// Inverser les points si nécessaire
 		if (x_start > x_end)
 		{
 			temp = x_start;
@@ -129,69 +133,48 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 			temp = y_start;
 			y_start = y_end;
 			y_end = temp;
-			delta_x *= -1;
-			delta_y *= -1;
 		}
-		y_inc = 1;
-		if (delta_y < 0)
-		{
-			y_inc = -1;
-			delta_y *= -1;
-		}
+		y_inc = (y_end >= y_start) ? 1 : -1;
 		y = y_start;
 		d = 2 * delta_y - delta_x;
-		x = x_start;
-		while (x < x_end)
+		for (x = x_start; x <= x_end; x++)
 		{
 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-				my_pixel_put(img, x, y,
-					0x00FF0000);
-			if (d < 0)
+				my_pixel_put(img, x, y, 0x00FF0000);
+			if (d > 0)
 			{
-				d += 2 * delta_y;
-			}
-			else
-			{
-				d += 2 * (delta_y - delta_x);
 				y += y_inc;
+				d -= 2 * delta_x;
 			}
-			x++;
+			d += 2 * delta_y;
 		}
 	}
+	// Si l'axe Y domine
 	else
 	{
+		// Inverser les points si nécessaire
 		if (y_start > y_end)
 		{
-			temp = x_end;
-			x_end = x_start;
-			x_start = temp;
+			temp = x_start;
+			x_start = x_end;
+			x_end = temp;
 			temp = y_start;
 			y_start = y_end;
 			y_end = temp;
-			delta_x *= -1;
-			delta_y *= -1;
 		}
-		x_inc = 1;
-		if (delta_x < 0)
-		{
-			x_inc = -1;
-			delta_x *= -1;
-		}
-		d = 2 * delta_x - delta_y;
+		x_inc = (x_end >= x_start) ? 1 : -1;
 		x = x_start;
-		y = y_start;
-		while (y < y_end)
+		d = 2 * delta_x - delta_y;
+		for (y = y_start; y <= y_end; y++)
 		{
 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-				my_pixel_put(img, x, y,
-					0x00FF0000);
-			if (d < 0)
-				d += 2 * delta_x;
-			else
+				my_pixel_put(img, x, y, 0x00FF0000);
+			if (d > 0)
 			{
-				d += 2 * (delta_x - delta_y);
 				x += x_inc;
+				d -= 2 * delta_y;
 			}
+			d += 2 * delta_x;
 		}
 	}
 }
