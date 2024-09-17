@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/17 13:29:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/17 14:15:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	ft_player_render(t_player *p, char **map)
 	int	start_x;
 	int	start_y;
 
-	start_x = p->p_x - (ft_resize_tiles(map) / 2);
-	start_y = p->p_y - (ft_resize_tiles(map) / 2);
+	start_x = p->p_x - (ft_resize_tiles(map) / 4);
+	start_y = p->p_y - (ft_resize_tiles(map) / 4);
 	x = start_x;
 	while (x < start_x + (ft_resize_tiles(map) / 2) && x >= 0 && x < S_WIDTH)
 	{
