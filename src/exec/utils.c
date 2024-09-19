@@ -6,11 +6,19 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/17 14:42:32 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:37:01 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	ft_inside_wall(t_player *p)
+{
+	if (p->map[(int)((p->p_y) / p->tile_size)][(int)((p->p_x)
+			/ p->tile_size)] == '1')
+		return (1);
+	return (0);
+}
 
 int	ft_count_lines(char **map)
 {
@@ -25,25 +33,37 @@ int	ft_count_lines(char **map)
 int	ft_count_columns(char **map)
 {
 	int	i;
+	int	len;
 
 	i = 0;
-	while (map[0][i])
+	len = ft_strlen(map[0]);
+	while (map[i])
+	{
 		i++;
-	return (i);
+		if (ft_strlen(map[i]) > (size_t)len)
+			len = ft_strlen(map[i]);
+	}
+	return (len - 1);
 }
-
-int	ft_resize_tiles(char **map)
+double	ft_divide(double i, double j)
+{
+	return (i / j);
+}
+double	ft_get_tile_size(char **map)
 {
 	int	col;
 
-	if (ft_count_columns(map) > ft_count_lines(map))
+	if (ft_divide(ft_count_columns(map),
+			ft_count_lines(map)) >= ft_divide(S_WIDTH, S_HEIGHT))
+	{
 		col = ft_count_columns(map);
-	else
-		col = ft_count_lines(map);
-	if (S_WIDTH < S_HEIGHT)
 		return (S_WIDTH / col);
+	}
 	else
+	{
+		col = ft_count_lines(map);
 		return (S_HEIGHT / col);
+	}
 }
 
 void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
@@ -95,9 +115,6 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 	int	y_inc;
 	int	x_inc;
 
-	// Debugging information
-	printf("x_start %d, y_start %d, x_end %d, y_end %d\n", x_start, y_start,
-		x_end, y_end);
 	delta_x = abs(x_end - x_start);
 	delta_y = abs(y_end - y_start);
 	// Si l'axe X domine
@@ -114,7 +131,7 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 			y_end = temp;
 		}
 		y_inc = -1;
-		if(y_end >= y_start)
+		if (y_end >= y_start)
 			y_inc = 1;
 		y = y_start;
 		x = x_start;
@@ -151,7 +168,7 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 		x = x_start;
 		y = y_start;
 		d = 2 * delta_x - delta_y;
-		while(y <= y_end)
+		while (y <= y_end)
 		{
 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
 				my_pixel_put(img, x, y, 0x00FF0000);

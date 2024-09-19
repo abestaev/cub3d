@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/17 17:21:58 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:30:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ t_image	*ft_mlx_init(void)
 
 void	ft_player_init(t_player *p, t_data *data)
 {
-	p->p_x = (S_WIDTH / 2) + (S_WIDTH % 2);
-	p->p_y = (S_HEIGHT / 2) + (S_HEIGHT % 2);
-	p->p_angl = PI / 2;
+	p->p_x = (S_WIDTH / 4);
+	p->p_y = (S_HEIGHT / 3);
+	p->p_angl = PI/2;
 	p->p_dir_x = p->p_x + 50 * cos(p->p_angl);
 	p->p_dir_y = p->p_y + 50 * sin(p->p_angl);
 	p->data = data;
 	p->map = data->map;
+	p->tile_size = ft_get_tile_size(p->map);
 }

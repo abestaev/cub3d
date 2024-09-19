@@ -15,7 +15,7 @@
 
 # define PI 3.1415926535897
 # define S_WIDTH 1000
-# define S_HEIGHT 600
+# define S_HEIGHT 800
 # define FOV 60
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
@@ -29,6 +29,8 @@ typedef struct s_player
 	double			p_angl;
 	double			p_dir_x;
 	double			p_dir_y;
+	double			tile_size;
+	double			plr_offset;
 	char			**map;
 	struct s_image	*img;
 	struct s_data	*data;
@@ -85,6 +87,7 @@ typedef struct s_data
 // init
 void				ft_player_init(t_player *p, t_data *data);
 t_image				*ft_mlx_init(void);
+int					ft_inside_wall(t_player *p);
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
 // int					ft_exit(void *param);
@@ -92,7 +95,7 @@ void				ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 						t_image *img);
 int					ft_count_columns(char **map);
 int					ft_count_lines(char **map);
-int					ft_resize_tiles(char **map);
+double				ft_get_tile_size(char **map);
 void				ft_draw_tile(t_image *img, int start_x, int start_y,
 						int size, int color);
 void				ft_cub_render(t_player *p);

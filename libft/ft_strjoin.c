@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:39:40 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/15 02:53:35 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:13:59 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ char	*ft_strjoin_free(char *s1, const char *s2)
 		return (NULL);
 	total = 0;
 	total = ft_strlen(s1);
-	dprintf(2, "total: %zu\n", total);
 	total += ft_strlen(s2);
-	dprintf(2, "total: %zu\n", total);
 	s3 = malloc(sizeof(char) * total + 1);
 	if (!s3)
 		return (NULL);
