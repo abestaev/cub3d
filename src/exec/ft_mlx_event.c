@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 13:39:59 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:39:19 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,33 @@
 
 void	ft_go_up(t_player *p)
 {
-	if (p->p_y >= 0 && p->p_y < S_HEIGHT && !ft_inside_wall(p))
-		p->p_y -= 6;
+	if(ft_inside_wall(p, p->p_x, p->p_y - p->plr_speed))
+		p->p_y += p->plr_speed + 1;
+	if (p->p_y >= 0 && p->p_y < S_HEIGHT)
+		p->p_y -= p->plr_speed;
 }
 void	ft_go_down(t_player *p)
 {
-	if (p->p_y >= 0 && p->p_y < S_HEIGHT && !ft_inside_wall(p))
-		p->p_y += 6;
+	if(ft_inside_wall(p, p->p_x, p->p_y + p->plr_speed))
+		p->p_y -= p->plr_speed + 1;
+	if (p->p_y >= 0 && p->p_y < S_HEIGHT)
+		p->p_y += p->plr_speed;
 }
 
 void	ft_go_right(t_player *p)
 {
-	if (p->p_x >= 0 && p->p_x < S_WIDTH && !ft_inside_wall(p))
-		p->p_x += 6;
+	if(ft_inside_wall(p, p->p_x + p->plr_speed, p->p_y))
+		p->p_x -= p->plr_speed + 1;
+	if (p->p_x >= 0 && p->p_x < S_WIDTH)
+		p->p_x += p->plr_speed;
 }
 
 void	ft_go_left(t_player *p)
 {
-	if (p->p_x >= 0 && p->p_x < S_WIDTH && !ft_inside_wall(p))
-		p->p_x -= 6;
+	if(ft_inside_wall(p, p->p_x - p->plr_speed, p->p_y))
+		p->p_x += p->plr_speed + 1;
+	if (p->p_x >= 0 && p->p_x < S_WIDTH)
+		p->p_x -= p->plr_speed;
 }
 
 void	ft_turn_right(t_player *p)

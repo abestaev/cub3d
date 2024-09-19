@@ -31,6 +31,7 @@ typedef struct s_player
 	double			p_dir_y;
 	double			tile_size;
 	double			plr_offset;
+	double			plr_speed;
 	char			**map;
 	struct s_image	*img;
 	struct s_data	*data;
@@ -87,7 +88,7 @@ typedef struct s_data
 // init
 void				ft_player_init(t_player *p, t_data *data);
 t_image				*ft_mlx_init(void);
-int					ft_inside_wall(t_player *p);
+int					ft_inside_wall(t_player *p, double x, double y);
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
 // int					ft_exit(void *param);

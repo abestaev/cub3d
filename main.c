@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 14:09:25 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:38:13 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ double	ft_find_next_x_tile(double point, t_player *p)
 	{
 		if (i > point)
 			return (i);
-		i += ft_get_tile_size(p->map);
+		i += p->tile_size;
 	}
 	// }
 	// else
@@ -104,7 +104,7 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	{
 		if (i > point)
 			return (i);
-		i += ft_get_tile_size(p->map);
+		i += p->tile_size;
 	}
 	// }
 	// else
@@ -129,10 +129,14 @@ void	ft_cast_rays(t_player *p)
 
 	i = 0;
 	ray_angl = p->p_angl - (ft_norm_angl(FOV) / 2);
+	// if ()
+	
+	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
+	// exit(0);
 	while (i < S_WIDTH)
 	{
-		if ((ray_angl > 0 && ray_angl < PI) || (p->p_angl > PI
-				&& p->p_angl < PI * 2))
+		if ((ray_angl > 0 && ray_angl < PI) || (ray_angl > PI && ray_angl < PI
+				* 2))
 		{
 			y_step = ft_find_next_y_tile(p->p_y, p);
 			while (y_step < S_HEIGHT)
@@ -147,7 +151,8 @@ void	ft_cast_rays(t_player *p)
 							+ opp_side) / p->tile_size)] == '1')
 					break ;
 			}
-			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, p->p_y + adj, p->img);
+			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, p->p_y + adj,
+				p->img);
 		}
 		else
 		{
@@ -164,7 +169,8 @@ void	ft_cast_rays(t_player *p)
 							+ opp_side) / p->tile_size)] == '1')
 					break ;
 			}
-			ft_draw_line(p->p_x, p->p_y, p->p_x + adj, p->p_y + opp_side, p->img);
+			ft_draw_line(p->p_x, p->p_y, p->p_x + adj, p->p_y + opp_side,
+				p->img);
 		}
 		ray_angl -= ft_norm_angl(FOV) / S_WIDTH;
 		i++;
@@ -176,7 +182,7 @@ void	ft_refresh(t_player *p)
 	ft_clear_image(p->img, 0x00000000);
 	ft_map_render(p, p->map);
 	ft_player_render(p);
-	ft_cast_rays(p);
+	// ft_cast_rays(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 

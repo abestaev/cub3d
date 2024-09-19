@@ -6,15 +6,15 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 13:37:01 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:32:47 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_inside_wall(t_player *p)
+int	ft_inside_wall(t_player *p, double x, double y)
 {
-	if (p->map[(int)((p->p_y) / p->tile_size)][(int)((p->p_x)
+	if (p->map[(int)(y / p->tile_size)][(int)(x
 			/ p->tile_size)] == '1')
 		return (1);
 	return (0);
