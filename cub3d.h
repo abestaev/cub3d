@@ -17,6 +17,7 @@
 # define S_WIDTH 1000
 # define S_HEIGHT 800
 # define FOV 60
+# define SPEED 5
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
 # define K_Right 65363 /* Move right, right arrow */

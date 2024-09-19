@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 15:38:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:48:11 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,32 +61,21 @@ double	ft_norm_angl(double degrees)
 	angl = degrees * (PI / 180);
 	return (angl);
 }
-
 double	ft_find_next_x_tile(double point, t_player *p)
 {
 	int	i;
 
-	// trouver l'intersection sur les axes x
 	i = 0;
-	// if (p->p_angl > PI && p->p_angl < PI * 2)
-	// // If my player is watching the south,
-	// // I want to find the next tile after him
-	// {
-	while (i <= S_HEIGHT)
+	while (i <= S_WIDTH)
 	{
 		if (i > point)
+		{
+			if (p->p_angl > PI && p->p_angl < PI * 2)
+				return (i - p->tile_size);
 			return (i);
+		}
 		i += p->tile_size;
 	}
-	// }
-	// else
-	// 	while (i <= S_HEIGHT) // If my player is watching the north,
-	// 	// I want to find the next tile before him
-	// 	{printf("p_y : %f\n", p->p_y);
-	// 		if (i > p->p_y)
-	// 			return (i);
-	// 		i += ft_get_tile_size(p->map);
-	// 	}
 	return (0);
 }
 
@@ -100,12 +89,17 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	// // If my player is watching the south,
 	// // I want to find the next tile after him
 	// {
-	while (i <= S_WIDTH)
+	while (i <= S_HEIGHT)
 	{
 		if (i > point)
+		{
+			if (p->p_angl > PI / 2 && p->p_angl < 3 * PI / 2)
+				return (i - p->tile_size);
 			return (i);
+		}
 		i += p->tile_size;
 	}
+	return (0);
 	// }
 	// else
 	// 	while (i <= S_HEIGHT) // If my player is watching the north,
@@ -115,9 +109,7 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	// 			return (i);
 	// 		i += ft_get_tile_size(p->map);
 	// 	}
-	return (0);
 }
-
 void	ft_cast_rays(t_player *p)
 {
 	int		i;
@@ -129,8 +121,6 @@ void	ft_cast_rays(t_player *p)
 
 	i = 0;
 	ray_angl = p->p_angl - (ft_norm_angl(FOV) / 2);
-	// if ()
-	
 	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
 	// exit(0);
 	while (i < S_WIDTH)
@@ -138,8 +128,8 @@ void	ft_cast_rays(t_player *p)
 		if ((ray_angl > 0 && ray_angl < PI) || (ray_angl > PI && ray_angl < PI
 				* 2))
 		{
-			y_step = ft_find_next_y_tile(p->p_y, p);
-			while (y_step < S_HEIGHT)
+			y_step = ft_find_next_x_tile(p->p_x, p); //find the first perpendicular intersection
+			while (y_step < S_HEIGHT && y_step > 0)
 			{
 				adj = fabs(y_step - p->p_y);
 				opp_side = tan(ray_angl) * adj;
@@ -156,8 +146,8 @@ void	ft_cast_rays(t_player *p)
 		}
 		else
 		{
-			x_step = ft_find_next_x_tile(p->p_y, p);
-			while (x_step < S_WIDTH)
+			x_step = ft_find_next_y_tile(p->p_y, p);
+			while (x_step < S_WIDTH && x_step > 0)
 			{
 				adj = fabs(x_step - p->p_x);
 				opp_side = tan(ray_angl) * adj;
@@ -182,7 +172,7 @@ void	ft_refresh(t_player *p)
 	ft_clear_image(p->img, 0x00000000);
 	ft_map_render(p, p->map);
 	ft_player_render(p);
-	// ft_cast_rays(p);
+	ft_cast_rays(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 

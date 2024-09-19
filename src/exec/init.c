@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 15:35:55 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:40:59 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,6 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->p_dir_y = p->p_y + 50 * sin(p->p_angl);
 	p->data = data;
 	p->map = data->map;
-	p->plr_speed = 5;
+	p->plr_speed = SPEED;
 	p->tile_size = ft_get_tile_size(p->map);
 }
