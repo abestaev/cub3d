@@ -14,7 +14,7 @@
 # include <unistd.h>
 
 # define PI 3.1415926535897
-# define S_WIDTH 1000
+# define S_WIDTH 600
 # define S_HEIGHT 800
 # define FOV 60
 # define SPEED 5

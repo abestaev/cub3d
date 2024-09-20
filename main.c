@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 16:48:11 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/20 14:36:49 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,33 @@ void	ft_player_render(t_player *p)
 	p->p_dir_y = p->p_y + S_HEIGHT * sin(p->p_angl);
 }
 
-double	ft_norm_angl(double degrees)
+double	ft_norm_deg_angl(double degrees)
 {
 	double	angl;
 
 	angl = degrees * (PI / 180);
 	return (angl);
 }
+double	ft_norm_radian_angl(double radian)
+{
+	double	angl;
+
+	angl = radian * (180 / PI);
+	return (angl);
+}
+
 double	ft_find_next_x_tile(double point, t_player *p)
 {
-	int	i;
+	double	i;
 
 	i = 0;
 	while (i <= S_WIDTH)
 	{
-		if (i > point)
+		if (i >= point)
 		{
-			if (p->p_angl > PI && p->p_angl < PI * 2)
-				return (i - p->tile_size);
-			return (i);
+			if ((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4))
+				return (i);
+			return (i - p->tile_size);
 		}
 		i += p->tile_size;
 	}
@@ -81,7 +89,7 @@ double	ft_find_next_x_tile(double point, t_player *p)
 
 double	ft_find_next_y_tile(double point, t_player *p)
 {
-	int	i;
+	double	i;
 
 	// trouver l'intersection sur les axes x
 	i = 0;
@@ -91,9 +99,9 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	// {
 	while (i <= S_HEIGHT)
 	{
-		if (i > point)
+		if (i >= point)
 		{
-			if (p->p_angl > PI / 2 && p->p_angl < 3 * PI / 2)
+			if (p->p_angl > 3 * PI / 4 && p->p_angl < 5 * PI / 4)
 				return (i - p->tile_size);
 			return (i);
 		}
@@ -110,61 +118,97 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	// 		i += ft_get_tile_size(p->map);
 	// 	}
 }
+
 void	ft_cast_rays(t_player *p)
 {
 	int		i;
+	double	ray_angl;
 	int		opp_side;
 	int		adj;
-	double	ray_angl;
 	double	y_step;
 	double	x_step;
 
+	// double	ray_x;
+	// double	ray_y;
 	i = 0;
-	ray_angl = p->p_angl - (ft_norm_angl(FOV) / 2);
+	ray_angl = p->p_angl - (ft_norm_deg_angl(FOV) / 2);
 	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
-	// exit(0);
 	while (i < S_WIDTH)
 	{
-		if ((ray_angl > 0 && ray_angl < PI) || (ray_angl > PI && ray_angl < PI
-				* 2))
+		y_step = ft_find_next_y_tile(p->p_y, p);
+		x_step = ft_find_next_x_tile(p->p_x, p);
+		if (((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4)) || ((p->p_angl > 5
+					* PI / 4 && p->p_angl < 7 * PI / 4)))
 		{
-			y_step = ft_find_next_x_tile(p->p_x, p); //find the first perpendicular intersection
-			while (y_step < S_HEIGHT && y_step > 0)
+			while (y_step > 0 && y_step < S_HEIGHT)
 			{
 				adj = fabs(y_step - p->p_y);
 				opp_side = tan(ray_angl) * adj;
+				ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
 				y_step += p->tile_size;
-				// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
-				// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
-				// + opp_side) / ft_get_tile_size(p->map))]);
-				if (p->map[(int)((p->p_y + adj) / p->tile_size)][(int)((p->p_x
-							+ opp_side) / p->tile_size)] == '1')
-					break ;
 			}
-			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, p->p_y + adj,
-				p->img);
 		}
 		else
 		{
-			x_step = ft_find_next_y_tile(p->p_y, p);
 			while (x_step < S_WIDTH && x_step > 0)
 			{
 				adj = fabs(x_step - p->p_x);
 				opp_side = tan(ray_angl) * adj;
+				ft_draw_line(p->p_x, p->p_y, x_step, p->p_y + opp_side, p->img);
 				x_step += p->tile_size;
-				// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
-				// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
-				// + opp_side) / ft_get_tile_size(p->map))]);
-				if (p->map[(int)((p->p_y + adj) / p->tile_size)][(int)((p->p_x
-							+ opp_side) / p->tile_size)] == '1')
-					break ;
 			}
-			ft_draw_line(p->p_x, p->p_y, p->p_x + adj, p->p_y + opp_side,
-				p->img);
 		}
-		ray_angl -= ft_norm_angl(FOV) / S_WIDTH;
+		// ray_x = cos(ray_angl) * 1000 + p->p_dir_x;
+		// ray_y = sin(ray_angl) * 1000 + p->p_dir_y;
+		// ft_draw_line(p->p_x, p->p_y, ray_x, ray_y, p->img);
+		ray_angl += ft_norm_deg_angl(FOV) / S_WIDTH;
 		i++;
 	}
+	// exit(0);
+	// while (i < S_WIDTH)
+	// {
+	// 	if ((ray_angl > 0 && ray_angl < PI) || (ray_angl > PI && ray_angl < PI
+	// 			* 2))
+	// 	{
+	// 		y_step = ft_find_next_x_tile(p->p_x, p);
+	// 			// find the first perpendicular intersection
+	// 		while (y_step < S_HEIGHT && y_step > 0)
+	// 		{
+	// 			adj = fabs(y_step - p->p_y);
+	// 			opp_side = tan(ray_angl) * adj;
+	// 			y_step += p->tile_size;
+	// 			// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
+	// 			// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
+	// 			// + opp_side) / ft_get_tile_size(p->map))]);
+	// 			// if (p->map[(int)((p->p_y + adj)
+	// 					// / p->tile_size)][(int)((p->p_x
+	// 			// 			+ opp_side) / p->tile_size)] == '1')
+	// 			// 	break ;
+	// 		}
+	//
+	// 	}
+	// 	else
+	// 	{
+	// 		x_step = ft_find_next_y_tile(p->p_y, p);
+	// 		while (x_step < S_WIDTH && x_step > 0)
+	// 		{
+	// 			adj = fabs(x_step - p->p_x);
+	// 			opp_side = tan(ray_angl) * adj;
+	// 			x_step += p->tile_size;
+	// 			// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
+	// 			// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
+	// 			// + opp_side) / ft_get_tile_size(p->map))]);
+	// 			// if (p->map[(int)((p->p_y + adj)
+	// 					// / p->tile_size)][(int)((p->p_x
+	// 			// 			+ opp_side) / p->tile_size)] == '1')
+	// 			// 	break ;
+	// 		}
+	// 		ft_draw_line(p->p_x, p->p_y, p->p_x + adj, p->p_y + opp_side,
+	// 			p->img);
+	// 	}
+	// 	ray_angl += ft_norm_angl(FOV) / S_WIDTH;
+	// 	i++;
+	// }
 }
 
 void	ft_refresh(t_player *p)
