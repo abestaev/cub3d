@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/20 16:28:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/21 23:35:00 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ t_image	*ft_mlx_init(void)
 void	ft_player_init(t_player *p, t_data *data)
 {
 	p->p_x = (S_WIDTH / 2);
-	p->p_y = (S_HEIGHT / 3);
-	p->p_angl = PI / 2;
+	p->p_y = (S_HEIGHT / 2);
+	p->p_angl = 0;
 	p->p_dir_x = p->p_x + 50 * cos(p->p_angl);
 	p->p_dir_y = p->p_y + 50 * sin(p->p_angl);
 	p->data = data;

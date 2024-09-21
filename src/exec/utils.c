@@ -3,20 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/19 15:32:47 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/22 00:54:58 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+double ft_dist(double x1, double y1, double x2, double y2)
+{
+	return (pow(x2 - x1, 2) + pow(y2 - y1, 2));
+}
+
 int	ft_inside_wall(t_player *p, double x, double y)
 {
-	if (p->map[(int)(y / p->tile_size)][(int)(x
-			/ p->tile_size)] == '1')
-		return (1);
+	if ((x > 0 && x < S_WIDTH) || (y > 0 || y < S_HEIGHT))
+	{
+		if (p->map[(int)(y / p->tile_size)][(int)(x / p->tile_size)] == '1')
+			return (1);
+	}
 	return (0);
 }
 

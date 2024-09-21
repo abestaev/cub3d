@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/20 17:19:14 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/22 01:06:42 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,39 +69,16 @@ double	ft_norm_radian_angl(double radian)
 	return (angl);
 }
 
-double	ft_find_next_x_tile(double point, t_player *p)
-{
-	double	i;
-
-	i = 0;
-	while (i <= S_WIDTH)
-	{
-		if (i >= point)
-		{
-			if ((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4))
-				return (i);
-			return (i - p->tile_size);
-		}
-		i += p->tile_size;
-	}
-	return (0);
-}
-
 double	ft_find_next_y_tile(double point, t_player *p)
 {
 	double	i;
 
-	// trouver l'intersection sur les axes x
 	i = 0;
-	// if (p->p_angl > PI && p->p_angl < PI * 2)
-	// // If my player is watching the south,
-	// // I want to find the next tile after him
-	// {
 	while (i <= S_HEIGHT)
 	{
 		if (i >= point)
 		{
-			if (p->p_angl > 3 * PI / 4 && p->p_angl < 5 * PI / 4)
+			if (p->p_angl >= PI && p->p_angl <= 2 * PI)
 				return (i - p->tile_size);
 			return (i);
 		}
@@ -109,119 +86,127 @@ double	ft_find_next_y_tile(double point, t_player *p)
 	}
 	return (0);
 }
-// void	ft_cast_rays(t_player *p)
-// {
-// 	int		i;
-// 	int		opp_side;
-// 	int		adj;
-// 	double	ray_angl;
-// 	double	y_step;
-// 	double	x_step;
 
-// 	i = 0;
-// 	ray_angl = p->p_angl - (ft_norm_deg_angl(FOV) / 2);
-// 	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
-// 	// exit(0);
-// 	while (i < S_WIDTH)
-// 	{
-// 		if ((ray_angl > 0 && ray_angl < PI) || (ray_angl > PI && ray_angl < PI
-// 				* 2))
-// 		{
-// 			y_step = ft_find_next_x_tile(p->p_x, p); //find the first perpendicular intersection
-// 			while (y_step < S_HEIGHT && y_step > 0)
-// 			{
-// 				adj = fabs(y_step - p->p_y);
-// 				opp_side = tan(ray_angl) * adj;
-// 				y_step += p->tile_size;
-// 				// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
-// 				// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
-// 				// + opp_side) / ft_get_tile_size(p->map))]);
-// 				if (p->map[(int)((p->p_y + adj) / p->tile_size)][(int)((p->p_x
-// 							+ opp_side) / p->tile_size)] == '1')
-// 					break ;
-// 			}
-// 			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, p->p_y + adj,
-// 				p->img);
-// 		}
-// 		else
-// 		{
-// 			x_step = ft_find_next_y_tile(p->p_y, p);
-// 			while (x_step < S_WIDTH && x_step > 0)
-// 			{
-// 				adj = fabs(x_step - p->p_x);
-// 				opp_side = tan(ray_angl) * adj;
-// 				x_step += p->tile_size;
-// 				// printf("CASE = %c\n\n", p->map[(int)( ( p->p_y
-// 				// + adj)/ ft_get_tile_size(p->map))][(int)((p->p_x
-// 				// + opp_side) / ft_get_tile_size(p->map))]);
-// 				if (p->map[(int)((p->p_y + adj) / p->tile_size)][(int)((p->p_x
-// 							+ opp_side) / p->tile_size)] == '1')
-// 					break ;
-// 			}
-// 			ft_draw_line(p->p_x, p->p_y, p->p_x + adj, p->p_y + opp_side,
-// 				p->img);
-// 		}
-// 		ray_angl -= ft_norm_deg_angl(FOV) / S_WIDTH;
-// 		i++;
-// 	}
-// }
-
-void	ft_cast_rays(t_player *p)
+double	ft_find_next_x_tile(double point, t_player *p)
 {
-	int		i;
-	double	ray_angl;
-	double	opp_side;
-	double		adj;
-	double	y_step;
-	double	x_step;
+	double	i;
 
-	// double	ray_x;
-	// double	ray_y;
+	// trouver l'intersection sur les axes x
 	i = 0;
-	ray_angl = p->p_angl + (ft_norm_deg_angl(FOV) / 2);
-	ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
-	while (i < S_WIDTH)
+	while (i <= S_WIDTH)
 	{
-		y_step = ft_find_next_y_tile(p->p_y, p);
-		x_step = ft_find_next_x_tile(p->p_x, p);
-		if (((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4)) || ((p->p_angl > 5
-					* PI / 4 && p->p_angl < 7 * PI / 4)))
+		if (i >= point)
 		{
-			while (y_step > 0 && y_step < S_HEIGHT)
-			{
-				adj = fabs(y_step - p->p_y);
-				opp_side = tan(ray_angl) * adj;
-				if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_WIDTH)) // si le cote opp sort de l ecran
-					break ;
-				if (p->map[(int)(y_step / p->tile_size)][(int)((p->p_x + opp_side) / p->tile_size)] == '1')
-					break ;
-				y_step += p->tile_size;
-			}
-			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
-			ray_angl += ft_norm_deg_angl(FOV) / S_WIDTH;
+			if (p->p_angl >= PI / 2 && p->p_angl <= 3 * PI / 2)
+				return (i - p->tile_size);
+			return (i);
 		}
-		else
-		{
-			while (x_step > 0 && x_step < S_WIDTH)
-			{
-				adj = fabs(x_step - p->p_x);
-				opp_side = tan(ray_angl) * adj;
-				if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_HEIGHT)) // si le cote opp sort de l ecran
-					break ;
-				if (p->map[(int)((p->p_y + opp_side) / p->tile_size)][(int)((x_step) / p->tile_size)] == '1')
-					break ;
-				x_step += p->tile_size;
-			}
-			ft_draw_line(p->p_x, p->p_y, x_step, p->p_y + opp_side, p->img);
-			ray_angl -= ft_norm_deg_angl(FOV) / S_HEIGHT;
-		}
-		// ray_x = cos(ray_angl) * 1000 + p->p_dir_x;
-		// ray_y = sin(ray_angl) * 1000 + p->p_dir_y;
-		// ft_draw_line(p->p_x, p->p_y, ray_x, ray_y, p->img);
-		i++;
+		i += p->tile_size;
+	}
+	return (0);
+}
+
+void	ft_draw_x(t_player *p)
+{
+	double	opp_side;
+	double	adj;
+	double	x_inter;
+
+	if (p->p_angl > PI / 2 && p->p_angl < 3 * PI / 2)
+	{
+		x_inter = ft_find_next_x_tile(p->p_x, p);
+		adj = fabs(x_inter - p->p_x);
+		opp_side = tan(p->p_angl) * adj;
+		ft_draw_line(p->p_x, p->p_y, x_inter, p->p_y - opp_side, p->img);
+	}
+	else
+	{
+		x_inter = ft_find_next_x_tile(p->p_x, p);
+		adj = fabs(x_inter - p->p_x);
+		opp_side = tan(p->p_angl) * adj;
+		ft_draw_line(p->p_x, p->p_y, x_inter, p->p_y + opp_side, p->img);
 	}
 }
 
+void	ft_draw_y(t_player *p)
+{
+	double	opp_side;
+	double	adj;
+	double	y_inter;
+
+	if (p->p_angl > 0 && p->p_angl < PI && p->p_angl != PI /2)
+	{
+		y_inter = ft_find_next_y_tile(p->p_y, p);
+		opp_side = fabs(y_inter - p->p_y);
+		adj = opp_side / tan(p->p_angl);
+		ft_draw_line(p->p_x, p->p_y, p->p_x + adj, y_inter, p->img);
+	}
+	if (p->p_angl > PI && p->p_angl < 2 * PI && p->p_angl != 3 * PI /2)
+	{
+		y_inter = ft_find_next_y_tile(p->p_y, p);
+		opp_side = fabs(y_inter - p->p_y);
+		adj = opp_side / tan(p->p_angl);
+		ft_draw_line(p->p_x, p->p_y, p->p_x - adj, y_inter, p->img);
+	}
+}
+
+void	ft_cast_rays(t_player *p)
+{
+	//double	opp_side;
+	//double	adj;
+	//double	y_inter;
+	//double	x_inter;
+
+	// int		i;
+	// double	ray_angl;
+	// double	ray_x;
+	// double	ray_y;
+	/// i = 0;
+	// ray_angl = p->p_angl + (ft_norm_deg_angl(FOV) / 2);
+	//ft_draw_x(p);
+	//ft_draw_y(p);
+	// while (i < S_WIDTH)
+	// {
+	// 	x_step = ft_find_next_x_tile(p->p_x, p);
+	// 	if (((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4)) || ((p->p_angl > 5* PI / 4 && p->p_angl < 7 * PI / 4)))
+	// 	{
+	// 		y_step = ft_find_next_y_tile(p->p_y, p);
+	// 		while (y_step > 0 && y_step < S_HEIGHT)
+	// 		{
+	// 			adj = fabs(x_step - p->p_y);
+	// 			opp_side = tan(ray_angl) * adj;
+	// 			if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_WIDTH))
+					// si le cote opp sort de l ecran
+	// 				break ;
+	// 			if (p->map[(int)(y_step / p->tile_size)][(int)((p->p_x+ opp_side) / p->tile_size)] == '1')
+	// 				break ;
+	// 			x_step = ft_find_next_y_tile(x_step, p);
+	// 		}
+	// 		// ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
+	// 		ray_angl += ft_norm_deg_angl(FOV) / S_WIDTH;
+	// 	}
+	// 	else
+	// 	{
+	// 		while (x_step > 0 && x_step < S_WIDTH)
+	// 		{
+	// 			adj = fabs(x_step - p->p_x);
+	// 			opp_side = tan(ray_angl) * adj;
+	// 			if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_HEIGHT))
+					// si le cote opp sort de l ecran
+	// 				break ;
+	// 			if (p->map[(int)((p->p_y + opp_side)/ p->tile_size)][(int)((x_step) / p->tile_size)] == '1')
+	// 				break ;
+	// 			x_step += p->tile_size;
+	// 		}
+	// 		// ft_draw_line(p->p_x, p->p_y, x_step, p->p_y + opp_side, p->img);
+	// 		ray_angl -= ft_norm_deg_angl(FOV) / S_HEIGHT;
+	// 	}
+	// 	// ray_x = cos(ray_angl) * 1000 + p->p_dir_x;
+	// 	// ray_y = sin(ray_angl) * 1000 + p->p_dir_y;
+	// 	// ft_draw_line(p->p_x, p->p_y, ray_x, ray_y, p->img);
+	// 	i++;
+	// }
+}
 
 void	ft_refresh(t_player *p)
 {

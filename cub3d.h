@@ -14,8 +14,8 @@
 # include <unistd.h>
 
 # define PI 3.1415926535897
-# define S_WIDTH 600
-# define S_HEIGHT 800
+# define S_WIDTH 500
+# define S_HEIGHT 500
 # define FOV 60
 # define SPEED 5
 # define K_Left 65361  /* Move left, left arrow */
@@ -87,6 +87,8 @@ typedef struct s_data
 // EXEC FUNCTIONS
 
 // init
+double	ft_norm_radian_angl(double radian);
+double	ft_norm_deg_angl(double degrees);
 void				ft_player_init(t_player *p, t_data *data);
 t_image				*ft_mlx_init(void);
 int					ft_inside_wall(t_player *p, double x, double y);
@@ -103,6 +105,8 @@ void				ft_draw_tile(t_image *img, int start_x, int start_y,
 void				ft_cub_render(t_player *p);
 void				ft_clear_image(t_image *img, int color);
 void				ft_refresh(t_player *p);
+double	ft_find_next_x_tile(double point, t_player *p);
+double	ft_find_next_y_tile(double point, t_player *p);
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/17 00:55:02 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/21 21:43:09 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 int	parse_line(char *str, t_textures *textures)
 {
 	char	**tab;
-	int		i;
 
 	tab = ft_split(str, " ");
-	i = 0;
 	{
 		if (ft_count_tab(tab) != 2)
 		{
