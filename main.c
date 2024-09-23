@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/23 16:17:24 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/23 16:19:23 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,107 +68,6 @@ double	ft_norm_radian_angl(double radian)
 	angl = radian * (180 / PI);
 	return (angl);
 }
-
-// double	ft_find_vert_tile(double point, t_player *p)
-// {
-// 	double	i;
-
-// 	i = 0;
-// 	while (i <= S_HEIGHT)
-// 	{
-// 		if (i >= point)
-// 		{
-// 			if (p->p_angl >= ft_norm_deg_angl(90)
-// 				&& p->p_angl <= ft_norm_deg_angl(270))
-// 				return (i - p->tile_size);
-// 			return (i);
-// 		}
-// 		i += p->tile_size;
-// 	}
-// 	return (0);
-// }
-
-// double	ft_find_hor_tile(double point, t_player *p)
-// {
-// 	double	i;
-
-// 	// trouver l'intersection sur les axes x
-// 	i = 0;
-// 	while (i <= S_WIDTH)
-// 	{
-// 		if (i >= point)
-// 		{
-// 			if (p->p_angl >= ft_norm_deg_angl(180)
-// 				&& p->p_angl <= ft_norm_deg_angl(360))
-// 				return (i - p->tile_size);
-// 			return (i);
-// 		}
-// 		i += p->tile_size;
-// 	}
-// 	return (0);
-// }
-
-// void	ft_horizontal_inter(t_player *p)
-// {
-// 	double	opp_side;
-// 	double	adj;
-// 	double	y_step;
-
-// 	if (ft_south(p))
-// 	{
-// 		y_step = ft_find_hor_tile(p->p_x, p);
-// 		printf("south %f\n", y_step);
-// 		printf("angl player %f\n", ft_norm_radian_angl(p->p_angl));
-// 		ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
-// 		adj = fabs(y_step + p->p_x);
-// 		opp_side = tan(p->p_angl) * adj;
-// 		printf("coord x = %f, coord y = %f\n", p->p_x + opp_side, y_step);
-// 		ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
-// 	}
-// 	else if (ft_north(p))
-// 	{
-// 		y_step = ft_find_hor_tile(p->p_x, p);
-// 		printf("north %f\n", y_step);
-// 		printf("angl player %f\n", ft_norm_radian_angl(p->p_angl));
-// 		ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
-// 		adj = fabs(p->p_x - y_step);
-// 		opp_side = tan(p->p_angl) * adj;
-// 		if (ft_norm_deg_angl(p->p_angl) > 270)
-// 		{
-// 		// printf("coord x = %f, coord y = %f\n", p->p_x + opp_side, y_step);
-
-// 			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side + p->p_dir_x, y_step,
-				// p->img);
-// 		}
-// 		else
-// 			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side + p->p_dir_x, y_step,
-				// p->img);
-// 	}
-// }
-
-// void	ft_vertical_inter(t_player *p)
-// {
-// 	double	opp_side;
-// 	double	adj;
-// 	double	x_step;
-
-// 	if (ft_ouest(p))
-// 	{
-// 		x_step = ft_find_vert_tile(p->p_y, p);
-// 		printf("ouest %f\n", x_step);
-// 		opp_side = fabs(x_step - p->p_y);
-// 		adj = opp_side * tan(p->p_angl);
-// 		ft_draw_line(p->p_x, p->p_y, p->p_x + adj, x_step, p->img);
-// 	}
-// 	else if (ft_est(p))
-// 	{
-// 		x_step = ft_find_vert_tile(p->p_y, p);
-// 		printf("est %f\n", x_step);
-// 		opp_side = fabs(x_step - p->p_y);
-// 		adj = opp_side * tan(p->p_angl);
-// 		ft_draw_line(p->p_x, p->p_y, p->p_x - adj, x_step, p->img);
-// 	}
-// }
 
 void	ft_cast_ray(t_player *p)
 {
