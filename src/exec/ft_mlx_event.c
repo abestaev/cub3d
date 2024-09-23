@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_event.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/21 23:06:42 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/23 11:02:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_turn_right(p);
 	if (keycode == 108)
 		ft_turn_left(p);
-	printf("angle->%f\n", ft_norm_radian_angl(p->p_angl));
-	printf("next_X ->%f\n", ft_find_next_x_tile(p->p_x, p));
-	printf("next_Y ->%f\n", ft_find_next_y_tile(p->p_y,p));
-	printf("~~~~~~~~~~~~~~~\n");
+	// printf("angle->%f\n", ft_norm_radian_angl(p->p_angl));
+	// printf("next_X ->%f\n", ft_find_next_x_tile(p->p_x, p));
+	// printf("next_Y ->%f\n", ft_find_next_y_tile(p->p_y,p));
+	// printf("~~~~~~~~~~~~~~~\n");
 	ft_refresh(p);
 	return (0);
 }

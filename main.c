@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/22 01:06:42 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/23 16:17:24 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,143 +69,170 @@ double	ft_norm_radian_angl(double radian)
 	return (angl);
 }
 
-double	ft_find_next_y_tile(double point, t_player *p)
-{
-	double	i;
+// double	ft_find_vert_tile(double point, t_player *p)
+// {
+// 	double	i;
 
+// 	i = 0;
+// 	while (i <= S_HEIGHT)
+// 	{
+// 		if (i >= point)
+// 		{
+// 			if (p->p_angl >= ft_norm_deg_angl(90)
+// 				&& p->p_angl <= ft_norm_deg_angl(270))
+// 				return (i - p->tile_size);
+// 			return (i);
+// 		}
+// 		i += p->tile_size;
+// 	}
+// 	return (0);
+// }
+
+// double	ft_find_hor_tile(double point, t_player *p)
+// {
+// 	double	i;
+
+// 	// trouver l'intersection sur les axes x
+// 	i = 0;
+// 	while (i <= S_WIDTH)
+// 	{
+// 		if (i >= point)
+// 		{
+// 			if (p->p_angl >= ft_norm_deg_angl(180)
+// 				&& p->p_angl <= ft_norm_deg_angl(360))
+// 				return (i - p->tile_size);
+// 			return (i);
+// 		}
+// 		i += p->tile_size;
+// 	}
+// 	return (0);
+// }
+
+// void	ft_horizontal_inter(t_player *p)
+// {
+// 	double	opp_side;
+// 	double	adj;
+// 	double	y_step;
+
+// 	if (ft_south(p))
+// 	{
+// 		y_step = ft_find_hor_tile(p->p_x, p);
+// 		printf("south %f\n", y_step);
+// 		printf("angl player %f\n", ft_norm_radian_angl(p->p_angl));
+// 		ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
+// 		adj = fabs(y_step + p->p_x);
+// 		opp_side = tan(p->p_angl) * adj;
+// 		printf("coord x = %f, coord y = %f\n", p->p_x + opp_side, y_step);
+// 		ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
+// 	}
+// 	else if (ft_north(p))
+// 	{
+// 		y_step = ft_find_hor_tile(p->p_x, p);
+// 		printf("north %f\n", y_step);
+// 		printf("angl player %f\n", ft_norm_radian_angl(p->p_angl));
+// 		ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
+// 		adj = fabs(p->p_x - y_step);
+// 		opp_side = tan(p->p_angl) * adj;
+// 		if (ft_norm_deg_angl(p->p_angl) > 270)
+// 		{
+// 		// printf("coord x = %f, coord y = %f\n", p->p_x + opp_side, y_step);
+
+// 			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side + p->p_dir_x, y_step,
+				// p->img);
+// 		}
+// 		else
+// 			ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side + p->p_dir_x, y_step,
+				// p->img);
+// 	}
+// }
+
+// void	ft_vertical_inter(t_player *p)
+// {
+// 	double	opp_side;
+// 	double	adj;
+// 	double	x_step;
+
+// 	if (ft_ouest(p))
+// 	{
+// 		x_step = ft_find_vert_tile(p->p_y, p);
+// 		printf("ouest %f\n", x_step);
+// 		opp_side = fabs(x_step - p->p_y);
+// 		adj = opp_side * tan(p->p_angl);
+// 		ft_draw_line(p->p_x, p->p_y, p->p_x + adj, x_step, p->img);
+// 	}
+// 	else if (ft_est(p))
+// 	{
+// 		x_step = ft_find_vert_tile(p->p_y, p);
+// 		printf("est %f\n", x_step);
+// 		opp_side = fabs(x_step - p->p_y);
+// 		adj = opp_side * tan(p->p_angl);
+// 		ft_draw_line(p->p_x, p->p_y, p->p_x - adj, x_step, p->img);
+// 	}
+// }
+
+void	ft_cast_ray(t_player *p)
+{
+	int		i;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double delta_dist_x;
+	double delta_dist_y;
+	int map_x;
+	int map_y;
+	int step_x;
+	int step_y;
+	double side_dist_x;
+	double side_dist_y;
+	
 	i = 0;
-	while (i <= S_HEIGHT)
+	while (i < S_WIDTH)
 	{
-		if (i >= point)
+		camera_x = 2 * i / (double)S_WIDTH - 1;
+		ray_dir_x = p->p_dir_x + p->p_x * camera_x;
+		ray_dir_y = p->p_dir_y + p->p_y * camera_x;
+		delta_dist_x = fabs(1 / ray_dir_x);
+		delta_dist_y = fabs(1 / ray_dir_y);
+		map_x = (int)p->p_x;
+		map_y = (int)p->p_y;
+		if (ray_dir_x < 0)
 		{
-			if (p->p_angl >= PI && p->p_angl <= 2 * PI)
-				return (i - p->tile_size);
-			return (i);
+			step_x = -1;
+			side_dist_x = (p->p_x - map_x) * delta_dist_x;
 		}
-		i += p->tile_size;
-	}
-	return (0);
-}
-
-double	ft_find_next_x_tile(double point, t_player *p)
-{
-	double	i;
-
-	// trouver l'intersection sur les axes x
-	i = 0;
-	while (i <= S_WIDTH)
-	{
-		if (i >= point)
+		else
 		{
-			if (p->p_angl >= PI / 2 && p->p_angl <= 3 * PI / 2)
-				return (i - p->tile_size);
-			return (i);
+			step_x = 1;
+			side_dist_x = (map_x + 1.0 - p->p_x) * delta_dist_x;
 		}
-		i += p->tile_size;
+		if (ray_dir_y < 0)
+		{
+			step_y = -1;
+			side_dist_y = (p->p_y - map_y) * delta_dist_y;
+		}
+		else
+		{
+			step_y = 1;
+			side_dist_y = (map_y + 1.0 - p->p_y) * delta_dist_y;
+		}
+		while (1)
+		{
+			if (side_dist_x < side_dist_y)
+			{
+				side_dist_x += delta_dist_x;
+				map_x += step_x;
+			}
+			else
+			{
+				side_dist_y += delta_dist_y;
+				map_y += step_y;
+			}
+			if (p->map[(int)(map_y / p->tile_size)][(int)(map_x / p->tile_size)] == '1')
+				break;
+		}
+		ft_draw_line(p->p_x, p->p_y, map_x, map_y, p->img);
+		i++;
 	}
-	return (0);
-}
-
-void	ft_draw_x(t_player *p)
-{
-	double	opp_side;
-	double	adj;
-	double	x_inter;
-
-	if (p->p_angl > PI / 2 && p->p_angl < 3 * PI / 2)
-	{
-		x_inter = ft_find_next_x_tile(p->p_x, p);
-		adj = fabs(x_inter - p->p_x);
-		opp_side = tan(p->p_angl) * adj;
-		ft_draw_line(p->p_x, p->p_y, x_inter, p->p_y - opp_side, p->img);
-	}
-	else
-	{
-		x_inter = ft_find_next_x_tile(p->p_x, p);
-		adj = fabs(x_inter - p->p_x);
-		opp_side = tan(p->p_angl) * adj;
-		ft_draw_line(p->p_x, p->p_y, x_inter, p->p_y + opp_side, p->img);
-	}
-}
-
-void	ft_draw_y(t_player *p)
-{
-	double	opp_side;
-	double	adj;
-	double	y_inter;
-
-	if (p->p_angl > 0 && p->p_angl < PI && p->p_angl != PI /2)
-	{
-		y_inter = ft_find_next_y_tile(p->p_y, p);
-		opp_side = fabs(y_inter - p->p_y);
-		adj = opp_side / tan(p->p_angl);
-		ft_draw_line(p->p_x, p->p_y, p->p_x + adj, y_inter, p->img);
-	}
-	if (p->p_angl > PI && p->p_angl < 2 * PI && p->p_angl != 3 * PI /2)
-	{
-		y_inter = ft_find_next_y_tile(p->p_y, p);
-		opp_side = fabs(y_inter - p->p_y);
-		adj = opp_side / tan(p->p_angl);
-		ft_draw_line(p->p_x, p->p_y, p->p_x - adj, y_inter, p->img);
-	}
-}
-
-void	ft_cast_rays(t_player *p)
-{
-	//double	opp_side;
-	//double	adj;
-	//double	y_inter;
-	//double	x_inter;
-
-	// int		i;
-	// double	ray_angl;
-	// double	ray_x;
-	// double	ray_y;
-	/// i = 0;
-	// ray_angl = p->p_angl + (ft_norm_deg_angl(FOV) / 2);
-	//ft_draw_x(p);
-	//ft_draw_y(p);
-	// while (i < S_WIDTH)
-	// {
-	// 	x_step = ft_find_next_x_tile(p->p_x, p);
-	// 	if (((p->p_angl > PI / 4 && p->p_angl < 3 * PI / 4)) || ((p->p_angl > 5* PI / 4 && p->p_angl < 7 * PI / 4)))
-	// 	{
-	// 		y_step = ft_find_next_y_tile(p->p_y, p);
-	// 		while (y_step > 0 && y_step < S_HEIGHT)
-	// 		{
-	// 			adj = fabs(x_step - p->p_y);
-	// 			opp_side = tan(ray_angl) * adj;
-	// 			if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_WIDTH))
-					// si le cote opp sort de l ecran
-	// 				break ;
-	// 			if (p->map[(int)(y_step / p->tile_size)][(int)((p->p_x+ opp_side) / p->tile_size)] == '1')
-	// 				break ;
-	// 			x_step = ft_find_next_y_tile(x_step, p);
-	// 		}
-	// 		// ft_draw_line(p->p_x, p->p_y, p->p_x + opp_side, y_step, p->img);
-	// 		ray_angl += ft_norm_deg_angl(FOV) / S_WIDTH;
-	// 	}
-	// 	else
-	// 	{
-	// 		while (x_step > 0 && x_step < S_WIDTH)
-	// 		{
-	// 			adj = fabs(x_step - p->p_x);
-	// 			opp_side = tan(ray_angl) * adj;
-	// 			if((p->p_x + opp_side < 0 || p->p_x + opp_side > S_HEIGHT))
-					// si le cote opp sort de l ecran
-	// 				break ;
-	// 			if (p->map[(int)((p->p_y + opp_side)/ p->tile_size)][(int)((x_step) / p->tile_size)] == '1')
-	// 				break ;
-	// 			x_step += p->tile_size;
-	// 		}
-	// 		// ft_draw_line(p->p_x, p->p_y, x_step, p->p_y + opp_side, p->img);
-	// 		ray_angl -= ft_norm_deg_angl(FOV) / S_HEIGHT;
-	// 	}
-	// 	// ray_x = cos(ray_angl) * 1000 + p->p_dir_x;
-	// 	// ray_y = sin(ray_angl) * 1000 + p->p_dir_y;
-	// 	// ft_draw_line(p->p_x, p->p_y, ray_x, ray_y, p->img);
-	// 	i++;
-	// }
 }
 
 void	ft_refresh(t_player *p)
@@ -213,7 +240,7 @@ void	ft_refresh(t_player *p)
 	ft_clear_image(p->img, 0x00000000);
 	ft_map_render(p, p->map);
 	ft_player_render(p);
-	ft_cast_rays(p);
+	ft_cast_ray(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 

@@ -107,6 +107,11 @@ void				ft_clear_image(t_image *img, int color);
 void				ft_refresh(t_player *p);
 double	ft_find_next_x_tile(double point, t_player *p);
 double	ft_find_next_y_tile(double point, t_player *p);
+int ft_est(t_player *p);
+int ft_ouest(t_player *p);
+int ft_north(t_player *p);
+int ft_south(t_player *p);
+
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures,
