@@ -6,12 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 13:16:17 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:07:05 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <string.h>
 
 t_image	*ft_mlx_init(void)
 {
@@ -28,15 +27,21 @@ t_image	*ft_mlx_init(void)
 
 void	ft_player_init(t_player *p, t_data *data)
 {
+	t_ray *ray;
+
+	ray = malloc(sizeof(t_ray));
+	ft_memset(ray, 0, sizeof(t_ray));
+	p->ray = ray;
 	p->p_x = (S_WIDTH / 2);
 	p->p_y = (S_HEIGHT / 2);
 	p->p_dir_x = 0;
 	p->p_dir_y = 1;
-	p->data = data;
 	p->map = data->map;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
 	p->tile_size = ft_get_tile_size(p->map);
 	p->plane_x = 0.66;
 	p->plane_y = 0;
+	p->data = data;
+
 }

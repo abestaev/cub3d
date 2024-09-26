@@ -17,6 +17,7 @@ SRC = main.c \
 	src/exec/utils.c \
 	src/exec/init.c \
 	src/exec/orientation.c \
+	src/exec/render.c \
 
 OBJ = $(SRC:.c=.o)
 

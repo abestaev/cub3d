@@ -6,50 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 13:11:21 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:35:43 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include <string.h>
-
-void	ft_map_render(t_player *p, char **map)
-{
-	double	y;
-	double	x;
-	int		index_x;
-	int		index_y;
-
-	index_y = 0;
-	y = 0;
-	while (index_y < ft_count_lines(map))
-	{
-		index_x = 0;
-		x = 0;
-		while (index_x < ft_count_columns(map) && map[index_y][index_x])
-		{
-			if (map[index_y][index_x] == '1')
-				ft_draw_tile(p->img, x, y, p->tile_size, 0xEF92EE);
-			else if (map[index_y][index_x] == '0')
-				ft_draw_tile(p->img, x, y, p->tile_size, 0x00000000);
-			x += p->tile_size;
-			index_x++;
-		}
-		y += p->tile_size;
-		index_y++;
-	}
-}
-
-void	ft_player_render(t_player *p)
-{
-	int	start_x;
-	int	start_y;
-
-	start_x = p->p_x - (p->tile_size / 16);
-	start_y = p->p_y - (p->tile_size / 16);
-	ft_draw_tile(p->img, start_x, start_y, p->tile_size / 8, 0x00FF0000);
-	p->plr_offset = p->tile_size / 8 / 2;
-}
 
 double	ft_norm_deg_angl(double degrees)
 {
@@ -68,70 +29,97 @@ double	ft_norm_radian_angl(double radian)
 
 void	ft_cast_ray(t_player *p)
 {
+	t_ray	*ray;
 	int		x;
 	double	camera_x;
-	double	ray_dir_x;
-	double	ray_dir_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
 	int		map_x;
 	int		map_y;
 	int		step_x;
 	int		step_y;
-	double	side_dist_x;
-	double	side_dist_y;
 
-	// ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
+	ray = p->ray;
 	x = 0;
 	while (x < S_WIDTH)
 	{
 		camera_x = 2 * x / (double)S_WIDTH - 1;
-		ray_dir_x = p->p_dir_x + p->plane_x * camera_x;
-		ray_dir_y = p->p_dir_y + p->plane_y * camera_x;
-		delta_dist_x = fabs(1 / ray_dir_x);
-		delta_dist_y = fabs(1 / ray_dir_y);
+		ray->dir_x = p->p_dir_x + p->plane_x * camera_x;
+		ray->dir_y = p->p_dir_y + p->plane_y * camera_x;
+		ray->delta_dist_x = fabs(1 / ray->dir_x);
+		ray->delta_dist_y = fabs(1 / ray->dir_y);
 		map_x = (int)p->p_x;
 		map_y = (int)p->p_y;
-		printf("player plane x = %f, player plane y %f\n",p->plane_x, p->plane_y);
-		if (ray_dir_x < 0)
+		if (ray->dir_x < 0)
 		{
 			step_x = -1;
-			side_dist_x = (p->p_x - map_x) * delta_dist_x;
+			ray->side_dist_x = (p->p_x - map_x) * ray->delta_dist_x;
 		}
 		else
 		{
 			step_x = 1;
-			side_dist_x = (map_x + 1.0 - p->p_x) * delta_dist_x;
+			ray->side_dist_x = (map_x + 1.0 - p->p_x) * ray->delta_dist_x;
 		}
-		if (ray_dir_y < 0)
+		if (ray->dir_y < 0)
 		{
 			step_y = -1;
-			side_dist_y = (p->p_y - map_y) * delta_dist_y;
+			ray->side_dist_y = (p->p_y - map_y) * ray->delta_dist_y;
 		}
 		else
 		{
 			step_y = 1;
-			side_dist_y = (map_y + 1.0 - p->p_y) * delta_dist_y;
+			ray->side_dist_y = (map_y + 1.0 - p->p_y) * ray->delta_dist_y;
 		}
 		while (1)
 		{
-			if (side_dist_x < side_dist_y)
+			if (ray->side_dist_x < ray->side_dist_y)
 			{
-				side_dist_x += delta_dist_x;
+				ray->side_dist_x += ray->delta_dist_x;
 				map_x += step_x;
+				ray->side = 0;
 			}
 			else
 			{
-				side_dist_y += delta_dist_y;
+				ray->side_dist_y += ray->delta_dist_y;
 				map_y += step_y;
+				ray->side = 1;
 			}
-			if (p->map[(int)(map_y / p->tile_size)][(int)(map_x
-					/ p->tile_size)] == '1')
+			if (ft_inside_wall(p, map_x, map_y))
 				break ;
 		}
-		ft_draw_line(p->p_x, p->p_y, map_x, map_y, p->img);
+		// ft_draw_line(p->p_x, p->p_y, map_x, map_y, p->img);
+		ft_get_wall_size(p);
 		x++;
 	}
+}
+
+/* We will take the distance from the camera plane to avoid the fish eyes effect */
+/* If we get the sizeonly throuht the coordinate of the player we'll have the distortion,
+if we increment some points along the camera vectore the distance will always have good proportion according to the distance from the wall to the camera vector */
+
+void	ft_get_wall_size(t_player *p)
+{
+	int		wall_height;
+	int		wall_dist;
+	double	start;
+	double	end;
+	t_ray	*ray;
+
+	ray = p->ray;
+	if (ray->side == 0)
+		wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+	else
+		wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	wall_height = (int)(S_HEIGHT / wall_dist);
+	start = -wall_height / 2 + S_HEIGHT / 2;
+	if (start < 0)
+		start = 0;
+	end = wall_height / 2 + S_HEIGHT / 2;
+	if (end >= S_HEIGHT)
+		end = S_HEIGHT - 1;
+	if (ray->side == 0)
+		ray->wall_x = p->p_x + wall_dist * ray->dir_y;
+	else
+		ray->wall_x = p->p_x + wall_dist * ray->dir_x;
+	ray->wall_x -= floor(ray->wall_x);
 }
 
 void	ft_refresh(t_player *p)
@@ -143,24 +131,19 @@ void	ft_refresh(t_player *p)
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 
-void	ft_cub_render(t_player *p)
-{
-	ft_refresh(p);
-	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
-	mlx_loop(p->img->mlx);
-}
 int	main(int argc, char **argv)
 {
-	t_player	*player;
+	t_player	*p;
 	t_data		data;
 
-	player = malloc(sizeof(t_player));
+	p = malloc(sizeof(t_player));
 	if (parsing(argc, argv, &data.textures, &data))
 		return (1);
-	ft_player_init(player, &data);
-	player->img = ft_mlx_init();
-	ft_cub_render(player);
-	free(player->img);
+	ft_player_init(p, &data);
+	p->img = ft_mlx_init();
+	ft_cub_render(p);
+	free(p->img);
+	free(p);
 	free_parsing(&data.textures, &data);
 	return (0);
 }

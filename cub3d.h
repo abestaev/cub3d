@@ -24,6 +24,19 @@
 # define K_Down 65364  /* Move down, down arrow */
 # define ROT_SPEED 0.05
 
+typedef struct s_rgb {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+} t_rgb;
+
+// Définition des constantes de couleur
+#define RGB_Red   (ColorRGB){255, 0, 0}
+#define RGB_Green (ColorRGB){0, 255, 0}
+#define RGB_Blue  (ColorRGB){0, 0, 255}
+#define RGB_White (ColorRGB){255, 255, 255}
+#define RGB_Yellow (ColorRGB){255, 255, 0}
+
 typedef struct s_player
 {
 	double			p_x;
@@ -40,11 +53,19 @@ typedef struct s_player
 	char			**map;
 	struct s_image	*img;
 	struct s_data	*data;
-}					t_player;
+	struct s_ray	*ray;
 
+}					t_player;
 typedef struct s_ray
 {
-	float			ray_angle;
+	double			dir_x;
+	double			dir_y;
+	int				side;
+	double			delta_dist_x;
+	double			delta_dist_y;
+	double			side_dist_x;
+	double			side_dist_y;
+	double			wall_x;
 }					t_ray;
 
 typedef struct textures
@@ -93,6 +114,9 @@ typedef struct s_data
 // EXEC FUNCTIONS
 
 // init
+
+void				ft_player_render(t_player *p);
+void				ft_map_render(t_player *p, char **map);
 double				ft_norm_radian_angl(double radian);
 double				ft_norm_deg_angl(double degrees);
 void				ft_player_init(t_player *p, t_data *data);
@@ -117,6 +141,7 @@ int					ft_est(t_player *p);
 int					ft_ouest(t_player *p);
 int					ft_north(t_player *p);
 int					ft_south(t_player *p);
+void				ft_get_wall_size(t_player *p);
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures,
