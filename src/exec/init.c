@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/21 23:35:00 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/26 13:16:17 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,13 @@ void	ft_player_init(t_player *p, t_data *data)
 {
 	p->p_x = (S_WIDTH / 2);
 	p->p_y = (S_HEIGHT / 2);
-	p->p_angl = 0;
-	p->p_dir_x = p->p_x + 50 * cos(p->p_angl);
-	p->p_dir_y = p->p_y + 50 * sin(p->p_angl);
+	p->p_dir_x = 0;
+	p->p_dir_y = 1;
 	p->data = data;
 	p->map = data->map;
 	p->plr_speed = SPEED;
+	p->speed_rot = ROT_SPEED;
 	p->tile_size = ft_get_tile_size(p->map);
+	p->plane_x = 0.66;
+	p->plane_y = 0;
 }

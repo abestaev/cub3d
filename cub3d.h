@@ -14,14 +14,15 @@
 # include <unistd.h>
 
 # define PI 3.1415926535897
-# define S_WIDTH 500
-# define S_HEIGHT 500
+# define S_WIDTH 1000
+# define S_HEIGHT 1000
 # define FOV 60
 # define SPEED 5
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
 # define K_Right 65363 /* Move right, right arrow */
 # define K_Down 65364  /* Move down, down arrow */
+# define ROT_SPEED 0.05
 
 typedef struct s_player
 {
@@ -30,9 +31,12 @@ typedef struct s_player
 	double			p_angl;
 	double			p_dir_x;
 	double			p_dir_y;
+	double			plane_x;
+	double			plane_y;
 	double			tile_size;
 	double			plr_offset;
 	double			plr_speed;
+	double			speed_rot;
 	char			**map;
 	struct s_image	*img;
 	struct s_data	*data;
@@ -45,6 +49,8 @@ typedef struct s_ray
 
 typedef struct textures
 {
+	double			plyr_pos_x;
+	double			plyr_pos_y;
 	int				fd;
 	char			*north;
 	char			*south;
@@ -87,8 +93,8 @@ typedef struct s_data
 // EXEC FUNCTIONS
 
 // init
-double	ft_norm_radian_angl(double radian);
-double	ft_norm_deg_angl(double degrees);
+double				ft_norm_radian_angl(double radian);
+double				ft_norm_deg_angl(double degrees);
 void				ft_player_init(t_player *p, t_data *data);
 t_image				*ft_mlx_init(void);
 int					ft_inside_wall(t_player *p, double x, double y);
@@ -105,13 +111,12 @@ void				ft_draw_tile(t_image *img, int start_x, int start_y,
 void				ft_cub_render(t_player *p);
 void				ft_clear_image(t_image *img, int color);
 void				ft_refresh(t_player *p);
-double	ft_find_next_x_tile(double point, t_player *p);
-double	ft_find_next_y_tile(double point, t_player *p);
-int ft_est(t_player *p);
-int ft_ouest(t_player *p);
-int ft_north(t_player *p);
-int ft_south(t_player *p);
-
+double				ft_find_next_x_tile(double point, t_player *p);
+double				ft_find_next_y_tile(double point, t_player *p);
+int					ft_est(t_player *p);
+int					ft_ouest(t_player *p);
+int					ft_north(t_player *p);
+int					ft_south(t_player *p);
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures,

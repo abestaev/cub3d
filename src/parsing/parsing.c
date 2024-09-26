@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/19 13:13:40 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/24 12:44:17 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,6 @@ int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
 		return (1);
 	if (parse_map(textures, data))
 		return (1);
-	print_map(data->map);
+	// print_map(data->map);
 	return (0);
 }

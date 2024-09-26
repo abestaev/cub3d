@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/23 16:19:23 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:11:21 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,6 @@ void	ft_player_render(t_player *p)
 	start_y = p->p_y - (p->tile_size / 16);
 	ft_draw_tile(p->img, start_x, start_y, p->tile_size / 8, 0x00FF0000);
 	p->plr_offset = p->tile_size / 8 / 2;
-	// resize the coordinate 2 of the vector player
-	p->p_dir_x = p->p_x + S_WIDTH * cos(p->p_angl);
-	p->p_dir_y = p->p_y + S_HEIGHT * sin(p->p_angl);
 }
 
 double	ft_norm_deg_angl(double degrees)
@@ -71,29 +68,31 @@ double	ft_norm_radian_angl(double radian)
 
 void	ft_cast_ray(t_player *p)
 {
-	int		i;
+	int		x;
 	double	camera_x;
 	double	ray_dir_x;
 	double	ray_dir_y;
-	double delta_dist_x;
-	double delta_dist_y;
-	int map_x;
-	int map_y;
-	int step_x;
-	int step_y;
-	double side_dist_x;
-	double side_dist_y;
-	
-	i = 0;
-	while (i < S_WIDTH)
+	double	delta_dist_x;
+	double	delta_dist_y;
+	int		map_x;
+	int		map_y;
+	int		step_x;
+	int		step_y;
+	double	side_dist_x;
+	double	side_dist_y;
+
+	// ft_draw_line(p->p_x, p->p_y, p->p_dir_x, p->p_dir_y, p->img);
+	x = 0;
+	while (x < S_WIDTH)
 	{
-		camera_x = 2 * i / (double)S_WIDTH - 1;
-		ray_dir_x = p->p_dir_x + p->p_x * camera_x;
-		ray_dir_y = p->p_dir_y + p->p_y * camera_x;
+		camera_x = 2 * x / (double)S_WIDTH - 1;
+		ray_dir_x = p->p_dir_x + p->plane_x * camera_x;
+		ray_dir_y = p->p_dir_y + p->plane_y * camera_x;
 		delta_dist_x = fabs(1 / ray_dir_x);
 		delta_dist_y = fabs(1 / ray_dir_y);
 		map_x = (int)p->p_x;
 		map_y = (int)p->p_y;
+		printf("player plane x = %f, player plane y %f\n",p->plane_x, p->plane_y);
 		if (ray_dir_x < 0)
 		{
 			step_x = -1;
@@ -126,11 +125,12 @@ void	ft_cast_ray(t_player *p)
 				side_dist_y += delta_dist_y;
 				map_y += step_y;
 			}
-			if (p->map[(int)(map_y / p->tile_size)][(int)(map_x / p->tile_size)] == '1')
-				break;
+			if (p->map[(int)(map_y / p->tile_size)][(int)(map_x
+					/ p->tile_size)] == '1')
+				break ;
 		}
 		ft_draw_line(p->p_x, p->p_y, map_x, map_y, p->img);
-		i++;
+		x++;
 	}
 }
 

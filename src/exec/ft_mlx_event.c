@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/23 11:02:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/26 13:20:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,31 @@ void	ft_go_left(t_player *p)
 		p->p_x -= p->plr_speed;
 }
 
-void	ft_turn_right(t_player *p)
-{
-	p->p_angl += 0.05;
-	if (p->p_angl > PI * 2)
-		p->p_angl = 0;
-	p->p_dir_x = p->p_x + cos(p->p_angl);
-	p->p_dir_y = p->p_y + sin(p->p_angl);
-}
-
 void	ft_turn_left(t_player *p)
 {
-	p->p_angl -= 0.05;
-	if (p->p_angl < 0)
-		p->p_angl = PI * 2;
-	p->p_dir_x = p->p_x + cos(p->p_angl);
-	p->p_dir_y = p->p_y + sin(p->p_angl);
+	double	tmp_dir_x;
+	
+	tmp_dir_x = p->p_dir_x;
+	p->p_dir_x = p->p_dir_x * cos(-p->speed_rot) - p->p_dir_y * sin(-p->speed_rot);
+	p->p_dir_y = tmp_dir_x * sin(-p->speed_rot) + p->p_dir_y * cos(-p->speed_rot);
+	tmp_dir_x = p->plane_x;
+	p->plane_x = p->plane_x * cos(-p->speed_rot) - p->plane_y * sin(-p->speed_rot);
+	p->plane_y = tmp_dir_x * sin(-p->speed_rot) + p->plane_y * cos(-p->speed_rot);
+}
+void	ft_turn_right(t_player *p)
+{
+	double	tmp_dir_x;
+	
+	tmp_dir_x = p->p_dir_x;
+	p->p_dir_x = p->p_dir_x * cos(p->speed_rot) - p->p_dir_y * sin(p->speed_rot);
+	p->p_dir_y = tmp_dir_x * sin(p->speed_rot) + p->p_dir_y * cos(p->speed_rot);
+	tmp_dir_x = p->plane_x;
+	p->plane_x = p->plane_x * cos(p->speed_rot) - p->plane_y * sin(p->speed_rot);
+	p->plane_y = tmp_dir_x * sin(p->speed_rot) + p->plane_y * cos(p->speed_rot);
 }
 
 int	ft_handle_hook(int keycode, t_player *p)
 {
-	// printf("%d\n", keycode);
 	if (keycode == K_Left)
 		ft_go_left(p);
 	if (keycode == K_Right)
@@ -76,10 +80,6 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_turn_right(p);
 	if (keycode == 108)
 		ft_turn_left(p);
-	// printf("angle->%f\n", ft_norm_radian_angl(p->p_angl));
-	// printf("next_X ->%f\n", ft_find_next_x_tile(p->p_x, p));
-	// printf("next_Y ->%f\n", ft_find_next_y_tile(p->p_y,p));
-	// printf("~~~~~~~~~~~~~~~\n");
 	ft_refresh(p);
 	return (0);
 }
