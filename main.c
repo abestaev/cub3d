@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 18:35:43 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:04:39 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_cast_ray(t_player *p)
 {
 	t_ray	*ray;
 	int		x;
-	double	camera_x;
+	double 	camera_x;
 	int		map_x;
 	int		map_y;
 	int		step_x;
@@ -85,8 +85,7 @@ void	ft_cast_ray(t_player *p)
 			if (ft_inside_wall(p, map_x, map_y))
 				break ;
 		}
-		// ft_draw_line(p->p_x, p->p_y, map_x, map_y, p->img);
-		ft_get_wall_size(p);
+		ft_get_wall_size(p, x);
 		x++;
 	}
 }
@@ -95,20 +94,23 @@ void	ft_cast_ray(t_player *p)
 /* If we get the sizeonly throuht the coordinate of the player we'll have the distortion,
 if we increment some points along the camera vectore the distance will always have good proportion according to the distance from the wall to the camera vector */
 
-void	ft_get_wall_size(t_player *p)
+void	ft_get_wall_size(t_player *p, int x)
 {
 	int		wall_height;
-	int		wall_dist;
-	double	start;
-	double	end;
+	double	wall_dist;
+	int	start;
+	int	end;
 	t_ray	*ray;
-
+	
 	ray = p->ray;
 	if (ray->side == 0)
 		wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
 		wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	wall_height = (int)(S_HEIGHT / wall_dist);
+	if(wall_dist == 0)
+		wall_height = S_HEIGHT;
+	else 
+		wall_height = (int)(S_HEIGHT / wall_dist);
 	start = -wall_height / 2 + S_HEIGHT / 2;
 	if (start < 0)
 		start = 0;
@@ -120,13 +122,17 @@ void	ft_get_wall_size(t_player *p)
 	else
 		ray->wall_x = p->p_x + wall_dist * ray->dir_x;
 	ray->wall_x -= floor(ray->wall_x);
+	if(ray->side == 1)
+		ft_draw_vertical_line(x, start, end, p->img, COLOR_MAGENTA);
+	else 
+		ft_draw_vertical_line(x, start, end, p->img, COLOR_BLUE);
 }
 
 void	ft_refresh(t_player *p)
 {
-	ft_clear_image(p->img, 0x00000000);
-	ft_map_render(p, p->map);
-	ft_player_render(p);
+	ft_clear_image(p->img, 0xFF00008F);
+	// ft_map_render(p, p->map);
+	// ft_player_render(p);
 	ft_cast_ray(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }

@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/22 00:54:58 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/27 16:09:24 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-double ft_dist(double x1, double y1, double x2, double y2)
+double	ft_dist(double x1, double y1, double x2, double y2)
 {
 	return (pow(x2 - x1, 2) + pow(y2 - y1, 2));
 }
 
-int	ft_inside_wall(t_player *p, double x, double y)
+int	ft_inside_wall(t_player *p, int x, int y)
 {
-	if ((x > 0 && x < S_WIDTH) || (y > 0 || y < S_HEIGHT))
+	if ((x > 0 && x < S_WIDTH) || ((y > 0 || y < S_HEIGHT)
+			&& ft_strlen(p->map[y])))
 	{
-		if (p->map[(int)(y / p->tile_size)][(int)(x / p->tile_size)] == '1')
+		if (p->map[y][x] == '1')
 			return (1);
 	}
 	return (0);
@@ -92,20 +93,37 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		x++;
 	}
 }
-void	ft_clear_image(t_image *img, int color)
+/* optimize calcul to work directly with the memory where the pixels are store */
+void ft_clear_image(t_image *img, int color)
 {
-	int	x;
+    int total_pixels = S_WIDTH * S_HEIGHT;
+    char *dst = img->addr;
+    int i;
+
+    for (i = 0; i < total_pixels; i++)
+    {
+        unsigned int *pixel = (unsigned int *)(dst + i * (img->bits_per_pixel / 8));
+        *pixel = color; 
+    }
+}
+
+int get_col(int r, int g, int b, int a)
+{
+	return (r << 24 | g << 16 | b << 8 | a << 0);	
+}
+void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,
+		long color)
+{
 	int	y;
 
-	y = 0;
-	while (y < S_HEIGHT)
+	y = start;
+	if (start < 0)
+		start = 0;
+	if (end >= S_HEIGHT)
+		end = S_HEIGHT - 1;
+	while (y <= end)
 	{
-		x = 0;
-		while (x < S_WIDTH)
-		{
-			my_pixel_put(img, x, y, color);
-			x++;
-		}
+		my_pixel_put(img, x_val, y, color);
 		y++;
 	}
 }

@@ -6,23 +6,23 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 13:20:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:40:20 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_go_up(t_player *p)
+void	ft_go_down(t_player *p)
 {
 	if(ft_inside_wall(p, p->p_x, p->p_y - p->plr_speed))
-		p->p_y += p->plr_speed + 1;
+		p->p_y += p->plr_speed + 0.01;
 	if (p->p_y >= 0 && p->p_y < S_HEIGHT)
 		p->p_y -= p->plr_speed;
 }
-void	ft_go_down(t_player *p)
+void	ft_go_up(t_player *p)
 {
 	if(ft_inside_wall(p, p->p_x, p->p_y + p->plr_speed))
-		p->p_y -= p->plr_speed + 1;
+		p->p_y -= p->plr_speed + 0.01;
 	if (p->p_y >= 0 && p->p_y < S_HEIGHT)
 		p->p_y += p->plr_speed;
 }
@@ -30,7 +30,7 @@ void	ft_go_down(t_player *p)
 void	ft_go_right(t_player *p)
 {
 	if(ft_inside_wall(p, p->p_x + p->plr_speed, p->p_y))
-		p->p_x -= p->plr_speed + 1;
+		p->p_x -= p->plr_speed + 0.01;
 	if (p->p_x >= 0 && p->p_x < S_WIDTH)
 		p->p_x += p->plr_speed;
 }
@@ -38,12 +38,12 @@ void	ft_go_right(t_player *p)
 void	ft_go_left(t_player *p)
 {
 	if(ft_inside_wall(p, p->p_x - p->plr_speed, p->p_y))
-		p->p_x += p->plr_speed + 1;
+		p->p_x += p->plr_speed + 0.01;
 	if (p->p_x >= 0 && p->p_x < S_WIDTH)
 		p->p_x -= p->plr_speed;
 }
 
-void	ft_turn_left(t_player *p)
+void	ft_turn_right(t_player *p)
 {
 	double	tmp_dir_x;
 	
@@ -54,7 +54,7 @@ void	ft_turn_left(t_player *p)
 	p->plane_x = p->plane_x * cos(-p->speed_rot) - p->plane_y * sin(-p->speed_rot);
 	p->plane_y = tmp_dir_x * sin(-p->speed_rot) + p->plane_y * cos(-p->speed_rot);
 }
-void	ft_turn_right(t_player *p)
+void	ft_turn_left(t_player *p)
 {
 	double	tmp_dir_x;
 	

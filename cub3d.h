@@ -13,29 +13,42 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+# define COLOR_BLACK 0x000000
+# define COLOR_WHITE 0xFFFFFF
+# define COLOR_RED 0xFF0000
+# define COLOR_GREEN 0x00FF00
+# define COLOR_BLUE 0x0000FF
+# define COLOR_YELLOW 0xFFFF00
+# define COLOR_CYAN 0x00FFFF
+# define COLOR_MAGENTA 0xFF00FF05
+# define COLOR_ORANGE 0xFFA500
+# define COLOR_PURPLE 0x800080
+# define COLOR_BROWN 0xA52A2A
+# define COLOR_GRAY 0x808080
+# define COLOR_LIGHT_GRAY 0xD3D3D3
+# define COLOR_DARK_GRAY 0xA9A9A9
+# define COLOR_PINK 0xFFC0CB
+# define COLOR_LIME 0x00FF00
+
 # define PI 3.1415926535897
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
 # define FOV 60
-# define SPEED 5
+# define SPEED 0.15
 # define K_Left 65361  /* Move left, left arrow */
 # define K_Up 65362    /* Move up, up arrow */
 # define K_Right 65363 /* Move right, right arrow */
 # define K_Down 65364  /* Move down, down arrow */
 # define ROT_SPEED 0.05
 
-typedef struct s_rgb {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
-} t_rgb;
+typedef struct s_rgba
+{
+	unsigned char	r;
+	unsigned char	g;
+	unsigned char	b;
+	unsigned char	a;
 
-// Définition des constantes de couleur
-#define RGB_Red   (ColorRGB){255, 0, 0}
-#define RGB_Green (ColorRGB){0, 255, 0}
-#define RGB_Blue  (ColorRGB){0, 0, 255}
-#define RGB_White (ColorRGB){255, 255, 255}
-#define RGB_Yellow (ColorRGB){255, 255, 0}
+}					t_rgba;
 
 typedef struct s_player
 {
@@ -121,7 +134,7 @@ double				ft_norm_radian_angl(double radian);
 double				ft_norm_deg_angl(double degrees);
 void				ft_player_init(t_player *p, t_data *data);
 t_image				*ft_mlx_init(void);
-int					ft_inside_wall(t_player *p, double x, double y);
+int					ft_inside_wall(t_player *p, int x, int y);
 void				my_pixel_put(t_image *img, int x, int y, int color);
 int					ft_handle_hook(int keycode, t_player *p);
 // int					ft_exit(void *param);
@@ -133,15 +146,15 @@ double				ft_get_tile_size(char **map);
 void				ft_draw_tile(t_image *img, int start_x, int start_y,
 						int size, int color);
 void				ft_cub_render(t_player *p);
-void				ft_clear_image(t_image *img, int color);
+void				ft_clear_image(t_image *img, unsigned int color);
 void				ft_refresh(t_player *p);
-double				ft_find_next_x_tile(double point, t_player *p);
-double				ft_find_next_y_tile(double point, t_player *p);
 int					ft_est(t_player *p);
 int					ft_ouest(t_player *p);
 int					ft_north(t_player *p);
 int					ft_south(t_player *p);
-void				ft_get_wall_size(t_player *p);
+void				ft_get_wall_size(t_player *p, int x);
+void				ft_draw_vertical_line(int x_val, int start, int end,
+						t_image *img, long color);
 
 // PARSING FUNCTIONS
 int					parsing(int argc, char **argv, t_textures *textures,

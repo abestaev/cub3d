@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 18:07:05 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/27 14:07:42 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	ft_player_init(t_player *p, t_data *data)
 	ray = malloc(sizeof(t_ray));
 	ft_memset(ray, 0, sizeof(t_ray));
 	p->ray = ray;
-	p->p_x = (S_WIDTH / 2);
-	p->p_y = (S_HEIGHT / 2);
+	p->p_x = 2;
+	p->p_y = 2;
 	p->p_dir_x = 0;
 	p->p_dir_y = 1;
 	p->map = data->map;
