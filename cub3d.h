@@ -81,6 +81,23 @@ typedef struct s_ray
 	double			wall_x;
 }					t_ray;
 
+typedef struct s_minimap
+{
+	double			p_x;
+	double			p_y;
+	double			p_angl;
+	double			p_dir_x;
+	double			p_dir_y;
+	double			plane_x;
+	double			plane_y;
+	double			tile_size;
+	double			plr_offset;
+	double			plr_speed;
+	double			speed_rot;
+	char			**map;
+
+}					t_minimap;
+
 typedef struct textures
 {
 	double			plyr_pos_x;
@@ -103,6 +120,7 @@ typedef struct textures
 	size_t			longest_line;
 	int				nb_lines;
 	int				i;
+	struct s_player	*p;
 }					t_textures;
 
 typedef struct s_image
@@ -179,6 +197,7 @@ int					is_image_png(char *path);
 int					missing_textures(t_textures *textures);
 int					parse_rgb(t_textures *textures);
 int					isplayer(char c);
+void				ft_init_player_orientation(char c, t_player *p);
 void				free_parsing(t_textures *textures, t_data *data);
 
 // debug functions

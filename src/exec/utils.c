@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/27 16:09:24 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/28 11:22:00 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 	}
 }
 /* optimize calcul to work directly with the memory where the pixels are store */
-void ft_clear_image(t_image *img, int color)
+void ft_clear_image(t_image *img, unsigned int color)
 {
     int total_pixels = S_WIDTH * S_HEIGHT;
     char *dst = img->addr;
@@ -103,7 +103,7 @@ void ft_clear_image(t_image *img, int color)
     for (i = 0; i < total_pixels; i++)
     {
         unsigned int *pixel = (unsigned int *)(dst + i * (img->bits_per_pixel / 8));
-        *pixel = color; 
+        *pixel = color;
     }
 }
 

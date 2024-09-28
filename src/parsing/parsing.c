@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/24 12:44:17 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:22:21 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,5 @@ int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
 		return (1);
 	if (parse_map(textures, data))
 		return (1);
-	// print_map(data->map);
 	return (0);
 }

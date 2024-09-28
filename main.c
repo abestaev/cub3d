@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/27 16:04:39 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/28 12:22:10 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,9 @@ int	main(int argc, char **argv)
 	t_data		data;
 
 	p = malloc(sizeof(t_player));
+	if(!p)
+		return (-1);
+	data.textures.p = p;
 	if (parsing(argc, argv, &data.textures, &data))
 		return (1);
 	ft_player_init(p, &data);

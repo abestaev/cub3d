@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/27 14:07:42 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/28 13:04:05 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,24 +24,73 @@ t_image	*ft_mlx_init(void)
 			&img->line_length, &img->endian);
 	return (img);
 }
+void	ft_init_player_orientation(char c, t_player *p)
+{
+	if (c == 'N')
+	{
+		p->p_dir_x = 0;
+		p->p_dir_y = -1;
+		p->plane_x = 0.66;
+		p->plane_y = 0;
+	}
+	else if (c == 'S')
+	{
+		p->p_dir_x = 0;
+		p->p_dir_y = 1;
+		p->plane_x = -0.66;
+		p->plane_y = 0;
+	}
+	else if (c == 'E')
+	{
+		p->p_dir_x = 1;
+		p->p_dir_y = 0;
+		p->plane_x = 0;
+		p->plane_y = 0.66;
+	}
+	else if (c == 'W')
+	{
+		p->p_dir_x = -1;
+		p->p_dir_y = 0;
+		p->plane_x = 0;
+		p->plane_y = -0.66;
+	}
+}
+
+void	ft_init_player_pos(t_player *p, t_textures t)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (t.map_tab_tmp[i])
+	{
+		j = 0;
+		while (t.map_tab_tmp[i][j])
+		{
+			if (isplayer(t.map_tab_tmp[i][j]))
+			{
+				p->p_x = j;
+				p->p_y = i;
+				ft_init_player_orientation(t.map_tab_tmp[i][j], p);
+				break ;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 void	ft_player_init(t_player *p, t_data *data)
 {
-	t_ray *ray;
+	t_ray	*ray;
 
 	ray = malloc(sizeof(t_ray));
 	ft_memset(ray, 0, sizeof(t_ray));
+	ft_init_player_pos(p, data->textures);
 	p->ray = ray;
-	p->p_x = 2;
-	p->p_y = 2;
-	p->p_dir_x = 0;
-	p->p_dir_y = 1;
 	p->map = data->map;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
 	p->tile_size = ft_get_tile_size(p->map);
-	p->plane_x = 0.66;
-	p->plane_y = 0;
 	p->data = data;
-
 }
