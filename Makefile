@@ -30,13 +30,13 @@ NAME = cub3D
 all: $(NAME)
 
 $(MLXLIB):
-	make -C mlx
+	make -j4 -C mlx
 
 $(NAME): $(OBJ) $(MLXLIB) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(MLXFLAGS) $(MLXLIB) $(LIBFLAGS)
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_PATH) all bonus
+	$(MAKE) -j4 -C $(LIBFT_PATH) all bonus
 
 clean:
 	rm -f $(OBJ)
