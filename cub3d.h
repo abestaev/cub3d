@@ -31,15 +31,20 @@
 # define COLOR_LIME 0x00FF00
 
 # define PI 3.1415926535897
-# define S_WIDTH 1000
-# define S_HEIGHT 1000
+# define S_WIDTH 1300
+# define S_HEIGHT 900
 # define FOV 60
 # define SPEED 0.15
-# define K_Left 65361  /* Move left, left arrow */
-# define K_Up 65362    /* Move up, up arrow */
-# define K_Right 65363 /* Move right, right arrow */
-# define K_Down 65364  /* Move down, down arrow */
 # define ROT_SPEED 0.05
+
+# define K_Left 97
+# define K_Up 119
+# define K_Right 100
+# define K_Down 115
+# define K_ESC 65307
+
+# define look_left 65361
+# define look_right 65363
 
 typedef struct s_rgba
 {
@@ -69,6 +74,7 @@ typedef struct s_player
 	struct s_ray	*ray;
 
 }					t_player;
+
 typedef struct s_ray
 {
 	double			dir_x;
@@ -202,5 +208,10 @@ void				free_parsing(t_textures *textures, t_data *data);
 
 // debug functions
 void				print_map(char **map);
+
+
+// testing
+int	ft_escape(t_player *p);
+
 
 #endif

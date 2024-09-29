@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/28 12:22:10 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/30 01:52:56 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,12 @@ void	ft_refresh(t_player *p)
 	// ft_player_render(p);
 	ft_cast_ray(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
+}
+
+int	ft_escape(t_player *p)
+{
+	mlx_destroy_window(p->img->mlx, p->img->win_ptr);
+	exit(0);
 }
 
 int	main(int argc, char **argv)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_event.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/28 12:11:27 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/30 01:44:16 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,17 @@ int	ft_handle_hook(int keycode, t_player *p)
 	{
 		ft_go_up(p);
 	}
-	if (keycode == 114)
+	if (keycode == look_left)
 	{
 		ft_turn_right(p);
 	}
-	if (keycode == 108)
+	if (keycode == look_right)
 	{
 		ft_turn_left(p);
+	}
+	if (keycode == K_ESC)
+	{
+		exit(0);  // Fonction pour quitter proprement
 	}
 	ft_refresh(p);
 	return (0);

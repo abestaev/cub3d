@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/26 16:01:14 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/09/30 01:52:24 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void	ft_cub_render(t_player *p)
 {
 	ft_refresh(p);
 	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
+	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 	mlx_loop(p->img->mlx);
 }
