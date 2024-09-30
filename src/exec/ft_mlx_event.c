@@ -1,12 +1,13 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_mlx_event.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 02:21:57 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/30 12:03:26 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +15,8 @@
 
 void	ft_go_down(t_player *p)
 {
-
-	if (ft_inside_wall(p, p->p_x - p->p_dir_x * p->plr_speed, p->p_y - p->p_dir_y * p->plr_speed))
+	if (ft_inside_wall(p, p->p_x - p->p_dir_x * p->plr_speed, p->p_y
+			- p->p_dir_y * p->plr_speed))
 	{
 		p->p_x += p->p_dir_x * p->plr_speed + 0.01;
 		p->p_y += p->p_dir_y * p->plr_speed + 0.01;
@@ -29,7 +30,8 @@ void	ft_go_down(t_player *p)
 
 void	ft_go_up(t_player *p)
 {
-	if (ft_inside_wall(p, p->p_x + p->p_dir_x * p->plr_speed, p->p_y + p->p_dir_y * p->plr_speed))
+	if (ft_inside_wall(p, p->p_x + p->p_dir_x * p->plr_speed, p->p_y
+			+ p->p_dir_y * p->plr_speed))
 	{
 		p->p_x -= p->p_dir_x * p->plr_speed + 0.01;
 		p->p_y -= p->p_dir_y * p->plr_speed + 0.01;
@@ -43,10 +45,13 @@ void	ft_go_up(t_player *p)
 
 void	ft_go_right(t_player *p)
 {
-	double perp_dir_x = p->p_dir_y;
-	double perp_dir_y = -p->p_dir_x;
+	double	perp_dir_x;
+	double	perp_dir_y;
 
-	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y + perp_dir_y * p->plr_speed))
+	perp_dir_x = p->p_dir_y;
+	perp_dir_y = -p->p_dir_x;
+	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y
+			+ perp_dir_y * p->plr_speed))
 	{
 		p->p_x -= perp_dir_x * p->plr_speed + 0.01;
 		p->p_y -= perp_dir_y * p->plr_speed + 0.01;
@@ -60,10 +65,13 @@ void	ft_go_right(t_player *p)
 
 void	ft_go_left(t_player *p)
 {
-	double perp_dir_x = -p->p_dir_y;
-	double perp_dir_y = p->p_dir_x;
+	double	perp_dir_x;
+	double	perp_dir_y;
 
-	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y + perp_dir_y * p->plr_speed))
+	perp_dir_x = -p->p_dir_y;
+	perp_dir_y = p->p_dir_x;
+	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y
+			+ perp_dir_y * p->plr_speed))
 	{
 		p->p_x -= perp_dir_x * p->plr_speed + 0.01;
 		p->p_y -= perp_dir_y * p->plr_speed + 0.01;
@@ -107,17 +115,17 @@ void	ft_turn_left(t_player *p)
 
 int	ft_handle_hook(int keycode, t_player *p)
 {
-	if (keycode == K_Left)
+	if (keycode == 65361)
 		ft_go_right(p);
-	if (keycode == K_Right)
+	if (keycode == 65363)
 		ft_go_left(p);
-	if (keycode == K_Down)
+	if (keycode == 65364)
 		ft_go_down(p);
-	if (keycode == K_Up)
+	if (keycode == 65362)
 		ft_go_up(p);
-	if (keycode == look_left)
+	if (keycode == 108)
 		ft_turn_right(p);
-	if (keycode == look_right)
+	if (keycode == 114)
 		ft_turn_left(p);
 	if (keycode == K_ESC)
 		exit(0);

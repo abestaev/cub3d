@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 02:20:16 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/30 12:09:14 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,22 +97,30 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 }
 
 /* optimize calcul to work directly with the memory where the pixels are store */
-void ft_clear_image(t_image *img, unsigned int color)
+void	ft_clear_image(t_image *img, unsigned int color)
 {
-    int total_pixels = S_WIDTH * S_HEIGHT;
-    char *dst = img->addr;
-    int i;
+	int				total_pixels;
+	char			*dst;
+	int				i;
+	unsigned int	*pixel;
 
-    for (i = 0; i < total_pixels; i++)
-    {
-        unsigned int *pixel = (unsigned int *)(dst + i * (img->bits_per_pixel / 8));
-        *pixel = color;
-    }
+	total_pixels = S_WIDTH * S_HEIGHT;
+	dst = img->addr;
+	i = 0;
+	while (i < total_pixels)
+	{
+		pixel = (unsigned int *)(dst + i * (img->bits_per_pixel / 8));
+		if (i < total_pixels / 2)
+			*pixel = color;
+		else
+			*pixel = COLOR_BLACK;
+		i++;
+	}
 }
 
-int get_col(int r, int g, int b, int a)
+int	get_col(int r, int g, int b, int a)
 {
-	return (r << 24 | g << 16 | b << 8 | a << 0);	
+	return (r << 24 | g << 16 | b << 8 | a << 0);
 }
 
 void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,

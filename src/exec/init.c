@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 02:11:28 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/30 14:11:25 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,21 @@ void	ft_init_player_pos(t_player *p, t_textures t)
 void	ft_player_init(t_player *p, t_data *data)
 {
 	t_ray	*ray;
+	t_minimap *mini;
 
 	ray = malloc(sizeof(t_ray));
+	mini = malloc(sizeof(t_minimap));
 	ft_memset(ray, 0, sizeof(t_ray));
+	ft_memset(mini, 0, sizeof(t_minimap));
 	ft_init_player_pos(p, data->textures);
-	p->ray = ray;
+	p->mini = mini;
 	p->map = data->map;
+	p->tile_size = ft_get_tile_size(p->map);
+	p->ray = ray;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
-	p->tile_size = ft_get_tile_size(p->map);
 	p->data = data;
+	p->mini->p_x = p->p_x;
+	p->mini->p_y = p->p_y;
+	// get_mini_pos(p);
 }

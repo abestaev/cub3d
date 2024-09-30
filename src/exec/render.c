@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 01:52:24 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:25:05 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_map_render(t_player *p, char **map)
+void get_mini_pos(t_player *p)
 {
 	double	y;
 	double	x;
@@ -20,34 +20,118 @@ void	ft_map_render(t_player *p, char **map)
 	int		index_y;
 
 	index_y = 0;
-	y = 0;
-	while (index_y < ft_count_lines(map))
+	y = S_HEIGHT * 5/6;
+	while (index_y < ft_count_lines(p->map))
 	{
 		index_x = 0;
 		x = 0;
-		while (index_x < ft_count_columns(map) && map[index_y][index_x])
+		while (index_x < ft_count_columns(p->map) && p->map[index_y][index_x])
 		{
-			if (map[index_y][index_x] == '1')
-				ft_draw_tile(p->img, x, y, p->tile_size, 0xEF92EE);
-			else if (map[index_y][index_x] == '0')
-				ft_draw_tile(p->img, x, y, p->tile_size, 0x00000000);
-			x += p->tile_size;
+			if (isplayer(p->map[index_y][index_x]))
+			{
+				p->mini->p_x = x;
+				p->mini->p_y = y;
+			}
+			x += 20;
 			index_x++;
 		}
-		y += p->tile_size;
+		y += 20;
 		index_y++;
 	}
 }
 
+int get_mini_y_index_after(t_player *p, int index)
+{
+	int y;
+
+	y = p->p_y;
+	while (y < ft_count_columns(p->map) && p->map[y] && y < index)
+	{
+		y++;
+	}
+	return(y);
+}
+
+int get_mini_y_index_before(t_player *p, int index)
+{
+	int y;
+
+	y = p->p_y;
+	while (y >= 0 && p->map[y][(int)p->p_x] && y > index)
+	{
+		y--;
+	}
+	return(y);
+}
+
+int get_mini_x_index_after(t_player *p, int index)
+{
+	int x;
+
+	x = p->p_x;
+	while (x < (int)ft_strlen(p->map[(int)p->p_y]) && p->map[(int)p->p_y][x] && x < index)
+	{
+		x++;
+	}
+	return(x);
+}
+
+int get_mini_x_index_before(t_player *p, int index)
+{
+	int x;
+
+	x = p->p_x;
+	while (x >= 0 && p->map[(int)p->p_y][x] && x > index)
+	{
+		x--;
+	}
+	return(x);
+}
+
+void	ft_minimap_render(t_player *p, char **map)
+{
+	double	y;
+	double	x;
+	int		index_x;
+	int		index_y;
+	int start_x;
+	int end_x;
+	int start_y;
+	int end_y;
+
+	start_x = get_mini_x_index_before(p, p->p_x - 3);
+	end_x = get_mini_x_index_after(p, p->p_x + 3);
+	start_y = get_mini_y_index_before(p, p->p_y - 3);
+	end_y = get_mini_y_index_after(p, p->p_y + 3);
+	printf("p_x %f\n", p->p_x);
+	printf("p_y %f\n", p->p_y);
+	
+	printf("start_x %d, end_x %d, start_y %d, end_y %d\n",start_x , end_x, start_y, end_y);
+	
+	y = S_HEIGHT * 5/6;
+	index_y = start_y;
+	while (index_y <= end_y)
+	{
+		index_x = start_x;
+		x = 0;
+		while (index_x <= end_x)
+		{
+			if (map[index_y][index_x] == '1')
+				ft_draw_tile(p->img, x, y, 20, 0xEF92EE);
+			else if (map[index_y][index_x] == '0')
+				ft_draw_tile(p->img, x, y, 20, COLOR_DARK_GRAY);
+			x += 20;
+			index_x++;
+		}
+		y += 20;
+		index_y++;
+	}
+	ft_draw_tile(p->img, 3 * 20, S_HEIGHT * 5/6 + 3 * 20, 20, COLOR_BLUE);
+}
+
 void	ft_player_render(t_player *p)
 {
-	int	start_x;
-	int	start_y;
-
-	start_x = p->p_x - (p->tile_size / 16);
-	start_y = p->p_y - (p->tile_size / 16);
-	ft_draw_tile(p->img, start_x, start_y, p->tile_size / 8, 0x00FF0000);
-	p->plr_offset = p->tile_size / 8 / 2;
+	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
 }
 
 void	ft_cub_render(t_player *p)

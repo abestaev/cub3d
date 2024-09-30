@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 01:52:56 by albestae         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:07:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,10 @@ void	ft_get_wall_size(t_player *p, int x)
 
 void	ft_refresh(t_player *p)
 {
-	ft_clear_image(p->img, 0xFF00008F);
-	// ft_map_render(p, p->map);
+	ft_clear_image(p->img, COLOR_BLACK);
+	// ft_cast_ray(p);
+	ft_minimap_render(p, p->map);
 	// ft_player_render(p);
-	ft_cast_ray(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 }
 
