@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/28 13:04:05 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/30 02:11:28 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_image	*ft_mlx_init(void)
 			&img->line_length, &img->endian);
 	return (img);
 }
+
 void	ft_init_player_orientation(char c, t_player *p)
 {
 	if (c == 'N')

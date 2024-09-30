@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/28 11:22:00 by renard           ###   ########.fr       */
+/*   Updated: 2024/09/30 02:20:16 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,12 @@ int	ft_count_columns(char **map)
 	}
 	return (len - 1);
 }
+
 double	ft_divide(double i, double j)
 {
 	return (i / j);
 }
+
 double	ft_get_tile_size(char **map)
 {
 	int	col;
@@ -93,6 +95,7 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		x++;
 	}
 }
+
 /* optimize calcul to work directly with the memory where the pixels are store */
 void ft_clear_image(t_image *img, unsigned int color)
 {
@@ -111,6 +114,7 @@ int get_col(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a << 0);	
 }
+
 void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,
 		long color)
 {
