@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/01 12:02:27 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:10:37 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	ft_clear_image(t_image *img, unsigned int color)
 		if (i < total_pixels / 2)
 			*pixel = color;
 		else
-			*pixel = COLOR_BLACK;
+			*pixel = COLOR_YELLOW;
 		i++;
 	}
 }
