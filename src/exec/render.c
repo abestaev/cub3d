@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 15:25:05 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:06:35 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int get_mini_y_index_after(t_player *p, int index)
 {
 	int y;
 
-	y = p->p_y;
-	while (y < ft_count_columns(p->map) && p->map[y] && y < index)
+	y = round(p->p_y);
+	while (p->map[y] && y < (int)ft_strlen(p->map[y]) && y < index)
 	{
 		y++;
 	}
@@ -56,8 +56,8 @@ int get_mini_y_index_before(t_player *p, int index)
 {
 	int y;
 
-	y = p->p_y;
-	while (y >= 0 && p->map[y][(int)p->p_x] && y > index)
+	y = round(p->p_y);
+	while (y >= 0 && p->map[y] && y > index)
 	{
 		y--;
 	}
@@ -68,8 +68,8 @@ int get_mini_x_index_after(t_player *p, int index)
 {
 	int x;
 
-	x = p->p_x;
-	while (x < (int)ft_strlen(p->map[(int)p->p_y]) && p->map[(int)p->p_y][x] && x < index)
+	x = round(p->p_x);
+	while (x < (int)ft_strlen(p->map[x]) && p->map[(int)p->p_y][x] && x < index)
 	{
 		x++;
 	}
@@ -80,7 +80,7 @@ int get_mini_x_index_before(t_player *p, int index)
 {
 	int x;
 
-	x = p->p_x;
+	x = round(p->p_x);
 	while (x >= 0 && p->map[(int)p->p_y][x] && x > index)
 	{
 		x--;
@@ -117,21 +117,21 @@ void	ft_minimap_render(t_player *p, char **map)
 		while (index_x <= end_x)
 		{
 			if (map[index_y][index_x] == '1')
-				ft_draw_tile(p->img, x, y, 20, 0xEF92EE);
-			else if (map[index_y][index_x] == '0')
-				ft_draw_tile(p->img, x, y, 20, COLOR_DARK_GRAY);
-			x += 20;
+				ft_draw_tile(p->img, x, y, 10, 0xEF92EE);
+			else if (map[index_y][index_x] == '0' || isplayer(map[index_y][index_x]))
+				ft_draw_tile(p->img, x, y, 10, COLOR_DARK_GRAY);
+			x += 10;
 			index_x++;
 		}
-		y += 20;
+		y += 10;
 		index_y++;
 	}
-	ft_draw_tile(p->img, 3 * 20, S_HEIGHT * 5/6 + 3 * 20, 20, COLOR_BLUE);
+	ft_draw_tile(p->img, 3 * 10, S_HEIGHT * 5/6 + 3 * 10, 10, COLOR_BLUE);
 }
 
 void	ft_player_render(t_player *p)
 {
-	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
+	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 10, COLOR_BLUE);
 }
 
 void	ft_cub_render(t_player *p)

@@ -37,14 +37,14 @@
 # define SPEED 0.15
 # define ROT_SPEED 0.05
 
-# define K_Left 97
-# define K_Up 119
-# define K_Right 100
-# define K_Down 115
+# define K_LEFT 97
+# define K_UP 119
+# define K_RIGHT 100
+# define K_DOWN 115
 # define K_ESC 65307
 
-# define look_left 65361
-# define look_right 65363
+# define K_LOOK_LEFT 65361
+# define K_LOOK_RIGHT 65363
 
 typedef struct s_rgba
 {

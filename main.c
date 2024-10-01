@@ -6,26 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 13:07:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/01 11:59:51 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-double	ft_norm_deg_angl(double degrees)
-{
-	double	angl;
-
-	angl = degrees * (PI / 180);
-	return (angl);
-}
-double	ft_norm_radian_angl(double radian)
-{
-	double	angl;
-
-	angl = radian * (180 / PI);
-	return (angl);
-}
 
 void	ft_cast_ray(t_player *p)
 {
@@ -131,7 +116,7 @@ void	ft_get_wall_size(t_player *p, int x)
 void	ft_refresh(t_player *p)
 {
 	ft_clear_image(p->img, COLOR_BLACK);
-	// ft_cast_ray(p);
+	ft_cast_ray(p);
 	ft_minimap_render(p, p->map);
 	// ft_player_render(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);

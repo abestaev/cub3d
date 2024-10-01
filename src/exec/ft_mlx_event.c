@@ -15,32 +15,18 @@
 
 void	ft_go_down(t_player *p)
 {
-	if (ft_inside_wall(p, p->p_x - p->p_dir_x * p->plr_speed, p->p_y
-			- p->p_dir_y * p->plr_speed))
-	{
-		p->p_x += p->p_dir_x * p->plr_speed + 0.01;
-		p->p_y += p->p_dir_y * p->plr_speed + 0.01;
-	}
-	else
-	{
+	if (!ft_inside_wall(p, p->p_x - p->p_dir_x * p->plr_speed, p->p_y))
 		p->p_x -= p->p_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->p_x, p->p_y - p->p_dir_y * p->plr_speed))
 		p->p_y -= p->p_dir_y * p->plr_speed;
-	}
 }
 
 void	ft_go_up(t_player *p)
 {
-	if (ft_inside_wall(p, p->p_x + p->p_dir_x * p->plr_speed, p->p_y
-			+ p->p_dir_y * p->plr_speed))
-	{
-		p->p_x -= p->p_dir_x * p->plr_speed + 0.01;
-		p->p_y -= p->p_dir_y * p->plr_speed + 0.01;
-	}
-	else
-	{
+	if (!ft_inside_wall(p, p->p_x + p->p_dir_x * p->plr_speed, p->p_y))
 		p->p_x += p->p_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->p_x, p->p_y + p->p_dir_y * p->plr_speed))
 		p->p_y += p->p_dir_y * p->plr_speed;
-	}
 }
 
 void	ft_go_right(t_player *p)
@@ -50,17 +36,10 @@ void	ft_go_right(t_player *p)
 
 	perp_dir_x = p->p_dir_y;
 	perp_dir_y = -p->p_dir_x;
-	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y
-			+ perp_dir_y * p->plr_speed))
-	{
-		p->p_x -= perp_dir_x * p->plr_speed + 0.01;
-		p->p_y -= perp_dir_y * p->plr_speed + 0.01;
-	}
-	else
-	{
+	if (!ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y))
 		p->p_x += perp_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->p_x, p->p_y + perp_dir_y * p->plr_speed))
 		p->p_y += perp_dir_y * p->plr_speed;
-	}
 }
 
 void	ft_go_left(t_player *p)
@@ -70,17 +49,10 @@ void	ft_go_left(t_player *p)
 
 	perp_dir_x = -p->p_dir_y;
 	perp_dir_y = p->p_dir_x;
-	if (ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y
-			+ perp_dir_y * p->plr_speed))
-	{
-		p->p_x -= perp_dir_x * p->plr_speed + 0.01;
-		p->p_y -= perp_dir_y * p->plr_speed + 0.01;
-	}
-	else
-	{
+	if (!ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y))
 		p->p_x += perp_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->p_x, p->p_y + perp_dir_y * p->plr_speed))
 		p->p_y += perp_dir_y * p->plr_speed;
-	}
 }
 
 void	ft_turn_right(t_player *p)
@@ -115,17 +87,17 @@ void	ft_turn_left(t_player *p)
 
 int	ft_handle_hook(int keycode, t_player *p)
 {
-	if (keycode == 65361)
-		ft_go_right(p);
-	if (keycode == 65363)
+	if (keycode == K_RIGHT)
 		ft_go_left(p);
-	if (keycode == 65364)
+	if (keycode == K_LEFT)
+		ft_go_right(p);
+	if (keycode == K_DOWN)
 		ft_go_down(p);
-	if (keycode == 65362)
+	if (keycode == K_UP)
 		ft_go_up(p);
-	if (keycode == 108)
+	if (keycode == K_LOOK_LEFT)
 		ft_turn_right(p);
-	if (keycode == 114)
+	if (keycode == K_LOOK_RIGHT)
 		ft_turn_left(p);
 	if (keycode == K_ESC)
 		exit(0);
