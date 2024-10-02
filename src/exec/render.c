@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/01 16:14:07 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/02 19:26:47 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	get_mini_y_index_after(t_player *p, int index)
 	int	y;
 
 	y = p->p_y;
-	while (y < (int)ft_strlen(p->map[y]) && y < index)
-	{
+	while (y < (int)ft_strlen(p->map[0]) && y < index)
 		y++;
-	}
+	if (round(y) >= 14)
+		return (13);
 	return (round(y));
 }
 
@@ -71,7 +71,7 @@ int	get_mini_x_index_after(t_player *p, int index)
 
 	y = p->p_y;
 	x = p->p_x;
-	while (x < (int)ft_strlen(p->map[y]) && p->map[y][x] && x < index)
+	while (x < ft_count_columns(p->map) && p->map[y][x] && x < index)
 	{
 		x++;
 	}
@@ -87,18 +87,26 @@ int	get_mini_x_index_before(t_player *p, int index)
 	{
 		x--;
 	}
+	if (round(p->p_x) > 12)
+		return (round(x) - 1);
 	return (round(x));
 }
 
-double ft_get_mini_offset(t_player *p)
+double ft_get_mini_y_offset(t_player *p, double mini_tile_size)
 {
-	if(round(p->p_x) < ft_strlen(p->map[0]) / 2)
-	{
-		printf("%f, %zu\n",round(p->p_x), ft_strlen(p->map[0]));
-		printf("yo\n");
-		return (ft_strlen(p->map[0]) / 2 - round(p->p_x));
-	}
-	return(0);
+	if (p->p_y < ft_count_lines(p->map) / 2 - 1)
+		return ((S_HEIGHT * 5 / 6) - p->p_y * mini_tile_size);
+	else
+		return ((S_HEIGHT * 5 / 6) - (6 * mini_tile_size));
+}
+
+
+double ft_get_mini_x_offset(t_player *p, double mini_tile_size)
+{
+	if (round(p->p_x) > ft_count_columns(p->map) / 2)
+		return (0);
+	else
+		return ((7.0 - p->p_x) * mini_tile_size);
 }
 
 void	ft_minimap_render(t_player *p, char **map)
@@ -111,32 +119,31 @@ void	ft_minimap_render(t_player *p, char **map)
 	int		end_x;
 	int		start_y;
 	int		end_y;
-	int		mini_tile_size;
+	double		mini_tile_size;
 
-	mini_tile_size = 10;
-	start_x = get_mini_x_index_before(p, p->p_x - 7);
-	end_x = get_mini_x_index_after(p, p->p_x + 7);
-	start_y = get_mini_y_index_before(p, p->p_y - 7);
-	end_y = get_mini_y_index_after(p, p->p_y + 7);
-	printf("p_x %f\n", p->p_x);
-	printf("p_y %f\n", p->p_y);
-	printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x,
-		start_y, end_y);
-	y = S_HEIGHT * 5 / 6;
+	mini_tile_size = 10.0;
+	// printf("p_x %f, p_y %f, case %c\n", p->p_x - 1, p->p_y, p->map[(int)round(p->p_y)][(int)round(p->p_x) - 1]);
+	start_x = get_mini_x_index_before(p, round(p->p_x) - 7);
+	end_x = get_mini_x_index_after(p, round(p->p_x) + 7);
+	start_y = get_mini_y_index_before(p, round(p->p_y) - 7);
+	end_y = get_mini_y_index_after(p, round(p->p_y) + 7);
+	printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x, start_y, end_y);
+	// y = ft_get_mini_y_offset(p, mini_tile_size);
+	y = ft_get_mini_y_offset(p, mini_tile_size);
 	index_y = start_y;
-	while (index_y < end_y)
+	while (index_y <= end_y)
 	{
 		index_x = start_x;
-		x = ft_get_mini_offset(p);
+		x = ft_get_mini_x_offset(p, mini_tile_size);
 		while (index_x <= end_x)
 		{
 			// printf("%c : x = %d y = %d\n", map[index_y][index_x], index_x, index_y);
+			printf("p->p_y : %f, x : %f, y : %f\n", p->p_y, x, y);
 			if (map[index_y][index_x] == '1')
 			{
 				ft_draw_tile(p->img, x, y, mini_tile_size, 0xEF92EE);
 			}
-			else if (map[index_y][index_x] == '0'
-				|| isplayer(map[index_y][index_x]))
+			else if (map[index_y][index_x] == '0' || isplayer(map[index_y][index_x]))
 			{
 				ft_draw_tile(p->img, x, y, mini_tile_size, COLOR_DARK_GRAY);
 			}
@@ -146,8 +153,7 @@ void	ft_minimap_render(t_player *p, char **map)
 		y += mini_tile_size;
 		index_y++;
 	}
-	ft_draw_tile(p->img, 7 * mini_tile_size, S_HEIGHT * 5 / 6 + 7
-		* mini_tile_size, mini_tile_size, COLOR_BLUE);
+	ft_draw_tile(p->img, 7 * mini_tile_size, (S_HEIGHT * 5 / 6), mini_tile_size, COLOR_BLUE);
 }
 
 void	ft_player_render(t_player *p)

@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I.
+CFLAGS = -Wall -Wextra -Werror -I. -g3
 LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -Lmlx -lmlx -lm -lX11 -lXext -lXrandr -lXi
 MLXLIB = mlx/libmlx_Linux.a 
