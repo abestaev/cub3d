@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/28 13:03:47 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/04 16:10:20 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	is_image_png(char *path)
 	int	i;
 
 	i = ft_strlen(path) - 5;
-	if (ft_strncmp(path + i, ".png", 4))
-		return (1);
+	// if (ft_strncmp(path + i, ".png", 4) || ft_strncmp(path + i, ".xpm", 4))
+	// 	return (1);
 	return (0);
 }
 

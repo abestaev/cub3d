@@ -6,39 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/02 19:26:47 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/04 18:24:06 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	get_mini_pos(t_player *p)
-{
-	double	y;
-	double	x;
-	int		index_x;
-	int		index_y;
-
-	index_y = 0;
-	y = S_HEIGHT * 5 / 6;
-	while (index_y < ft_count_lines(p->map))
-	{
-		index_x = 0;
-		x = 0;
-		while (index_x < ft_count_columns(p->map) && p->map[index_y][index_x])
-		{
-			if (isplayer(p->map[index_y][index_x]))
-			{
-				p->mini->p_x = x;
-				p->mini->p_y = y;
-			}
-			x += 20;
-			index_x++;
-		}
-		y += 20;
-		index_y++;
-	}
-}
 
 int	get_mini_y_index_after(t_player *p, int index)
 {
@@ -47,8 +19,6 @@ int	get_mini_y_index_after(t_player *p, int index)
 	y = p->p_y;
 	while (y < (int)ft_strlen(p->map[0]) && y < index)
 		y++;
-	if (round(y) >= 14)
-		return (13);
 	return (round(y));
 }
 
@@ -127,7 +97,7 @@ void	ft_minimap_render(t_player *p, char **map)
 	end_x = get_mini_x_index_after(p, round(p->p_x) + 7);
 	start_y = get_mini_y_index_before(p, round(p->p_y) - 7);
 	end_y = get_mini_y_index_after(p, round(p->p_y) + 7);
-	printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x, start_y, end_y);
+	// printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x, start_y, end_y);
 	// y = ft_get_mini_y_offset(p, mini_tile_size);
 	y = ft_get_mini_y_offset(p, mini_tile_size);
 	index_y = start_y;
@@ -138,7 +108,7 @@ void	ft_minimap_render(t_player *p, char **map)
 		while (index_x <= end_x)
 		{
 			// printf("%c : x = %d y = %d\n", map[index_y][index_x], index_x, index_y);
-			printf("p->p_y : %f, x : %f, y : %f\n", p->p_y, x, y);
+			// printf("p->p_y : %f, x : %f, y : %f\n", p->p_y, x, y);
 			if (map[index_y][index_x] == '1')
 			{
 				ft_draw_tile(p->img, x, y, mini_tile_size, 0xEF92EE);
