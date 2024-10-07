@@ -30,26 +30,23 @@
 # define COLOR_PINK 0xFFC0CB
 # define COLOR_LIME 0x00FF00
 
-# define NUM_TEXTURES 4
 # define TEXTURE_SIZE 64
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 
-# define PI 3.1415926535897
-# define S_WIDTH 1300
-# define S_HEIGHT 900
-# define FOV 60
+# define S_WIDTH 1920
+# define S_HEIGHT 1020
 # define SPEED 0.15
 # define ROT_SPEED 0.05
 
-# define K_LEFT 97
-# define K_UP 119
-# define K_RIGHT 100
-# define K_DOWN 115
-# define K_ESC 65307
+# define K_LEFT 0x61  // 'a' key
+# define K_UP 0x77    // 'w' key
+# define K_RIGHT 0x64 // 'd' key
+# define K_DOWN 0x73  // 's' key
+# define K_ESC 0xFF1B // ESC key
 
-# define K_LOOK_LEFT 65361
-# define K_LOOK_RIGHT 65363
+# define K_LOOK_LEFT 0xFF51  // Left arrow key
+# define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
 typedef struct s_rgba
 {
@@ -59,16 +56,20 @@ typedef struct s_rgba
 	unsigned char		a;
 
 }						t_rgba;
+typedef struct s_point
+{
+	double				x;
+	double				y;
+}						t_point;
 
 typedef struct s_player
 {
 	int					**text_buff;
-	int					*text_map;
-	double				p_x;
-	double				p_y;
 	double				p_angl;
 	double				p_dir_x;
 	double				p_dir_y;
+	int					p_y;
+	int					p_x;
 	double				plane_x;
 	double				plane_y;
 	double				tile_size;
@@ -76,17 +77,23 @@ typedef struct s_player
 	double				plr_speed;
 	double				speed_rot;
 	char				**map;
+	t_point				pos;
 	struct s_image		*img;
 	struct s_data		*data;
 	struct s_ray		*ray;
 	struct s_minimap	*mini;
-
 }						t_player;
 
 typedef struct s_ray
 {
 	double				dir_x;
 	double				dir_y;
+	int					map_x;
+	int					map_y;
+	int					step_x;
+	int					step_y;
+	int					wall_height;
+	double				wall_dist;
 	int					side;
 	double				delta_dist_x;
 	double				delta_dist_y;
@@ -161,16 +168,12 @@ typedef struct s_data
 // init
 
 void					ft_player_render(t_player *p);
-void					get_mini_pos(t_player *p);
 void					ft_minimap_render(t_player *p, char **map);
-double					ft_norm_radian_angl(double radian);
-double					ft_norm_deg_angl(double degrees);
 void					ft_player_init(t_player *p, t_data *data);
-t_image					*ft_mlx_init(void);
+void					ft_mlx_init(t_image **img);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
 int						ft_handle_hook(int keycode, t_player *p);
-// int					ft_exit(void *param);
 void					ft_draw_line(int x_start, int y_start, int x_end,
 							int y_end, t_image *img);
 int						ft_count_columns(char **map);
@@ -181,14 +184,14 @@ void					ft_draw_tile(t_image *img, int start_x, int start_y,
 void					ft_cub_render(t_player *p);
 void					ft_clear_image(t_image *img, unsigned int color);
 void					ft_refresh(t_player *p);
-int						ft_est(t_player *p);
-int						ft_ouest(t_player *p);
-int						ft_north(t_player *p);
-int						ft_south(t_player *p);
-void					ft_get_wall_size(t_player *p, int x, int map_x,
-							int map_y);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
+void					ft_get_wall_size(t_player *p, int x);
+void					ft_cast_ray(t_player *p);
+void					ft_get_color(t_player *p, int wall_height, int start,
+							int map_x, int map_y, int x);
+void					ft_get_sides_dist(t_player *p);
+int	ft_ray_iteration(t_player *p);
 
 // TEXTURES
 void					ft_init_textures(t_player *p);
@@ -219,6 +222,7 @@ int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					ft_init_player_orientation(char c, t_player *p);
 void					free_parsing(t_textures *textures, t_data *data);
+void					ft_init_ray(t_player *p, int x);
 
 // debug functions
 void					print_map(char **map);

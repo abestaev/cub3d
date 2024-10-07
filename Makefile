@@ -18,6 +18,7 @@ SRC = main.c \
 	src/exec/init.c \
 	src/exec/render.c \
 	src/exec/textures.c \
+	src/exec/raycast.c \
 
 OBJ = $(SRC:.c=.o)
 

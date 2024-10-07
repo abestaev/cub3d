@@ -15,18 +15,18 @@
 
 void	ft_go_down(t_player *p)
 {
-	if (!ft_inside_wall(p, p->p_x - p->p_dir_x * p->plr_speed, p->p_y))
-		p->p_x -= p->p_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->p_x, p->p_y - p->p_dir_y * p->plr_speed))
-		p->p_y -= p->p_dir_y * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x - p->p_dir_x * p->plr_speed, p->pos.y))
+		p->pos.x -= p->p_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x, p->pos.y - p->p_dir_y * p->plr_speed))
+		p->pos.y -= p->p_dir_y * p->plr_speed;
 }
 
 void	ft_go_up(t_player *p)
 {
-	if (!ft_inside_wall(p, p->p_x + p->p_dir_x * p->plr_speed, p->p_y))
-		p->p_x += p->p_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->p_x, p->p_y + p->p_dir_y * p->plr_speed))
-		p->p_y += p->p_dir_y * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x + p->p_dir_x * p->plr_speed, p->pos.y))
+		p->pos.x += p->p_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x, p->pos.y + p->p_dir_y * p->plr_speed))
+		p->pos.y += p->p_dir_y * p->plr_speed;
 }
 
 void	ft_go_right(t_player *p)
@@ -36,10 +36,10 @@ void	ft_go_right(t_player *p)
 
 	perp_dir_x = p->p_dir_y;
 	perp_dir_y = -p->p_dir_x;
-	if (!ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y))
-		p->p_x += perp_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->p_x, p->p_y + perp_dir_y * p->plr_speed))
-		p->p_y += perp_dir_y * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x + perp_dir_x * p->plr_speed, p->pos.y))
+		p->pos.x += perp_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x, p->pos.y + perp_dir_y * p->plr_speed))
+		p->pos.y += perp_dir_y * p->plr_speed;
 }
 
 void	ft_go_left(t_player *p)
@@ -49,10 +49,10 @@ void	ft_go_left(t_player *p)
 
 	perp_dir_x = -p->p_dir_y;
 	perp_dir_y = p->p_dir_x;
-	if (!ft_inside_wall(p, p->p_x + perp_dir_x * p->plr_speed, p->p_y))
-		p->p_x += perp_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->p_x, p->p_y + perp_dir_y * p->plr_speed))
-		p->p_y += perp_dir_y * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x + perp_dir_x * p->plr_speed, p->pos.y))
+		p->pos.x += perp_dir_x * p->plr_speed;
+	if (!ft_inside_wall(p, p->pos.x, p->pos.y + perp_dir_y * p->plr_speed))
+		p->pos.y += perp_dir_y * p->plr_speed;
 }
 
 void	ft_turn_right(t_player *p)

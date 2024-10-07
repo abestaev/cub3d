@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/04 18:24:06 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:43:08 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	get_mini_y_index_after(t_player *p, int index)
 {
 	int	y;
 
-	y = p->p_y;
+	y = p->pos.y;
 	while (y < (int)ft_strlen(p->map[0]) && y < index)
 		y++;
 	return (round(y));
@@ -26,8 +26,8 @@ int	get_mini_y_index_before(t_player *p, int index)
 {
 	int	y;
 
-	y = p->p_y;
-	while (y > 0 && p->map[y][(int)p->p_x] && y > index)
+	y = p->pos.y;
+	while (y > 0 && p->map[y][(int)p->pos.x] && y > index)
 	{
 		y--;
 	}
@@ -39,8 +39,8 @@ int	get_mini_x_index_after(t_player *p, int index)
 	int	x;
 	int	y;
 
-	y = p->p_y;
-	x = p->p_x;
+	y = p->pos.y;
+	x = p->pos.x;
 	while (x < ft_count_columns(p->map) && p->map[y][x] && x < index)
 	{
 		x++;
@@ -52,20 +52,20 @@ int	get_mini_x_index_before(t_player *p, int index)
 {
 	int	x;
 
-	x = p->p_x;
+	x = p->pos.x;
 	while (x > 0 && x > index)
 	{
 		x--;
 	}
-	if (round(p->p_x) > 12)
+	if (round(p->pos.x) > 12)
 		return (round(x) - 1);
 	return (round(x));
 }
 
 double ft_get_mini_y_offset(t_player *p, double mini_tile_size)
 {
-	if (p->p_y < ft_count_lines(p->map) / 2 - 1)
-		return ((S_HEIGHT * 5 / 6) - p->p_y * mini_tile_size);
+	if (p->pos.y < ft_count_lines(p->map) / 2 - 1)
+		return ((S_HEIGHT * 5 / 6) - p->pos.y * mini_tile_size);
 	else
 		return ((S_HEIGHT * 5 / 6) - (6 * mini_tile_size));
 }
@@ -73,10 +73,10 @@ double ft_get_mini_y_offset(t_player *p, double mini_tile_size)
 
 double ft_get_mini_x_offset(t_player *p, double mini_tile_size)
 {
-	if (round(p->p_x) > ft_count_columns(p->map) / 2)
+	if (round(p->pos.x) > ft_count_columns(p->map) / 2)
 		return (0);
 	else
-		return ((7.0 - p->p_x) * mini_tile_size);
+		return ((7.0 - p->pos.x) * mini_tile_size);
 }
 
 void	ft_minimap_render(t_player *p, char **map)
@@ -92,11 +92,11 @@ void	ft_minimap_render(t_player *p, char **map)
 	double		mini_tile_size;
 
 	mini_tile_size = 10.0;
-	// printf("p_x %f, p_y %f, case %c\n", p->p_x - 1, p->p_y, p->map[(int)round(p->p_y)][(int)round(p->p_x) - 1]);
-	start_x = get_mini_x_index_before(p, round(p->p_x) - 7);
-	end_x = get_mini_x_index_after(p, round(p->p_x) + 7);
-	start_y = get_mini_y_index_before(p, round(p->p_y) - 7);
-	end_y = get_mini_y_index_after(p, round(p->p_y) + 7);
+	// printf("p_x %f, p_y %f, case %c\n", p->pos.x - 1, p->pos.y, p->map[(int)round(p->pos.y)][(int)round(p->pos.x) - 1]);
+	start_x = get_mini_x_index_before(p, round(p->pos.x) - 7);
+	end_x = get_mini_x_index_after(p, round(p->pos.x) + 7);
+	start_y = get_mini_y_index_before(p, round(p->pos.y) - 7);
+	end_y = get_mini_y_index_after(p, round(p->pos.y) + 7);
 	// printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x, start_y, end_y);
 	// y = ft_get_mini_y_offset(p, mini_tile_size);
 	y = ft_get_mini_y_offset(p, mini_tile_size);
@@ -108,7 +108,7 @@ void	ft_minimap_render(t_player *p, char **map)
 		while (index_x <= end_x)
 		{
 			// printf("%c : x = %d y = %d\n", map[index_y][index_x], index_x, index_y);
-			// printf("p->p_y : %f, x : %f, y : %f\n", p->p_y, x, y);
+			// printf("p->pos.y : %f, x : %f, y : %f\n", p->pos.y, x, y);
 			if (map[index_y][index_x] == '1')
 			{
 				ft_draw_tile(p->img, x, y, mini_tile_size, 0xEF92EE);
