@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/04 17:36:39 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/05 13:51:01 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,29 @@ int	*ft_get_north_textures(t_player *p)
 	int		text_width;
 	void	*img;
 	char	*img_addr;
+	int		i;
 
 	text = malloc(sizeof(int) * TEXTURE_WIDTH * TEXTURE_HEIGHT);
 	if (!text)
 		return (NULL);
 	text_height = TEXTURE_HEIGHT;
 	text_width = TEXTURE_WIDTH;
-	img = mlx_xpm_file_to_image(p->img->mlx, "textures/red.xpm",
-			&text_width, &text_height);
+	img = mlx_xpm_file_to_image(p->img->mlx, "textures/red.xpm", &text_width,
+			&text_height);
 	if (!img)
 	{
 		printf("Erreur : impossible de charger la texture.\n");
-		free(text); 
+		free(text);
 		return (NULL);
 	}
 	img_addr = mlx_get_data_addr(img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
+	i = 0;
+	while (i < TEXTURE_SIZE)
+	{
+		text[i] = *(int *)&img_addr[i * (p->img->bits_per_pixel / 8)];
+		i++;
+	}
 	mlx_destroy_image(p->img->mlx, img);
 	return (text);
 }
@@ -46,6 +53,7 @@ int	*ft_get_south_textures(t_player *p)
 	int		text_width;
 	void	*img;
 	char	*img_addr;
+	int		i;
 
 	text = malloc(sizeof(int) * TEXTURE_WIDTH * TEXTURE_HEIGHT);
 	if (!text)
@@ -57,11 +65,17 @@ int	*ft_get_south_textures(t_player *p)
 	if (!img)
 	{
 		printf("Erreur : impossible de charger la texture.\n");
-		free(text); 
+		free(text);
 		return (NULL);
 	}
 	img_addr = mlx_get_data_addr(img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
+	i = 0;
+	while (i < TEXTURE_SIZE)
+	{
+		text[i] = *(int *)&img_addr[i * (p->img->bits_per_pixel / 8)];
+		i++;
+	}
 	mlx_destroy_image(p->img->mlx, img);
 	return (text);
 }
@@ -73,22 +87,29 @@ int	*ft_get_west_textures(t_player *p)
 	int		text_width;
 	void	*img;
 	char	*img_addr;
+	int		i;
 
 	text = malloc(sizeof(int) * TEXTURE_WIDTH * TEXTURE_HEIGHT);
 	if (!text)
 		return (NULL);
 	text_height = TEXTURE_HEIGHT;
 	text_width = TEXTURE_WIDTH;
-	img = mlx_xpm_file_to_image(p->img->mlx, "textures/eagle.xpm",
-			&text_width, &text_height);
+	img = mlx_xpm_file_to_image(p->img->mlx, "textures/eagle.xpm", &text_width,
+			&text_height);
 	if (!img)
 	{
-		free(text); 
+		free(text);
 		printf("Erreur : impossible de charger la texture.\n");
 		return (NULL);
 	}
 	img_addr = mlx_get_data_addr(img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
+	i = 0;
+	while (i < TEXTURE_SIZE)
+	{
+		text[i] = *(int *)&img_addr[i * (p->img->bits_per_pixel / 8)];
+		i++;
+	}
 	mlx_destroy_image(p->img->mlx, img);
 	return (text);
 }
@@ -100,6 +121,7 @@ int	*ft_get_east_textures(t_player *p)
 	int		text_width;
 	void	*img;
 	char	*img_addr;
+	int		i;
 
 	text = malloc(sizeof(int) * TEXTURE_WIDTH * TEXTURE_HEIGHT);
 	if (!text)
@@ -111,13 +133,13 @@ int	*ft_get_east_textures(t_player *p)
 	if (!img)
 	{
 		printf("Erreur : impossible de charger la texture.\n");
-		free(text); 
+		free(text);
 		return (NULL);
 	}
 	img_addr = mlx_get_data_addr(img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
-	int i = 0;
-	while(i < TEXTURE_SIZE)
+	i = 0;
+	while (i < TEXTURE_SIZE)
 	{
 		text[i] = *(int *)&img_addr[i * (p->img->bits_per_pixel / 8)];
 		i++;
@@ -129,14 +151,16 @@ int	*ft_get_east_textures(t_player *p)
 void	ft_init_textures(t_player *p)
 {
 	int	**texture;
+
+	texture = malloc(sizeof(int *) * 5);
 	// int	i;
 	// int	j;
-
-	texture = p->text_buff;
 	texture[0] = ft_get_north_textures(p);
 	texture[1] = ft_get_south_textures(p);
 	texture[2] = ft_get_west_textures(p);
 	texture[3] = ft_get_east_textures(p);
+	texture[4] = NULL;
+	p->text_buff = texture;
 	// i = 0;
 	// while (i < 4)
 	// {

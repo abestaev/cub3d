@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/04 18:42:37 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/05 14:11:03 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 void	ft_get_color(t_player *p, int wall_height, int start, int map_x,
 		int map_y, int x)
 {
+	(void)x;
 	int	tex_x;
 	int	step;
 	int	pos;  
 	int	tex_nb;
 	int	*texture;
+	int *text_map = malloc(sizeof(int) * 64 * 64);
+	int y;
 
 	tex_x = 0;
 	// printf("p->map %d\n",p->map[map_x][map_y] - 1 );
@@ -32,11 +35,23 @@ void	ft_get_color(t_player *p, int wall_height, int start, int map_x,
 	step = 1.0 * TEXTURE_SIZE / wall_height;
 	pos = (start - S_HEIGHT / 2 + wall_height / 2) * step;
 	texture = p->text_buff[tex_nb];
-	if (pos >= 0 && pos < TEXTURE_HEIGHT && tex_x >= 0 && tex_x < TEXTURE_WIDTH)
-    {
-        int color = texture[4];
-        my_pixel_put(p->img->mlx, x, start, color);
-    }
+	for (y = start; y < start + wall_height; y++)
+	{
+		int tex_y = (int)pos & (TEXTURE_SIZE - 1);  // Get the y texture coordinate
+		pos += step;  // Increment the texture position
+
+		int color = texture[TEXTURE_SIZE * tex_y + tex_x];  // Get the texture color
+
+		// Darken the color for y-sides
+		if (p->ray->side == 1) color = (color >> 1) & 8355711;
+
+		// Store the color in the text_map (1D array)
+		if (y < TEXTURE_SIZE && tex_x < TEXTURE_SIZE) {
+			text_map[TEXTURE_SIZE * tex_y + tex_x] = color;
+		}
+	}
+	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img,0,0 );
+	free(text_map);
 
 }
 void	ft_cast_ray(t_player *p)
@@ -138,7 +153,9 @@ void	ft_get_wall_size(t_player *p, int x, int map_x, int map_y)
 		ft_draw_vertical_line(x, start, end, p->img, COLOR_MAGENTA);
 	else
 		ft_draw_vertical_line(x, start, end, p->img, COLOR_BLUE);
-	ft_get_color(p, wall_height, start, map_x, map_y, x);
+	(void)map_x;
+	(void)map_y;
+	// ft_get_color(p, wall_height, start, map_x, map_y, x);
 }
 
 void	ft_refresh(t_player *p)
@@ -168,7 +185,7 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_player_init(p, &data);
 	p->img = ft_mlx_init();
-	ft_init_textures(p);
+	// ft_init_textures(p);
 	ft_cub_render(p);
 	free(p->img);
 	free(p);

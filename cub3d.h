@@ -31,7 +31,7 @@
 # define COLOR_LIME 0x00FF00
 
 # define NUM_TEXTURES 4
-#define TEXTURE_SIZE 64
+# define TEXTURE_SIZE 64
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 
@@ -63,6 +63,7 @@ typedef struct s_rgba
 typedef struct s_player
 {
 	int					**text_buff;
+	int					*text_map;
 	double				p_x;
 	double				p_y;
 	double				p_angl;
@@ -184,7 +185,8 @@ int						ft_est(t_player *p);
 int						ft_ouest(t_player *p);
 int						ft_north(t_player *p);
 int						ft_south(t_player *p);
-void					ft_get_wall_size(t_player *p, int x, int map_x, int map_y);
+void					ft_get_wall_size(t_player *p, int x, int map_x,
+							int map_y);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 
