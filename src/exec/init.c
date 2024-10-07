@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/07 15:44:46 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:11:32 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	ft_player_init(t_player *p, t_data *data)
 {
 	t_ray	*ray;
 	t_minimap *mini;
-	int **text_buff = malloc(sizeof(int *) * 5);
 
 	ray = malloc(sizeof(t_ray));
 	mini = malloc(sizeof(t_minimap));
@@ -94,7 +93,6 @@ void	ft_player_init(t_player *p, t_data *data)
 	printf("p->map = %p\n", p->map);
 	p->tile_size = ft_get_tile_size(p->map);
 	p->ray = ray;
-	p->text_buff = text_buff;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
 	p->data = data;

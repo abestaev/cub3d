@@ -64,7 +64,7 @@ typedef struct s_point
 
 typedef struct s_player
 {
-	int					**text_buff;
+	int					**texture;
 	double				p_angl;
 	double				p_dir_x;
 	double				p_dir_y;
@@ -142,6 +142,7 @@ typedef struct textures
 	int					nb_lines;
 	int					i;
 	struct s_player		*p;
+	int					text_size;
 }						t_textures;
 
 typedef struct s_image
@@ -191,7 +192,7 @@ void					ft_cast_ray(t_player *p);
 void					ft_get_color(t_player *p, int wall_height, int start,
 							int map_x, int map_y, int x);
 void					ft_get_sides_dist(t_player *p);
-int	ft_ray_iteration(t_player *p);
+int						ft_ray_iteration(t_player *p);
 
 // TEXTURES
 void					ft_init_textures(t_player *p);

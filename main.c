@@ -6,105 +6,87 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/07 16:00:17 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:06:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_get_color(t_player *p, int wall_height, int start, int map_x,
-		int map_y, int x)
-{
-	(void)x;
-	int	tex_x;
-	int	step;
-	int	pos;  
-	int	tex_nb;
-	int	*texture;
-	int *text_map = malloc(sizeof(int) * 64 * 64);
-	int y;
 
-	tex_x = 0;
-	// printf("p->map %d\n",p->map[map_x][map_y] - 1 );
-	(void)map_x;
-	(void)map_y;
-	tex_nb = p->map[5][5] - 1;
+int	ft_get_text_index(t_ray *ray)
+{
+	if (ray->side == 0)
+	{
+		if (ray->dir_x < 0)
+			return (0);
+		else
+			return (1);
+	}
+	else
+	{
+		if (ray->dir_y > 0)
+			return (2);
+		else
+			return (3);
+	}
+}
+int	**ft_init_screen_pixels()
+{
+	int	i;
+	int	**text_pixels;
+
+	text_pixels = malloc(sizeof(int *) * (S_HEIGHT + 1));
+	if (!text_pixels)
+		return (NULL); // Gérer l'erreur
+
+	i = 0;
+	while (i < S_HEIGHT)
+	{
+		text_pixels[i] = ft_calloc(S_WIDTH + 1, sizeof(int));
+		if (!text_pixels[i])
+		{
+			// Libération de la mémoire en cas d'échec d'allocation
+			while (i > 0)
+				free(text_pixels[--i]);
+			free(text_pixels);
+			return (NULL);
+		}
+		i++;
+	}
+	return (text_pixels);
+}
+
+
+void	ft_calcul_wall_text(t_player *p, int start, int x, int end)
+{
+	int	y;
+	int	color;
+	int text_index = ft_get_text_index(p->ray);
+	int text_x;
+	int text_y;
+	int text_step;
+	int pos;
+
+	int **text_buff = ft_init_screen_pixels();
+
+	text_x = (int)(p->ray->wall_x * TEXTURE_SIZE);
 	if ((p->ray->side == 0 && p->ray->dir_x < 0) || (p->ray->side == 1
 			&& p->ray->dir_y > 0))
-		tex_x = TEXTURE_SIZE - tex_x - 1;
-	step = 1.0 * TEXTURE_SIZE / wall_height;
-	pos = (start - S_HEIGHT / 2 + wall_height / 2) * step;
-	texture = p->text_buff[tex_nb];
-	for (y = start; y < start + wall_height; y++)
+		text_x = TEXTURE_SIZE - text_x - 1;
+	text_step = 1.0 * TEXTURE_SIZE / p->ray->wall_height;
+	pos = (start - S_HEIGHT / 2 + p->ray->wall_dist / 2)
+		* text_step;
+	y = start;
+	while (y < end)
 	{
-		int tex_y = (int)pos & (TEXTURE_SIZE - 1);  // Get the y texture coordinate
-		pos += step;  // Increment the texture position
-
-		int color = texture[TEXTURE_SIZE * tex_y + tex_x];  // Get the texture color
-
-		// Darken the color for y-sides
-		if (p->ray->side == 1) color = (color >> 1) & 8355711;
-
-		// Store the color in the text_map (1D array)
-		if (y < TEXTURE_SIZE && tex_x < TEXTURE_SIZE) {
-			text_map[TEXTURE_SIZE * tex_y + tex_x] = color;
-		}
-	}
-	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img,0,0 );
-	free(text_map);
-
-}
-void	ft_cast_ray(t_player *p)
-{
-	t_ray	*ray;
-	int		x;
-	int		step_x;
-	int		step_y;
-
-	ray = p->ray;
-	x = 0;
-	while (x < S_WIDTH)
-	{
-		ft_init_ray(p, x);
-		if (ray->dir_x < 0)
-		{
-			step_x = -1;
-			ray->side_dist_x = (p->pos.x - ray->map_x) * ray->delta_dist_x;
-		}
-		else
-		{
-			step_x = 1;
-			ray->side_dist_x = (ray->map_x + 1.0 - p->pos.x) * ray->delta_dist_x;
-		}
-		if (ray->dir_y < 0)
-		{
-			step_y = -1;
-			ray->side_dist_y = (p->pos.y - ray->map_y) * ray->delta_dist_y;
-		}
-		else
-		{
-			step_y = 1;
-			ray->side_dist_y = (ray->map_y + 1.0 - p->pos.y) * ray->delta_dist_y;
-		}
-		while (1)
-		{
-			if (ray->side_dist_x < ray->side_dist_y)
-			{
-				ray->side_dist_x += ray->delta_dist_x;
-				ray->map_x += step_x;
-				ray->side = 0;
-			}
-			else
-			{
-				ray->side_dist_y += ray->delta_dist_y;
-				ray->map_y += step_y;
-				ray->side = 1;
-			}
-			if (ft_inside_wall(p, ray->map_x, ray->map_y))
-				break ;
-		}
-		ft_get_wall_size(p, x);
-		x++;
+		text_y = pos & (TEXTURE_SIZE - 1);
+		pos += text_step;
+		color = p->texture[text_index][TEXTURE_SIZE * text_y + text_x];
+		if (text_index == 0 || text_index == 1)
+			color = (color >> 1) & 8355711;
+		if (color > 0)
+			text_buff[y][x] = color;
+		y++;
 	}
 }
 
@@ -140,11 +122,11 @@ void	ft_get_wall_size(t_player *p, int x)
 	else
 		ray->wall_x = p->pos.x + wall_dist * ray->dir_x;
 	ray->wall_x -= floor(ray->wall_x);
-	if (ray->side == 1)
-		ft_draw_vertical_line(x, start, end, p->img, COLOR_MAGENTA);
-	else
-		ft_draw_vertical_line(x, start, end, p->img, COLOR_BLUE);
-	// ft_get_color(p, wall_height, start, map_x, map_y, x);
+	// if (ray->side == 1)
+	// 	ft_draw_vertical_line(x, start, end, p->img, COLOR_MAGENTA);
+	// else
+	// 	ft_draw_vertical_line(x, start, end, p->img, COLOR_BLUE);
+	ft_calcul_wall_text(p, start, x, end);
 }
 
 void	ft_refresh(t_player *p)
@@ -175,8 +157,7 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_player_init(p, &data);
 	ft_mlx_init(&(p->img));
-
-	// ft_init_textures(p);
+	ft_init_textures(p);
 	ft_cub_render(p);
 	free(p->img);
 	free(p);
