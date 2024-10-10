@@ -65,6 +65,7 @@ typedef struct s_point
 typedef struct s_player
 {
 	int					**texture;
+	int 				**text_buff;
 	double				p_angl;
 	double				p_dir_x;
 	double				p_dir_y;
@@ -171,7 +172,7 @@ typedef struct s_data
 void					ft_player_render(t_player *p);
 void					ft_minimap_render(t_player *p, char **map);
 void					ft_player_init(t_player *p, t_data *data);
-void					ft_mlx_init(t_image **img);
+void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
 int						ft_handle_hook(int keycode, t_player *p);
@@ -184,7 +185,7 @@ void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
 void					ft_cub_render(t_player *p);
 void					ft_clear_image(t_image *img, unsigned int color);
-void					ft_refresh(t_player *p);
+void					ft_refresh_frame(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p, int x);

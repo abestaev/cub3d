@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/01 14:10:37 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:09:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,12 @@ void	ft_clear_image(t_image *img, unsigned int color)
 int	get_col(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a << 0);
+}
+
+int	ft_escape(t_player *p)
+{
+	mlx_destroy_window(p->img->mlx, p->img->win_ptr);
+	exit(0);
 }
 
 void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,

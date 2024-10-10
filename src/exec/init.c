@@ -6,20 +6,19 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/07 17:11:32 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:58:54 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_mlx_init(t_image **img)
+void	ft_mlx_init(t_player *p)
 {
-	*img = malloc(sizeof(t_image));
-	(*img)->mlx = mlx_init();
-	(*img)->win_ptr = mlx_new_window((*img)->mlx, S_WIDTH, S_HEIGHT, "Cub3D");
-	(*img)->img = mlx_new_image((*img)->mlx, S_WIDTH, S_HEIGHT);
-	(*img)->addr = mlx_get_data_addr((*img)->img, &(*img)->bits_per_pixel,
-			&(*img)->line_length, &(*img)->endian);
+	p->img = malloc(sizeof(t_image));
+	p->img->mlx = mlx_init();
+	p->img->win_ptr = mlx_new_window(p->img->mlx, S_WIDTH, S_HEIGHT, "Cub3D");
+	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
+	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 }
 
 void	ft_init_player_orientation(char c, t_player *p)
@@ -90,7 +89,6 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->mini = mini;
 	ft_init_player_pos(p, data->textures);
 	p->map = data->map;
-	printf("p->map = %p\n", p->map);
 	p->tile_size = ft_get_tile_size(p->map);
 	p->ray = ray;
 	p->plr_speed = SPEED;
@@ -98,5 +96,4 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->data = data;
 	p->mini->p_x = p->pos.x;
 	p->mini->p_y = p->pos.y;
-	// get_mini_pos(p);
 }

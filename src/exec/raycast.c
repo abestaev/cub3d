@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/07 18:27:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:12:03 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_cast_ray(t_player *p)
 
 	ray = p->ray;
 	x = 0;
+
 	while (x < S_WIDTH)
 	{
 		ft_init_ray(p, x);
@@ -74,9 +75,9 @@ void	ft_cast_ray(t_player *p)
 			if (ft_inside_wall(p, ray->map_x, ray->map_y))
 				break ;
 		}
-		ft_get_wall_size(p, x);
-	
 
+		ft_get_wall_size(p, x);
 		x++;
-	}mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
+	}
+
 }
