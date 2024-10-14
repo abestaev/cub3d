@@ -101,6 +101,6 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_turn_left(p);
 	if (keycode == K_ESC)
 		exit(0);
-	ft_refresh_frame(p);
+	ft_refresh(p);
 	return (0);
 }

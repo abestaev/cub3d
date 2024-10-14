@@ -65,7 +65,7 @@ typedef struct s_point
 typedef struct s_player
 {
 	int					**texture;
-	int 				**text_buff;
+	int					**text_buff;
 	double				p_angl;
 	double				p_dir_x;
 	double				p_dir_y;
@@ -100,6 +100,8 @@ typedef struct s_ray
 	double				delta_dist_y;
 	double				side_dist_x;
 	double				side_dist_y;
+	int					start_pxl;
+	int					end_pxl;
 	double				wall_x;
 }						t_ray;
 
@@ -142,6 +144,7 @@ typedef struct textures
 	size_t				longest_line;
 	int					nb_lines;
 	int					i;
+
 	struct s_player		*p;
 	int					text_size;
 }						t_textures;
@@ -185,19 +188,19 @@ void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
 void					ft_cub_render(t_player *p);
 void					ft_clear_image(t_image *img, unsigned int color);
-void					ft_refresh_frame(t_player *p);
+void					ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
-void					ft_get_wall_size(t_player *p, int x);
+void					ft_get_wall_size(t_player *p);
 void					ft_cast_ray(t_player *p);
 void					ft_get_color(t_player *p, int wall_height, int start,
 							int map_x, int map_y, int x);
-void					ft_get_sides_dist(t_player *p);
-int						ft_ray_iteration(t_player *p);
+void					ft_find_walls(t_player *p);
+int						ft_get_text_index(t_ray *ray);
 
 // TEXTURES
 void					ft_init_textures(t_player *p);
-
+void					ft_calcul_wall_text(t_player *p, int x);
 // PARSING FUNCTIONS
 int						parsing(int argc, char **argv, t_textures *textures,
 							t_data *data);
@@ -231,5 +234,7 @@ void					print_map(char **map);
 
 // testing
 int						ft_escape(t_player *p);
+
+void					ft_free_all_struct(t_player *p);
 
 #endif

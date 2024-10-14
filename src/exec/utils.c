@@ -6,15 +6,34 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/10 16:09:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:48:31 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int	ft_get_text_index(t_ray *ray)
+{
+	if (ray->side == 0)
+	{
+		if (ray->dir_x < 0)
+			return (0);
+		else
+			return (1);
+	}
+	else
+	{
+		if (ray->dir_y > 0)
+			return (2);
+		else
+			return (3);
+	}
+}
+
+
 int	ft_inside_wall(t_player *p, int x, int y)
 {
-	if ((x > 0 && x < S_WIDTH) || (y > 0 || y < S_HEIGHT))
+	if ((x > 0 && x < S_WIDTH) || (y > 0 && y < S_HEIGHT))
 	{
 		if (p->map[y][x] == '1')
 			return (1);
@@ -140,85 +159,85 @@ void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,
 	}
 }
 
-void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
-		t_image *img)
-{
-	int	delta_x;
-	int	delta_y;
-	int	d;
-	int	temp;
-	int	y;
-	int	x;
-	int	y_inc;
-	int	x_inc;
+// void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
+// 		t_image *img)
+// {
+// 	int	delta_x;
+// 	int	delta_y;
+// 	int	d;
+// 	int	temp;
+// 	int	y;
+// 	int	x;
+// 	int	y_inc;
+// 	int	x_inc;
 
-	delta_x = abs(x_end - x_start);
-	delta_y = abs(y_end - y_start);
-	// Si l'axe X domine
-	if (delta_x > delta_y)
-	{
-		// Inverser les points si nécessaire
-		if (x_start > x_end)
-		{
-			temp = x_start;
-			x_start = x_end;
-			x_end = temp;
-			temp = y_start;
-			y_start = y_end;
-			y_end = temp;
-		}
-		y_inc = -1;
-		if (y_end >= y_start)
-			y_inc = 1;
-		y = y_start;
-		x = x_start;
-		d = 2 * delta_y - delta_x;
-		while (x <= x_end)
-		{
-			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-				my_pixel_put(img, x, y, 0x00FF0000);
-			if (d > 0)
-			{
-				y += y_inc;
-				d -= 2 * delta_x;
-			}
-			d += 2 * delta_y;
-			x++;
-		}
-	}
-	// Si l'axe Y domine
-	else
-	{
-		// Inverser les points si nécessaire
-		if (y_start > y_end)
-		{
-			temp = x_start;
-			x_start = x_end;
-			x_end = temp;
-			temp = y_start;
-			y_start = y_end;
-			y_end = temp;
-		}
-		x_inc = -1;
-		if (x_end >= x_start)
-			x_inc = 1;
-		x = x_start;
-		y = y_start;
-		d = 2 * delta_x - delta_y;
-		while (y <= y_end)
-		{
-			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-				my_pixel_put(img, x, y, 0x00FF0000);
-			if (d > 0)
-			{
-				x += x_inc;
-				d -= 2 * delta_y;
-			}
-			d += 2 * delta_x;
-			y++;
-		}
-	}
-}
+// 	delta_x = abs(x_end - x_start);
+// 	delta_y = abs(y_end - y_start);
+// 	// Si l'axe X domine
+// 	if (delta_x > delta_y)
+// 	{
+// 		// Inverser les points si nécessaire
+// 		if (x_start > x_end)
+// 		{
+// 			temp = x_start;
+// 			x_start = x_end;
+// 			x_end = temp;
+// 			temp = y_start;
+// 			y_start = y_end;
+// 			y_end = temp;
+// 		}
+// 		y_inc = -1;
+// 		if (y_end >= y_start)
+// 			y_inc = 1;
+// 		y = y_start;
+// 		x = x_start;
+// 		d = 2 * delta_y - delta_x;
+// 		while (x <= x_end)
+// 		{
+// 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+// 				my_pixel_put(img, x, y, 0x00FF0000);
+// 			if (d > 0)
+// 			{
+// 				y += y_inc;
+// 				d -= 2 * delta_x;
+// 			}
+// 			d += 2 * delta_y;
+// 			x++;
+// 		}
+// 	}
+// 	// Si l'axe Y domine
+// 	else
+// 	{
+// 		// Inverser les points si nécessaire
+// 		if (y_start > y_end)
+// 		{
+// 			temp = x_start;
+// 			x_start = x_end;
+// 			x_end = temp;
+// 			temp = y_start;
+// 			y_start = y_end;
+// 			y_end = temp;
+// 		}
+// 		x_inc = -1;
+// 		if (x_end >= x_start)
+// 			x_inc = 1;
+// 		x = x_start;
+// 		y = y_start;
+// 		d = 2 * delta_x - delta_y;
+// 		while (y <= y_end)
+// 		{
+// 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+// 				my_pixel_put(img, x, y, 0x00FF0000);
+// 			if (d > 0)
+// 			{
+// 				x += x_inc;
+// 				d -= 2 * delta_y;
+// 			}
+// 			d += 2 * delta_x;
+// 			y++;
+// 		}
+// 	}
+// }
 // int	*ft_exit(void *param)
 // {
 // 	t_image *img;
