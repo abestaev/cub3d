@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/10 17:32:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/14 20:09:32 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,4 @@ void	ft_init_textures(t_player *p)
 	p->texture[2] = ft_get_texture_pxl(p, "./textures/purplestone.xpm");
 	p->texture[3] = ft_get_texture_pxl(p, "./textures/red.xpm");
 	p->texture[4] = NULL;
-	int i;
-
-		i = 0;
-		while(i < TEXTURE_SIZE)
-		{
-			printf("p->texture[0] : %d\n", p->texture[0][i]);
-			i++;
-		}
-	
 }
