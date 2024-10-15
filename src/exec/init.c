@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/14 20:41:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:46:34 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,9 @@ void	ft_mlx_init(t_player *p)
 	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 }
 
-void	ft_init_player_orientation(char c, t_player *p)
+void	ft_init_player_orientation_01(char c, t_player *p)
 {
-	if (c == 'N')
-	{
-		p->p_dir_x = 0;
-		p->p_dir_y = -1;
-		p->plane_x = 0.66;
-		p->plane_y = 0;
-	}
-	else if (c == 'S')
-	{
-		p->p_dir_x = 0;
-		p->p_dir_y = 1;
-		p->plane_x = -0.66;
-		p->plane_y = 0;
-	}
-	else if (c == 'E')
+	if (c == 'E')
 	{
 		p->p_dir_x = 1;
 		p->p_dir_y = 0;
@@ -71,22 +57,41 @@ void	ft_init_player_orientation(char c, t_player *p)
 	}
 }
 
-void	ft_init_player_pos(t_player *p, t_textures t)
+void	ft_init_player_orientation_00(char c, t_player *p)
+{
+	if (c == 'N')
+	{
+		p->p_dir_x = 0;
+		p->p_dir_y = -1;
+		p->plane_x = 0.66;
+		p->plane_y = 0;
+	}
+	else if (c == 'S')
+	{
+		p->p_dir_x = 0;
+		p->p_dir_y = 1;
+		p->plane_x = -0.66;
+		p->plane_y = 0;
+	}
+	ft_init_player_orientation_01(c, p);
+}
+
+void	ft_init_player_pos(t_player *p)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (t.map_tab_tmp[i])
+	while (p->map[i])
 	{
 		j = 0;
-		while (t.map_tab_tmp[i][j])
+		while (p->map[i][j])
 		{
-			if (isplayer(t.map_tab_tmp[i][j]))
+			if (isplayer(p->map[i][j]))
 			{
-				p->pos.x = j;
-				p->pos.y = i;
-				ft_init_player_orientation(t.map_tab_tmp[i][j], p);
+				p->pos.x = j + 0.2;
+				p->pos.y = i + 0.2;
+				ft_init_player_orientation(p->map[i][j], p);
 				break ;
 			}
 			j++;
@@ -105,8 +110,8 @@ void	ft_player_init(t_player *p, t_data *data)
 	ft_memset(ray, 0, sizeof(t_ray));
 	ft_memset(mini, 0, sizeof(t_minimap));
 	p->mini = mini;
-	ft_init_player_pos(p, data->textures);
 	p->map = data->map;
+	ft_init_player_pos(p);
 	p->tile_size = ft_get_tile_size(p->map);
 	p->ray = ray;
 	p->plr_speed = SPEED;

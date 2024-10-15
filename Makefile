@@ -16,7 +16,7 @@ SRC = main.c \
 	src/exec/ft_mlx_event.c \
 	src/exec/utils.c \
 	src/exec/init.c \
-	src/exec/render.c \
+	src/exec/minimap_render.c \
 	src/exec/init_textures.c \
 	src/exec/raycast.c \
 

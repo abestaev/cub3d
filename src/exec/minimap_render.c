@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/10 15:52:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:59:52 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,3 @@ void	ft_player_render(t_player *p)
 {
 	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
 }
-
-// void	ft_cub_render(t_player *p)
-// {
-// 	ft_refresh(p);
-
-// }

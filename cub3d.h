@@ -179,22 +179,21 @@ void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
 int						ft_handle_hook(int keycode, t_player *p);
-void					ft_draw_line(int x_start, int y_start, int x_end,
-							int y_end, t_image *img);
+// void					ft_draw_line(int x_start, int y_start, int x_end,
+// 							int y_end, t_image *img);
 int						ft_count_columns(char **map);
 int						ft_count_lines(char **map);
 double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
-void					ft_cub_render(t_player *p);
 void					ft_clear_image(t_image *img, unsigned int color);
 void					ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p);
 void					ft_cast_ray(t_player *p);
-void					ft_get_color(t_player *p, int wall_height, int start,
-							int map_x, int map_y, int x);
+// void					ft_get_color(t_player *p, int wall_height, int start,
+// 							int map_x, int map_y, int x);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_ray *ray);
 
