@@ -19,6 +19,7 @@ SRC = main.c \
 	src/exec/minimap_render.c \
 	src/exec/init_textures.c \
 	src/exec/raycast.c \
+	src/exec/time_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/14 20:48:31 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:22:30 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	ft_get_text_index(t_ray *ray)
 			return (3);
 	}
 }
-
 
 int	ft_inside_wall(t_player *p, int x, int y)
 {
@@ -108,32 +107,55 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		x++;
 	}
 }
-
-/* optimize calcul to work directly with the memory where the pixels are store */
-void	ft_clear_image(t_image *img, unsigned int color)
+int	get_hexa_color(int r, int g, int b)
 {
+	return (r << 16 | g << 8 | b); // Inverser l'ordre
+}
+
+static void	ft_init_floor_and_ceiling_color(t_textures *textures)
+{
+	char	**rgb_split_ceiling;
+	char	**rgb_split_floor;
+
+	rgb_split_floor = ft_split(textures->floor, ",");
+	rgb_split_ceiling = ft_split(textures->ceiling, ",");
+	textures->floor_r = ft_atoi(rgb_split_floor[0]);
+	textures->floor_g = ft_atoi(rgb_split_floor[1]);
+	textures->floor_b = ft_atoi(rgb_split_floor[2]);
+	textures->ceiling_r = ft_atoi(rgb_split_ceiling[0]);
+	textures->ceiling_g = ft_atoi(rgb_split_ceiling[1]);
+	textures->ceiling_b = ft_atoi(rgb_split_ceiling[2]);
+	free(rgb_split_floor);
+	free(rgb_split_ceiling);
+}
+/* optimize calcul to work directly with the memory where the pixels are store */
+
+void	ft_color_background(t_image *img)
+{
+	t_textures		*textures;
 	int				total_pixels;
 	char			*dst;
+	unsigned int	color;
 	int				i;
-	unsigned int	*pixel;
 
+	textures = img->p->data->textures;
 	total_pixels = S_WIDTH * S_HEIGHT;
 	dst = img->addr;
+	ft_init_floor_and_ceiling_color(textures);
 	i = 0;
 	while (i < total_pixels)
 	{
-		pixel = (unsigned int *)(dst + i * (img->bits_per_pixel / 8));
 		if (i < total_pixels / 2)
-			*pixel = color;
+		{
+			color = get_hexa_color(textures->ceiling_r, textures->ceiling_g,
+					textures->ceiling_b);
+		}
 		else
-			*pixel = COLOR_YELLOW;
+			color = get_hexa_color(textures->floor_r, textures->floor_g,
+					textures->floor_b);
+		*(unsigned int *)(dst + i * (img->bits_per_pixel / 8)) = color;
 		i++;
 	}
-}
-
-int	get_col(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a << 0);
 }
 
 int	ft_escape(t_player *p)

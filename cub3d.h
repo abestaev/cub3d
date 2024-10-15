@@ -11,6 +11,7 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include <unistd.h>
 
 # define COLOR_BLACK 0x000000
@@ -164,8 +165,12 @@ typedef struct s_image
 typedef struct s_data
 {
 	char				**map;
+	long				fps;
+	int					fps_flag;
+	long				old_time;
+	long				actual_time;
 	t_image				img;
-	t_textures			textures;
+	t_textures			*textures;
 }						t_data;
 
 // EXEC FUNCTIONS
@@ -186,7 +191,6 @@ int						ft_count_lines(char **map);
 double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
-void					ft_clear_image(t_image *img, unsigned int color);
 void					ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
@@ -200,9 +204,9 @@ int						ft_get_text_index(t_ray *ray);
 // TEXTURES
 void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
+void					ft_color_background(t_image *img);
 // PARSING FUNCTIONS
-int						parsing(int argc, char **argv, t_textures *textures,
-							t_data *data);
+int						parsing(int argc, char **argv, t_data *data);
 int						arg_valid(int argc, char **argv);
 int						read_file(t_textures *textures);
 int						parse_line(char *str, t_textures *textures);
@@ -224,12 +228,15 @@ int						is_image_png(char *path);
 int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
-void					ft_init_player_orientation(char c, t_player *p);
 void					free_parsing(t_textures *textures, t_data *data);
 void					ft_init_ray(t_player *p, int x);
 
 // debug functions
 void					print_map(char **map);
+
+// TIME_UTILS
+long					ft_get_sec_time(void);
+void					ft_print_fps(t_data *data);
 
 // testing
 int						ft_escape(t_player *p);
