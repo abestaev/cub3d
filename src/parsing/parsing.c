@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/28 12:22:21 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/08 03:18:49 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
 	if (invalid_char(textures))
 		return (1);
 	if (parse_map(textures, data))
+		return (1);
+	if (is_door_valid(data, textures))
 		return (1);
 	return (0);
 }

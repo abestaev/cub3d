@@ -34,8 +34,8 @@
 # define S_WIDTH 1300
 # define S_HEIGHT 900
 # define FOV 60
-# define SPEED 0.15
-# define ROT_SPEED 0.05
+# define SPEED 0.02
+# define ROT_SPEED 0.01
 
 # define K_LEFT 97
 # define K_UP 119
@@ -73,11 +73,20 @@ typedef struct s_player
 	struct s_data		*data;
 	struct s_ray		*ray;
 	struct s_minimap	*mini;
+	// update movement
+	int					move_forward;
+	int					move_backward;
+	int					move_left;
+	int					move_right;
+	int					rotate_left;
+	int					rotate_right;
 
 }						t_player;
 
 typedef struct s_ray
 {
+	int					step_x;
+	int					step_y;
 	double				dir_x;
 	double				dir_y;
 	int					side;
@@ -161,9 +170,21 @@ double					ft_norm_deg_angl(double degrees);
 void					ft_player_init(t_player *p, t_data *data);
 t_image					*ft_mlx_init(void);
 int						ft_inside_wall(t_player *p, int x, int y);
+
 void					my_pixel_put(t_image *img, int x, int y, int color);
+// movement
 int						ft_handle_hook(int keycode, t_player *p);
+int						key_press(int keycode, t_player *p);
+int						key_release(int keycode, t_player *p);
+
+void					ft_go_down(t_player *p);
+void					ft_go_up(t_player *p);
+void					ft_go_left(t_player *p);
+void					ft_go_right(t_player *p);
+void					ft_turn_left(t_player *p);
+void					ft_turn_right(t_player *p);
 // int					ft_exit(void *param);
+
 void					ft_draw_line(int x_start, int y_start, int x_end,
 							int y_end, t_image *img);
 int						ft_count_columns(char **map);
@@ -171,7 +192,7 @@ int						ft_count_lines(char **map);
 double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
-void					ft_cub_render(t_player *p);
+int					ft_cub_render(t_player *p);
 void					ft_clear_image(t_image *img, unsigned int color);
 void					ft_refresh(t_player *p);
 int						ft_est(t_player *p);
@@ -208,11 +229,11 @@ int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					ft_init_player_orientation(char c, t_player *p);
 void					free_parsing(t_textures *textures, t_data *data);
-
+int	is_door_valid(t_data *data, t_textures *textures); // bonus
 // debug functions
 void					print_map(char **map);
 
 // testing
-int						ft_escape(t_player *p);
+int						ft_escape(int keycode, t_player *p);
 
 #endif

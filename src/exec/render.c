@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/02 19:26:47 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:29:41 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,10 +161,27 @@ void	ft_player_render(t_player *p)
 	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
 }
 
-void	ft_cub_render(t_player *p)
+void update_position(t_player *p)
 {
+    if (p->move_forward)
+        ft_go_up(p);
+    if (p->move_backward)
+        ft_go_down(p);
+    if (p->move_left)
+        ft_go_right(p);
+    if (p->move_right)
+		ft_go_left(p);
+    if (p->rotate_left)
+		ft_turn_right(p);
+    if (p->rotate_right)
+       ft_turn_left(p);
+}
+
+int	ft_cub_render(t_player *p)
+{
+	update_position(p);
 	ft_refresh(p);
-	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
-	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
-	mlx_loop(p->img->mlx);
+	// mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
+	return (0);
+	// mlx_loop(p->img->mlx);
 }
