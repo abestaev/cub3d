@@ -36,8 +36,8 @@
 
 # define S_WIDTH 1920
 # define S_HEIGHT 1020
-# define SPEED 0.15
-# define ROT_SPEED 0.05
+# define SPEED 0.04
+# define ROT_SPEED 0.04
 
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
@@ -83,6 +83,12 @@ typedef struct s_player
 	struct s_data		*data;
 	struct s_ray		*ray;
 	struct s_minimap	*mini;
+	int					move_forward;
+	int					move_backward;
+	int					move_left;
+	int					move_right;
+	int					rotate_left;
+	int					rotate_right;
 }						t_player;
 
 typedef struct s_ray
@@ -178,7 +184,18 @@ void					ft_player_init(t_player *p, t_data *data);
 void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
+// movement
 int						ft_handle_hook(int keycode, t_player *p);
+int						key_press(int keycode, t_player *p);
+int						key_release(int keycode, t_player *p);
+
+void					ft_go_down(t_player *p);
+void					ft_go_up(t_player *p);
+void					ft_go_left(t_player *p);
+void					ft_go_right(t_player *p);
+void					ft_turn_left(t_player *p);
+void					ft_turn_right(t_player *p);
+
 // void					ft_draw_line(int x_start, int y_start, int x_end,
 // 							int y_end, t_image *img);
 int						ft_count_columns(char **map);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 12:46:34 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:37:21 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	ft_init_player_pos(t_player *p)
 			{
 				p->pos.x = j + 0.2;
 				p->pos.y = i + 0.2;
-				ft_init_player_orientation(p->map[i][j], p);
+				ft_init_player_orientation_00(p->map[i][j], p);
 				break ;
 			}
 			j++;
@@ -119,4 +119,10 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->data = data;
 	p->mini->p_x = p->pos.x;
 	p->mini->p_y = p->pos.y;
+	p->move_forward = 0;
+	p->move_backward = 0;
+	p->move_left = 0;
+	p->move_right = 0;
+	p->rotate_left = 0;
+	p->rotate_right = 0;
 }
