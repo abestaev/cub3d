@@ -1,132 +1,204 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render.c                                           :+:      :+:    :+:   */
+/*   minimap_render.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 11:59:52 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:57:22 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	get_mini_y_index_after(t_player *p, int index)
-{
-	int	y;
+// int	get_mini_y_index_start(t_player *p, int nb_tile)
+// {
+// 	int	start_y;
 
-	y = p->pos.y;
-	while (y < (int)ft_strlen(p->map[0]) && y < index)
-		y++;
-	return (round(y));
+// 	start_y = p->pos.y - nb_tile;
+// 	if (start_y < 0)
+// 		return (0);
+// 	return (start_y);
+// }
+
+// int	get_mini_y_index_end(t_player *p, int nb_tile)
+// {
+// 	int	end_y;
+// 	int	map_height;
+
+// 	map_height = ft_count_lines(p->map);
+// 	end_y = p->pos.y + nb_tile;
+// 	if (end_y > map_height)
+// 		return (map_height);
+// 	return (end_y);
+// }
+
+// int	get_mini_x_index_start(t_player *p, int nb_tile)
+// {
+// 	int	start_x;
+
+// 	start_x = p->pos.x - nb_tile;
+// 	if (start_x < 0)
+// 		return (0);
+// 	return (start_x);
+// }
+
+// int	get_mini_x_index_end(t_player *p, int nb_tile)
+// {
+// 	int	end_x;
+// 	int	map_width;
+
+// 	map_width = ft_count_columns(p->map);
+// 	end_x = p->pos.x + nb_tile;
+// 	if (end_x > map_width)
+// 		return (map_width);
+// 	return (end_x);
+// }
+double	ft_get_mini_y_offset(t_player *p)
+{
+	return((S_HEIGHT * 1 / 10) - p->pos.y * MINIMAP_TILE + 2);
 }
 
-int	get_mini_y_index_before(t_player *p, int index)
+double	ft_get_mini_x_offset(t_player *p)
 {
-	int	y;
-
-	y = p->pos.y;
-	while (y > 0 && p->map[y][(int)p->pos.x] && y > index)
-	{
-		y--;
-	}
-	return (round(y));
+	return(10 * MINIMAP_TILE - p->pos.x * MINIMAP_TILE + 2);
 }
 
-int	get_mini_x_index_after(t_player *p, int index)
+void	ft_draw_map(t_player *p, char **map)
 {
+	int	index_x;
+	int	index_y;
 	int	x;
 	int	y;
 
-	y = p->pos.y;
-	x = p->pos.x;
-	while (x < ft_count_columns(p->map) && p->map[y][x] && x < index)
+	y = ft_get_mini_y_offset(p);
+	index_y = 0;
+	while (index_y < ft_count_lines(map))
 	{
-		x++;
+		index_x = 0;
+		x = ft_get_mini_x_offset(p);
+		while (index_x < ft_count_columns(map))
+		{
+			if (map[index_y][index_x] == '1')
+				ft_draw_tile(p->img, x, y, MINIMAP_TILE, COLOR_CYAN);
+			x += MINIMAP_TILE;
+			index_x++;
+		}
+		y += MINIMAP_TILE;
+		index_y++;
 	}
-	return (round(x));
-}
-
-int	get_mini_x_index_before(t_player *p, int index)
-{
-	int	x;
-
-	x = p->pos.x;
-	while (x > 0 && x > index)
-	{
-		x--;
-	}
-	if (round(p->pos.x) > 12)
-		return (round(x) - 1);
-	return (round(x));
-}
-
-double ft_get_mini_y_offset(t_player *p, double mini_tile_size)
-{
-	if (p->pos.y < ft_count_lines(p->map) / 2 - 1)
-		return ((S_HEIGHT * 5 / 6) - p->pos.y * mini_tile_size);
-	else
-		return ((S_HEIGHT * 5 / 6) - (6 * mini_tile_size));
-}
-
-
-double ft_get_mini_x_offset(t_player *p, double mini_tile_size)
-{
-	if (round(p->pos.x) > ft_count_columns(p->map) / 2)
-		return (0);
-	else
-		return ((7.0 - p->pos.x) * mini_tile_size);
 }
 
 void	ft_minimap_render(t_player *p, char **map)
 {
-	double	y;
-	double	x;
-	int		index_x;
-	int		index_y;
-	int		start_x;
-	int		end_x;
-	int		start_y;
-	int		end_y;
-	double		mini_tile_size;
-
-	mini_tile_size = 10.0;
-	// printf("p_x %f, p_y %f, case %c\n", p->pos.x - 1, p->pos.y, p->map[(int)round(p->pos.y)][(int)round(p->pos.x) - 1]);
-	start_x = get_mini_x_index_before(p, round(p->pos.x) - 7);
-	end_x = get_mini_x_index_after(p, round(p->pos.x) + 7);
-	start_y = get_mini_y_index_before(p, round(p->pos.y) - 7);
-	end_y = get_mini_y_index_after(p, round(p->pos.y) + 7);
-	// printf("start_x %d, end_x %d, start_y %d, end_y %d\n", start_x, end_x, start_y, end_y);
-	// y = ft_get_mini_y_offset(p, mini_tile_size);
-	y = ft_get_mini_y_offset(p, mini_tile_size);
+	// double	x;
+	// int		index_x;
+	// int		index_y;
+	// int		start_x;
+	// int		end_x;
+	// int		start_y;
+	// int		end_y;
+	// double	y_offset;
+	// double	x_offset;
+(void)map;
+	ft_draw_map(p, p->map);
+	/* double	y;
+	start_x = get_mini_x_index_start(p, 10);
+	end_x = get_mini_x_index_end(p, 10);
+	start_y = get_mini_y_index_start(p, 10);
+	end_y = get_mini_y_index_end(p, 10);
+	printf("start_x %d\n", start_x);
+	printf("end_x %d\n", end_x);
+	printf("start_y %d\n", start_y);
+	printf("end_y %d\n", end_y);
+	y_offset = (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE;
+	x_offset = 0;
+	y = y_offset;
 	index_y = start_y;
-	while (index_y <= end_y)
+	while (index_y <= end_y && index_y < ft_count_lines(p->map))
 	{
 		index_x = start_x;
-		x = ft_get_mini_x_offset(p, mini_tile_size);
-		while (index_x <= end_x)
+		x = x_offset;
+		while (index_x <= end_x && index_x < ft_count_columns(p->map))
 		{
-			// printf("%c : x = %d y = %d\n", map[index_y][index_x], index_x, index_y);
-			// printf("p->pos.y : %f, x : %f, y : %f\n", p->pos.y, x, y);
 			if (map[index_y][index_x] == '1')
-			{
-				ft_draw_tile(p->img, x, y, mini_tile_size, 0xEF92EE);
-			}
-			else if (map[index_y][index_x] == '0' || isplayer(map[index_y][index_x]))
-			{
-				ft_draw_tile(p->img, x, y, mini_tile_size, COLOR_DARK_GRAY);
-			}
-			x += mini_tile_size;
+				ft_draw_tile(p->img, x, y, MINIMAP_TILE, COLOR_CYAN);
+			else
+				ft_draw_alpha_tile(p->img, x, y, MINIMAP_TILE, COLOR_DARK_GRAY);
+			x += MINIMAP_TILE;
 			index_x++;
 		}
-		y += mini_tile_size;
+		y += MINIMAP_TILE;
 		index_y++;
-	}
-	ft_draw_tile(p->img, 7 * mini_tile_size, (S_HEIGHT * 5 / 6), mini_tile_size, COLOR_BLUE);
+	} */
 }
 
 void	ft_player_render(t_player *p)
 {
-	ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
+	ft_draw_tile(p->img, 10 * MINIMAP_TILE, (S_HEIGHT * 1 / 10), 5,
+		COLOR_BLUE);
 }
+void	ft_countouring_render(t_player *p)
+{
+	int	thickness;
+	int	j;
+
+	thickness = 0;
+	j = 0;
+	// haut
+	while (thickness < 5)
+	{
+		ft_draw_vertical_line(thickness, (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE,
+			(S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE, p->img,
+			p->data->textures->ceiling_col);
+		thickness++;
+	}
+	thickness = 0;
+	// bas
+	while (thickness < 5)
+	{
+		ft_draw_vertical_line(20 * MINIMAP_TILE + thickness, (S_HEIGHT * 5 / 6)
+			- 10 * MINIMAP_TILE, (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE
+			+ thickness, p->img, p->data->textures->ceiling_col);
+		thickness++;
+	}
+	thickness = 0;
+	// droite
+	while (thickness < 5)
+	{
+		ft_draw_horizontal_line((S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE
+			+ thickness, 0, 20 * MINIMAP_TILE, p->img,
+			p->data->textures->ceiling_col);
+		thickness++;
+	}
+	thickness = 0;
+	// gauche
+	while (thickness < 5)
+	{
+		ft_draw_horizontal_line((S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE
+			+ thickness, 0, 20 * MINIMAP_TILE + thickness, p->img,
+			p->data->textures->ceiling_col);
+		thickness++;
+	}
+}
+// int		i = 0;
+// int		j = 0;
+
+// while (i < 10)
+// {
+// 	ft_draw_vertical_line(p->mini->p_x - 7 * p->tile_size + i, p->mini->p_y - 7
+// 		* p->tile_size, p->mini->p_y + 7 * p->tile_size, p->img, COLOR_BLUE);
+// 	i++;
+// }
+
+// ft_draw_vertical_line(p->mini->p_x + 8 * p->tile_size, p->mini->p_y - 8
+// 	* p->tile_size, p->mini->p_y + 8 * p->tile_size, p->img, COLOR_BLUE);
+// ft_draw_horizontal_line(p->mini->p_y - 8 * p->tile_size, p->mini->p_x - 8
+// 	* p->tile_size, p->mini->p_x + 8 * p->tile_size, p->img, COLOR_BLUE);
+// ft_draw_horizontal_line(p->mini->p_y + 8 * p->tile_size, p->mini->p_x - 8
+// 	* p->tile_size, p->mini->p_x + 8 * p->tile_size, p->img, COLOR_BLUE);
+// ft_draw_vertical_line(p->mini->p_x - 8 * p->tile_size);
+
+// ft_draw_tile(p->img, p->mini->p_x, p->mini->p_y, 20, COLOR_BLUE);
+// }

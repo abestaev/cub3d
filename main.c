@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 17:55:15 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/16 14:38:38 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ void	ft_refresh(t_player *p)
 	p->data->actual_time = ft_get_sec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
+	ft_player_render(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	ft_minimap_render(p, p->map);
+	ft_player_render(p);
+	ft_countouring_render(p);
 	ft_print_fps(p->data);
 	p->data->fps++;
 }

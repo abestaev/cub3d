@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 14:48:24 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/15 18:30:11 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 void	ft_init_textures(t_player *p)
 {
 	p->texture = malloc(sizeof(int *) * 5);
-	p->texture[0] = ft_get_texture_pxl(p, "./textures/eagle.xpm");
-	p->texture[1] = ft_get_texture_pxl(p, "./textures/greystone.xpm");
-	p->texture[2] = ft_get_texture_pxl(p, "./textures/purplestone.xpm");
+	p->texture[0] = ft_get_texture_pxl(p, "./textures/mur.xpm");
+	p->texture[1] = ft_get_texture_pxl(p, "./textures/tonneaux.xpm");
+	p->texture[2] = ft_get_texture_pxl(p, "./textures/os.xpm");
 	p->texture[3] = ft_get_texture_pxl(p, "./textures/red.xpm");
 	p->texture[4] = NULL;
 }

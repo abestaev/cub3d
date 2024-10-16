@@ -34,6 +34,7 @@
 # define TEXTURE_SIZE 64
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
+# define MINIMAP_TILE 10
 
 # define S_WIDTH 1920
 # define S_HEIGHT 1020
@@ -132,8 +133,10 @@ typedef struct textures
 	char				*south;
 	char				*west;
 	char				*east;
-	char				*floor;
-	char				*ceiling;
+	char *floor;
+	char *ceiling;
+	unsigned int		floor_col;
+	unsigned int		ceiling_col;
 	int					floor_r;
 	int					floor_g;
 	int					floor_b;
@@ -230,6 +233,11 @@ int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					free_parsing(t_textures *textures, t_data *data);
 void					ft_init_ray(t_player *p, int x);
+void					ft_countouring_render(t_player *p);
+void					ft_draw_horizontal_line(int y_val, int start, int end,
+							t_image *img, long color);
+void	ft_draw_alpha_tile(t_image *img, int start_x, int start_y, int size,
+		int color);
 
 // debug functions
 void					print_map(char **map);
@@ -237,6 +245,7 @@ void					print_map(char **map);
 // TIME_UTILS
 long					ft_get_sec_time(void);
 void					ft_print_fps(t_data *data);
+int						get_hexa_color(int r, int g, int b);
 
 // testing
 int						ft_escape(t_player *p);

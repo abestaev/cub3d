@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 16:22:30 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:51:29 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,7 @@ int	ft_count_lines(char **map)
 
 int	ft_count_columns(char **map)
 {
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(map[0]);
-	while (map[i])
-	{
-		i++;
-		if (ft_strlen(map[i]) > (size_t)len)
-			len = ft_strlen(map[i]);
-	}
-	return (len - 1);
+	return(ft_strlen(map[0]));
 }
 
 double	ft_divide(double i, double j)
@@ -95,21 +84,42 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 	int	y;
 
 	x = start_x;
+	if (x > (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE)
+	x = (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE;
 	while (x < start_x - 1 + size)
 	{
 		y = start_y;
-		while (y < start_y - 1 + size)
+		while (y < start_y - 1 + size && y < (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE)
 		{
-			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+			if (x > 0 && x < S_WIDTH && y > 0 && y < S_HEIGHT)
 				my_pixel_put(img, x, y, color);
 			y++;
 		}
 		x++;
 	}
 }
+void	ft_draw_alpha_tile(t_image *img, int start_x, int start_y, int size,
+		int color)
+{
+	int	x;
+	int	y;
+
+	x = start_x;
+	while (x < start_x - 1 + size)
+	{
+		y = start_y;
+		while (y < start_y - 1 + size)
+		{
+			if (x > 0 && x < S_WIDTH && y > 0 && y < (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE)
+				my_pixel_put(img, x, y, color);
+			y+=2;
+		}
+		x+=2;
+	}
+}
 int	get_hexa_color(int r, int g, int b)
 {
-	return (r << 16 | g << 8 | b); // Inverser l'ordre
+	return ((r << 24) | (g << 16) | (b << 8));
 }
 
 static void	ft_init_floor_and_ceiling_color(t_textures *textures)
@@ -125,6 +135,10 @@ static void	ft_init_floor_and_ceiling_color(t_textures *textures)
 	textures->ceiling_r = ft_atoi(rgb_split_ceiling[0]);
 	textures->ceiling_g = ft_atoi(rgb_split_ceiling[1]);
 	textures->ceiling_b = ft_atoi(rgb_split_ceiling[2]);
+	textures->ceiling_col = get_hexa_color(textures->ceiling_r, textures->ceiling_g,
+					textures->ceiling_b);
+	textures->floor_col = get_hexa_color(textures->floor_r, textures->floor_g,
+					textures->floor_b);
 	free(rgb_split_floor);
 	free(rgb_split_ceiling);
 }
@@ -147,12 +161,10 @@ void	ft_color_background(t_image *img)
 	{
 		if (i < total_pixels / 2)
 		{
-			color = get_hexa_color(textures->ceiling_r, textures->ceiling_g,
-					textures->ceiling_b);
+			color = textures->ceiling_col;
 		}
 		else
-			color = get_hexa_color(textures->floor_r, textures->floor_g,
-					textures->floor_b);
+			color = textures->floor_col;
 		*(unsigned int *)(dst + i * (img->bits_per_pixel / 8)) = color;
 		i++;
 	}
@@ -180,86 +192,102 @@ void	ft_draw_vertical_line(int x_val, int start, int end, t_image *img,
 		y++;
 	}
 }
+void	ft_draw_horizontal_line(int y_val, int start, int end, t_image *img,
+		long color)
+{
+	int	x;
 
-// void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
-// 		t_image *img)
-// {
-// 	int	delta_x;
-// 	int	delta_y;
-// 	int	d;
-// 	int	temp;
-// 	int	y;
-// 	int	x;
-// 	int	y_inc;
-// 	int	x_inc;
+	x = start;
+	if (start < 0)
+		start = 0;
+	if (end >= S_WIDTH)
+		end = S_WIDTH - 1;
+	while (x <= end)
+	{
+		my_pixel_put(img, x,y_val , color);
+		x++;
+	}
+}
 
-// 	delta_x = abs(x_end - x_start);
-// 	delta_y = abs(y_end - y_start);
-// 	// Si l'axe X domine
-// 	if (delta_x > delta_y)
-// 	{
-// 		// Inverser les points si nécessaire
-// 		if (x_start > x_end)
-// 		{
-// 			temp = x_start;
-// 			x_start = x_end;
-// 			x_end = temp;
-// 			temp = y_start;
-// 			y_start = y_end;
-// 			y_end = temp;
-// 		}
-// 		y_inc = -1;
-// 		if (y_end >= y_start)
-// 			y_inc = 1;
-// 		y = y_start;
-// 		x = x_start;
-// 		d = 2 * delta_y - delta_x;
-// 		while (x <= x_end)
-// 		{
-// 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-// 				my_pixel_put(img, x, y, 0x00FF0000);
-// 			if (d > 0)
-// 			{
-// 				y += y_inc;
-// 				d -= 2 * delta_x;
-// 			}
-// 			d += 2 * delta_y;
-// 			x++;
-// 		}
-// 	}
-// 	// Si l'axe Y domine
-// 	else
-// 	{
-// 		// Inverser les points si nécessaire
-// 		if (y_start > y_end)
-// 		{
-// 			temp = x_start;
-// 			x_start = x_end;
-// 			x_end = temp;
-// 			temp = y_start;
-// 			y_start = y_end;
-// 			y_end = temp;
-// 		}
-// 		x_inc = -1;
-// 		if (x_end >= x_start)
-// 			x_inc = 1;
-// 		x = x_start;
-// 		y = y_start;
-// 		d = 2 * delta_x - delta_y;
-// 		while (y <= y_end)
-// 		{
-// 			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
-// 				my_pixel_put(img, x, y, 0x00FF0000);
-// 			if (d > 0)
-// 			{
-// 				x += x_inc;
-// 				d -= 2 * delta_y;
-// 			}
-// 			d += 2 * delta_x;
-// 			y++;
-// 		}
-// 	}
-// }
+void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
+		t_image *img)
+{
+	int	delta_x;
+	int	delta_y;
+	int	d;
+	int	temp;
+	int	y;
+	int	x;
+	int	y_inc;
+	int	x_inc;
+
+	delta_x = abs(x_end - x_start);
+	delta_y = abs(y_end - y_start);
+	// Si l'axe X domine
+	if (delta_x > delta_y)
+	{
+		// Inverser les points si nécessaire
+		if (x_start > x_end)
+		{
+			temp = x_start;
+			x_start = x_end;
+			x_end = temp;
+			temp = y_start;
+			y_start = y_end;
+			y_end = temp;
+		}
+		y_inc = -1;
+		if (y_end >= y_start)
+			y_inc = 1;
+		y = y_start;
+		x = x_start;
+		d = 2 * delta_y - delta_x;
+		while (x <= x_end)
+		{
+			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+				my_pixel_put(img, x, y, 0x00FF0000);
+			if (d > 0)
+			{
+				y += y_inc;
+				d -= 2 * delta_x;
+			}
+			d += 2 * delta_y;
+			x++;
+		}
+	}
+	// Si l'axe Y domine
+	else
+	{
+		// Inverser les points si nécessaire
+		if (y_start > y_end)
+		{
+			temp = x_start;
+			x_start = x_end;
+			x_end = temp;
+			temp = y_start;
+			y_start = y_end;
+			y_end = temp;
+		}
+		x_inc = -1;
+		if (x_end >= x_start)
+			x_inc = 1;
+		x = x_start;
+		y = y_start;
+		d = 2 * delta_x - delta_y;
+		while (y <= y_end)
+		{
+			if (x >= 0 && x < S_WIDTH && y >= 0 && y < S_HEIGHT)
+				my_pixel_put(img, x, y, 0x00FF0000);
+			if (d > 0)
+			{
+				x += x_inc;
+				d -= 2 * delta_y;
+			}
+			d += 2 * delta_x;
+			y++;
+		}
+	}
+}
 // int	*ft_exit(void *param)
 // {
 // 	t_image *img;
