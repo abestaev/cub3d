@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 17:35:30 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 00:51:37 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,8 @@ void	ft_calcul_dda(t_player *p)
 
 void	ft_cast_ray(t_player *p)
 {
-	t_ray	*ray;
 	int		x;
 
-	ray = p->ray;
 	x = 0;
 	while (x < S_WIDTH)
 	{

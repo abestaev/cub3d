@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/16 17:51:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 01:03:59 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 	int	y;
 
 	x = start_x;
-	if (x > (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE)
-	x = (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE;
-	while (x < start_x - 1 + size)
+	if(start_y < S_HEIGHT * 5 / 6 - 10 * MINIMAP_TILE)
+		start_y = S_HEIGHT * 5 / 6 - 10 * MINIMAP_TILE;
+	while (x < start_x - 1 + size && x < 20 * MINIMAP_TILE)
 	{
 		y = start_y;
 		while (y < start_y - 1 + size && y < (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE)
