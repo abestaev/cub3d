@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 06:30:59 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:11:17 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,32 @@ static int	ft_arrlen(char **array)
 		i++;
 	return (i);
 }
-//todo check rgv values
-// static int check_rgb_values(t_textures *textures)
-// {
-// 	while
-// }
+
+static int check_rgb_values(t_textures *textures)
+{
+	char	**tmp1;
+	char	**tmp2;
+
+	tmp1 = ft_split(textures->ceiling, ",");
+	tmp2 = ft_split(textures->floor, ",");
+	textures->ceiling_r = ft_atoi(tmp1[0]);
+	textures->ceiling_g = ft_atoi(tmp1[1]);
+	textures->ceiling_b = ft_atoi(tmp1[2]);
+	textures->floor_r = ft_atoi(tmp2[0]);
+	textures->floor_g = ft_atoi(tmp2[1]);
+	textures->floor_b = ft_atoi(tmp2[2]);
+	if (textures->ceiling_r < 0 || textures->ceiling_r > 255
+		|| textures->ceiling_g < 0 || textures->ceiling_g > 255
+		|| textures->ceiling_b < 0 || textures->ceiling_b > 255
+		|| textures->floor_r < 0 || textures->floor_r > 255
+		|| textures->floor_g < 0 || textures->floor_g > 255
+		|| textures->floor_b < 0 || textures->floor_b > 255)
+	{
+		printf("insecte\n");
+		return (1);
+	}
+	return (0);
+}
 
 int	parse_rgb(t_textures *textures)
 {
@@ -41,17 +62,19 @@ int	parse_rgb(t_textures *textures)
 		printf("Error\nInvalid RGB format\n");
 		return (1);
 	}
-	textures->ceiling_r = ft_atoi(tmp1[0]);
-	textures->ceiling_g = ft_atoi(tmp1[1]);
-	textures->ceiling_b = ft_atoi(tmp1[2]);
-	textures->floor_r = ft_atoi(tmp2[0]);
-	textures->floor_g = ft_atoi(tmp2[1]);
-	textures->floor_b = ft_atoi(tmp2[2]);
-	// if (check_rgb_values(textures))
-	// {
-	// 	printf("Error\nInvalid RGB values\n");
-	// 	return (1);
-	// }	
+	if (ft_strlen(tmp1[0]) > 4 || ft_strlen(tmp2[0]) > 4
+		|| ft_strlen(tmp1[1]) > 4 || ft_strlen(tmp2[1]) > 4
+		|| ft_strlen(tmp1[2]) > 4 || ft_strlen(tmp2[2]) > 4)
+	{
+		printf("%s %s %zu %zu %zu %zu\n", tmp1[0], tmp2[0], ft_strlen(tmp1[1]), ft_strlen(tmp2[1]), ft_strlen(tmp1[2]), ft_strlen(tmp2[2]));
+		printf("Error\nInvalid RGB format\n");
+		return (1);
+	}
+	if (check_rgb_values(textures))
+	{
+		printf("Error\nInvalid RGB values\n");
+		return (1);
+	}	
 	free_tab(tmp1);
 	free_tab(tmp2);
 	return (0);

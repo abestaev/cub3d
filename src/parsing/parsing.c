@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 06:33:32 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 14:00:11 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	compare_texture_line(char *s1, char *s2, t_textures *textures)
 	else if (textures->east == NULL && ft_strncmp(s1, "EA", 2) == 0)
 		textures->east = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->floor == NULL && ft_strncmp(s1, "F", 1) == 0)
-		textures->floor = ft_strjoin_free(ft_strdup("./"), s2);
+		textures->floor = s2;
 	else if (textures->ceiling == NULL && ft_strncmp(s1, "C", 1) == 0)
-		textures->ceiling = ft_strjoin_free(ft_strdup("./"), s2);
+		textures->ceiling = s2;
 	else
 	{
 		printf("Error\nInvalid texture line\n");
