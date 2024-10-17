@@ -6,7 +6,7 @@
 /*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 01:09:34 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 10:50:23 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,25 @@ void	ft_minimap_render(t_player *p, char **map)
 		}
 		y += MINIMAP_TILE;
 		index_y++;
+	}
+}
+
+void ft_draw_mini_background(t_image *img, int x_start, int x_end, int y_start, int y_end)
+{
+	double	x;
+	double	y;
+
+	x = x_start;
+	while (x < x_end)
+	{
+		y = y_start;
+		while (y < y_end)
+		{
+			if (x > 0 && x < S_WIDTH && y > 0 && y < S_HEIGHT)
+				my_pixel_put(img, x, y, COLOR_DARK_GRAY);
+			y+=2;
+		}
+		x+=2;
 	}
 }
 
@@ -94,3 +113,4 @@ void	ft_countouring_render(t_player *p)
 	}
 }
 
+ 

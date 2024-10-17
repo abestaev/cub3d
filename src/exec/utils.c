@@ -6,7 +6,7 @@
 /*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 01:03:59 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 10:19:07 by renard           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,10 @@ void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 	int	y;
 
 	x = start_x;
-	if(start_y < S_HEIGHT * 5 / 6 - 10 * MINIMAP_TILE)
-		start_y = S_HEIGHT * 5 / 6 - 10 * MINIMAP_TILE;
 	while (x < start_x - 1 + size && x < 20 * MINIMAP_TILE)
 	{
 		y = start_y;
-		while (y < start_y - 1 + size && y < (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE)
+		while (y < start_y - 1 + size && y < (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE && start_y > S_HEIGHT * 5 / 6 - 10 * MINIMAP_TILE)
 		{
 			if (x > 0 && x < S_WIDTH && y > 0 && y < S_HEIGHT)
 				my_pixel_put(img, x, y, color);

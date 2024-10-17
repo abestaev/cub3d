@@ -36,8 +36,8 @@
 # define TEXTURE_HEIGHT 64
 # define MINIMAP_TILE 10
 
-# define S_WIDTH 1920
-# define S_HEIGHT 1020
+# define S_WIDTH 800
+# define S_HEIGHT 1000
 # define SPEED 0.15
 # define ROT_SPEED 0.05
 
@@ -179,7 +179,7 @@ typedef struct s_data
 // EXEC FUNCTIONS
 
 // init
-
+void ft_draw_mini_background(t_image *img, int x_start, int x_end, int y_start, int y_end);
 void					ft_player_render(t_player *p);
 void					ft_minimap_render(t_player *p, char **map);
 void					ft_player_init(t_player *p, t_data *data);
