@@ -6,14 +6,18 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 17:22:48 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 20:07:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_get_text_index(t_ray *ray)
+int	ft_get_text_index(t_player *p, t_ray *ray)
 {
+	if (p->doors)
+	{
+		return(4);
+	}
 	if (ray->side == 0)
 	{
 		if (ray->dir_x < 0)
@@ -29,6 +33,18 @@ int	ft_get_text_index(t_ray *ray)
 			return (3);
 	}
 }
+int	ft_inside_wall_doors(t_player *p, int x, int y)
+{
+	if ((x > 0 && x < S_WIDTH) || (y > 0 && y < S_HEIGHT))
+	{
+		if (p->map[y][x] == 'P')
+		{
+			p->doors = 1;
+			return (1);
+		}
+	}
+	return (0);
+}
 
 int	ft_inside_wall(t_player *p, int x, int y)
 {
@@ -36,6 +52,11 @@ int	ft_inside_wall(t_player *p, int x, int y)
 	{
 		if (p->map[y][x] == '1')
 			return (1);
+		if (p->map[y][x] == 'P')
+		{
+			p->doors = 1;
+			return (0);
+		}
 	}
 	return (0);
 }

@@ -102,6 +102,7 @@ typedef struct s_player
 	int					rotate_left;
 	int					rotate_right;
 	int					mouse_x;
+	int					doors;
 }						t_player;
 
 typedef struct s_ray
@@ -188,7 +189,7 @@ void					my_pixel_put(t_image *img, int x, int y, int color);
 int						ft_handle_hook(int keycode, t_player *p);
 int						key_press(int keycode, t_player *p);
 int						key_release(int keycode, t_player *p);
-void	update_position(t_player *p);
+void					update_position(t_player *p);
 void					ft_go_down(t_player *p);
 void					ft_go_up(t_player *p);
 void					ft_go_left(t_player *p);
@@ -203,13 +204,13 @@ int						ft_count_lines(char **map);
 double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
-int					ft_refresh(t_player *p);
+int						ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p);
 void					ft_cast_ray(t_player *p);
 void					ft_find_walls(t_player *p);
-int						ft_get_text_index(t_ray *ray);
+int						ft_get_text_index(t_player *p, t_ray *ray);
 
 // MINIMAP
 int						ft_count_columns(char **map);
@@ -227,6 +228,9 @@ void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
 void					ft_color_background(t_image *img);
 int						ft_calcul_darkness(int color, double factor);
+void					ft_cast_ray_doors(t_player *p);
+int						ft_inside_wall_doors(t_player *p, int x, int y);
+void					ft_find_walls_doors(t_player *p);
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);
 int						parsing(int argc, char **argv, t_data *data);

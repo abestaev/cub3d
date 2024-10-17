@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 16:58:40 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 19:26:21 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,15 @@ static void	ft_init_xpm(t_player *p, t_image *img, char *text_name)
 	if (!img->img)
 	{
 		printf("Error, impossible to load texture.\n");
-		return ;
+		exit(0);
 	}
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);
 	if (!img->addr)
+	{
 		printf("Error, no address\n");
+		exit(0);
+	}
 }
 
 int	*ft_get_texture_pxl(t_player *p, char *text_name)
@@ -62,10 +65,19 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 
 void	ft_init_textures(t_player *p)
 {
-	p->texture = malloc(sizeof(int *) * 5);
+	p->texture = malloc(sizeof(int *) * 6);
 	p->texture[0] = ft_get_texture_pxl(p, p->data->textures->north);
 	p->texture[1] = ft_get_texture_pxl(p, p->data->textures->south);
 	p->texture[3] = ft_get_texture_pxl(p, p->data->textures->east);
 	p->texture[2] = ft_get_texture_pxl(p, p->data->textures->west);
-	p->texture[4] = NULL;
+	p->texture[4] = ft_get_texture_pxl(p, "./textures/gate.xpm");
+	p->texture[5] = NULL;
+
+	// int i = 0;
+	
+	// while(p->texture[4][i])
+	// {
+	// 	printf("%d\n", p->texture[4][i]);
+	// 	i++;
+	// }
 }

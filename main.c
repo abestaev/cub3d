@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 17:33:23 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 20:06:22 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int	ft_refresh(t_player *p)
 	p->data->actual_time = ft_get_sec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
+	if(p->doors)
+	{
+		ft_cast_ray_doors(p);
+		p->doors = 0;
+	}
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	ft_print_fps(p->data);

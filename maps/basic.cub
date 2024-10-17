@@ -1,7 +1,7 @@
 NO textures/eagle.xpm
-SO textures/eagle.xpm
-WE textures/eagle.xpm
-EA textures/eagle.xpm
+SO textures/greystone.xpm
+WE textures/purplestone.xpm
+EA textures/red.xpm
 
 F 128,128,128
 C 0,0,0
