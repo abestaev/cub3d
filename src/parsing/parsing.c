@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 02:23:28 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 06:33:32 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
 	if (invalid_char(textures))
 		return (1);
 	if (parse_map(textures, data))
+		return (1);
+	if (is_door_valid(textures, data))
 		return (1);
 	return (0);
 }

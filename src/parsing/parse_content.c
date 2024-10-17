@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 02:31:40 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 06:30:59 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ int	invalid_char(t_textures *t)
 		if (t->map_str_tmp[i] != ' ' && t->map_str_tmp[i] != '1'
 			&& t->map_str_tmp[i] != '0' && t->map_str_tmp[i] != '\n'
 			&& t->map_str_tmp[i] != 'N' && t->map_str_tmp[i] != 'S'
-			&& t->map_str_tmp[i] != 'W' && t->map_str_tmp[i] != 'E')
+			&& t->map_str_tmp[i] != 'W' && t->map_str_tmp[i] != 'E'
+			&& t->map_str_tmp[i] != 'P') // bonus
 		{
 			printf("Error\nInvalid character '%c' in map\n", t->map_str_tmp[i]);
 			return (1);

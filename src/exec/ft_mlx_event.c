@@ -13,46 +13,65 @@
 
 #include "cub3d.h"
 
+int	is_in_wall(t_player *p, double x, double y)
+{
+	// Vérifie les 4 coins de la hitbox
+	return (ft_inside_wall(p, x - HITBOX_SIZE, y - HITBOX_SIZE) ||
+			ft_inside_wall(p, x + HITBOX_SIZE, y - HITBOX_SIZE) ||
+			ft_inside_wall(p, x - HITBOX_SIZE, y + HITBOX_SIZE) ||
+			ft_inside_wall(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
+}
+
 void	ft_go_down(t_player *p)
 {
-	if (!ft_inside_wall(p, p->pos.x - p->p_dir_x * p->plr_speed, p->pos.y))
-		p->pos.x -= p->p_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->pos.x, p->pos.y - p->p_dir_y * p->plr_speed))
-		p->pos.y -= p->p_dir_y * p->plr_speed;
+	double new_x = p->pos.x - p->p_dir_x * p->plr_speed;
+	double new_y = p->pos.y - p->p_dir_y * p->plr_speed;
+
+	// Vérifier les collisions avec la hitbox pour les 4 coins
+	if (!is_in_wall(p, new_x, p->pos.y))
+		p->pos.x = new_x;
+	if (!is_in_wall(p, p->pos.x, new_y))
+		p->pos.y = new_y;
 }
 
 void	ft_go_up(t_player *p)
 {
-	if (!ft_inside_wall(p, p->pos.x + p->p_dir_x * p->plr_speed, p->pos.y))
-		p->pos.x += p->p_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->pos.x, p->pos.y + p->p_dir_y * p->plr_speed))
-		p->pos.y += p->p_dir_y * p->plr_speed;
+	double new_x = p->pos.x + p->p_dir_x * p->plr_speed;
+	double new_y = p->pos.y + p->p_dir_y * p->plr_speed;
+
+	// Vérifier les collisions avec la hitbox pour les 4 coins
+	if (!is_in_wall(p, new_x, p->pos.y))
+		p->pos.x = new_x;
+	if (!is_in_wall(p, p->pos.x, new_y))
+		p->pos.y = new_y;
 }
 
 void	ft_go_right(t_player *p)
 {
-	double	perp_dir_x;
-	double	perp_dir_y;
+	double perp_dir_x = p->p_dir_y;
+	double perp_dir_y = -p->p_dir_x;
+	double new_x = p->pos.x + perp_dir_x * p->plr_speed;
+	double new_y = p->pos.y + perp_dir_y * p->plr_speed;
 
-	perp_dir_x = p->p_dir_y;
-	perp_dir_y = -p->p_dir_x;
-	if (!ft_inside_wall(p, p->pos.x + perp_dir_x * p->plr_speed, p->pos.y))
-		p->pos.x += perp_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->pos.x, p->pos.y + perp_dir_y * p->plr_speed))
-		p->pos.y += perp_dir_y * p->plr_speed;
+	// Vérifier les collisions avec la hitbox pour les 4 coins
+	if (!is_in_wall(p, new_x, p->pos.y))
+		p->pos.x = new_x;
+	if (!is_in_wall(p, p->pos.x, new_y))
+		p->pos.y = new_y;
 }
 
 void	ft_go_left(t_player *p)
 {
-	double	perp_dir_x;
-	double	perp_dir_y;
+	double perp_dir_x = -p->p_dir_y;
+	double perp_dir_y = p->p_dir_x;
+	double new_x = p->pos.x + perp_dir_x * p->plr_speed;
+	double new_y = p->pos.y + perp_dir_y * p->plr_speed;
 
-	perp_dir_x = -p->p_dir_y;
-	perp_dir_y = p->p_dir_x;
-	if (!ft_inside_wall(p, p->pos.x + perp_dir_x * p->plr_speed, p->pos.y))
-		p->pos.x += perp_dir_x * p->plr_speed;
-	if (!ft_inside_wall(p, p->pos.x, p->pos.y + perp_dir_y * p->plr_speed))
-		p->pos.y += perp_dir_y * p->plr_speed;
+	// Vérifier les collisions avec la hitbox pour les 4 coins
+	if (!is_in_wall(p, new_x, p->pos.y))
+		p->pos.x = new_x;
+	if (!is_in_wall(p, p->pos.x, new_y))
+		p->pos.y = new_y;
 }
 
 void	ft_turn_right(t_player *p)
@@ -68,7 +87,7 @@ void	ft_turn_right(t_player *p)
 	p->plane_x = p->plane_x * cos(-p->speed_rot) - p->plane_y
 		* sin(-p->speed_rot);
 	p->plane_y = tmp_dir_x * sin(-p->speed_rot) + p->plane_y
-		* cos(-p->speed_rot);
+		* cos(-p->speed_rot);	
 }
 
 void	ft_turn_left(t_player *p)

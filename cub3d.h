@@ -38,7 +38,7 @@
 # define S_HEIGHT 1020
 # define SPEED 0.05
 # define ROT_SPEED 0.03
-
+# define HITBOX_SIZE 0.1
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
 # define K_RIGHT 0x64 // 'd' key
@@ -219,6 +219,7 @@ int						ft_get_text_index(t_ray *ray);
 void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
 // PARSING FUNCTIONS
+int						is_door_valid(t_textures *textures, t_data *data);
 int						parsing(int argc, char **argv, t_textures *textures,
 							t_data *data);
 int						arg_valid(int argc, char **argv);

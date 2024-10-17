@@ -13,6 +13,7 @@ SRC = main.c \
 	src/parsing/parse_content.c \
 	src/parsing/read_file.c	\
 	src/parsing/free_parsing.c \
+	src/parsing/parse_doors.c \
 	src/exec/ft_mlx_event.c \
 	src/exec/utils.c \
 	src/exec/init.c \
