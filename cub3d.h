@@ -37,7 +37,7 @@
 # define S_WIDTH 1920
 # define S_HEIGHT 1020
 # define SPEED 0.05
-# define ROT_SPEED 0.05
+# define ROT_SPEED 0.03
 
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key

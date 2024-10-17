@@ -1,8 +1,8 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I. -g3
+CFLAGS = -Wall -Wextra -Werror -I. -g3 -MMD
 LIBFLAGS = -L./libft/ -lft
 MLXFLAGS = -Lmlx -lmlx -lm -lX11 -lXext -lXrandr -lXi
-MLXLIB = mlx/libmlx_Linux.a 
+MLXLIB = mlx/libmlx_Linux.a
 
 SRC = main.c \
 	src/my_pixel_put.c \
@@ -20,13 +20,18 @@ SRC = main.c \
 	src/exec/init_textures.c \
 	src/exec/raycast.c \
 
-OBJ = $(SRC:.c=.o)
+OBJ_DIR = obj
+OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+DEP = $(OBJ:.o=.d)
 
 LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)libft.a
 
-
 NAME = cub3D
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all: $(NAME)
 
@@ -39,8 +44,10 @@ $(NAME): $(OBJ) $(MLXLIB) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -j4 -C $(LIBFT_PATH) all bonus
 
+-include $(DEP)
+
 clean:
-	rm -f $(OBJ)
+	rm -rf $(OBJ_DIR)
 	make -C mlx clean
 	make -C $(LIBFT_PATH) fclean
 
@@ -49,4 +56,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re 
+.PHONY: all clean fclean re
