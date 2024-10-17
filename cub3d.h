@@ -11,6 +11,7 @@
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/time.h>
 # include <unistd.h>
 
 # define COLOR_BLACK 0x000000
@@ -35,9 +36,10 @@
 # define TEXTURE_HEIGHT 64
 
 # define S_WIDTH 1920
-# define S_HEIGHT 1020
-# define SPEED 0.05
+# define S_HEIGHT 1080
+# define SPEED 0.10
 # define ROT_SPEED 0.03
+# define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
@@ -61,6 +63,16 @@ typedef struct s_point
 	double				x;
 	double				y;
 }						t_point;
+
+typedef struct s_minimap
+{
+	t_point				pos;
+	int					x_offset;
+	int					y_offset;
+	int					nb_tile;
+	int					tile_size;
+
+}						t_minimap;
 
 typedef struct s_player
 {
@@ -112,23 +124,6 @@ typedef struct s_ray
 	double				wall_x;
 }						t_ray;
 
-typedef struct s_minimap
-{
-	double				p_x;
-	double				p_y;
-	double				p_angl;
-	double				p_dir_x;
-	double				p_dir_y;
-	double				plane_x;
-	double				plane_y;
-	double				tile_size;
-	double				plr_offset;
-	double				plr_speed;
-	double				speed_rot;
-	char				**map;
-
-}						t_minimap;
-
 typedef struct textures
 {
 	double				plyr_pos_x;
@@ -140,6 +135,8 @@ typedef struct textures
 	char				*east;
 	char				*floor;
 	char				*ceiling;
+	unsigned int		floor_col;
+	unsigned int		ceiling_col;
 	int					floor_r;
 	int					floor_g;
 	int					floor_b;
@@ -171,16 +168,18 @@ typedef struct s_image
 typedef struct s_data
 {
 	char				**map;
+	long				fps;
+	int					fps_flag;
+	long				old_time;
+	long				actual_time;
 	t_image				img;
-	t_textures			textures;
+	t_textures			*textures;
 }						t_data;
 
 // EXEC FUNCTIONS
 
 // init
 
-void					ft_player_render(t_player *p);
-void					ft_minimap_render(t_player *p, char **map);
 void					ft_player_init(t_player *p, t_data *data);
 void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
@@ -189,7 +188,7 @@ void					my_pixel_put(t_image *img, int x, int y, int color);
 int						ft_handle_hook(int keycode, t_player *p);
 int						key_press(int keycode, t_player *p);
 int						key_release(int keycode, t_player *p);
-
+void	update_position(t_player *p);
 void					ft_go_down(t_player *p);
 void					ft_go_up(t_player *p);
 void					ft_go_left(t_player *p);
@@ -197,31 +196,40 @@ void					ft_go_right(t_player *p);
 void					ft_turn_left(t_player *p);
 void					ft_turn_right(t_player *p);
 
-// void					ft_draw_line(int x_start, int y_start, int x_end,
-// 							int y_end, t_image *img);
+void					ft_draw_line(int x_start, int y_start, int x_end,
+							int y_end, t_image *img);
 int						ft_count_columns(char **map);
 int						ft_count_lines(char **map);
 double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
-void					ft_clear_image(t_image *img, unsigned int color);
-void					ft_refresh(t_player *p);
+int					ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p);
 void					ft_cast_ray(t_player *p);
-// void					ft_get_color(t_player *p, int wall_height, int start,
-// 							int map_x, int map_y, int x);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_ray *ray);
+
+// MINIMAP
+int						ft_count_columns(char **map);
+int						ft_count_lines(char **map);
+void					ft_minimap(t_player *p);
+void					ft_draw_mini_background(t_image *img, int x_start,
+							int x_end, int y_start, int y_end);
+void					ft_player_render(t_player *p);
+void					ft_minimap_render(t_player *p, char **map);
+void					ft_init_minimap(t_player *p);
+void					ft_countouring_render_00(t_player *p);
 
 // TEXTURES
 void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
+void					ft_color_background(t_image *img);
+int						ft_calcul_darkness(int color, double factor);
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);
-int						parsing(int argc, char **argv, t_textures *textures,
-							t_data *data);
+int						parsing(int argc, char **argv, t_data *data);
 int						arg_valid(int argc, char **argv);
 int						read_file(t_textures *textures);
 int						parse_line(char *str, t_textures *textures);
@@ -243,12 +251,20 @@ int						is_image_xpm(char *path);
 int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
-void					ft_init_player_orientation(char c, t_player *p);
 void					free_parsing(t_textures *textures, t_data *data);
 void					ft_init_ray(t_player *p, int x);
+void					ft_draw_horizontal_line(int y_val, int start, int end,
+							t_image *img, long color);
+void					ft_draw_alpha_tile(t_image *img, int start_x,
+							int start_y, int size, int color);
 
 // debug functions
 void					print_map(char **map);
+
+// TIME_UTILS
+long					ft_get_sec_time(void);
+void					ft_print_fps(t_data *data);
+int						get_hexa_color(int r, int g, int b);
 
 // testing
 int						ft_escape(t_player *p);

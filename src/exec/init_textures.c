@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 02:35:09 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:58:40 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 void	ft_init_textures(t_player *p)
 {
 	p->texture = malloc(sizeof(int *) * 5);
-	p->texture[0] = ft_get_texture_pxl(p, p->data->textures.north);
-	p->texture[1] = ft_get_texture_pxl(p, p->data->textures.south);
-	p->texture[3] = ft_get_texture_pxl(p, p->data->textures.east);
-	p->texture[2] = ft_get_texture_pxl(p, p->data->textures.west);
+	p->texture[0] = ft_get_texture_pxl(p, p->data->textures->north);
+	p->texture[1] = ft_get_texture_pxl(p, p->data->textures->south);
+	p->texture[3] = ft_get_texture_pxl(p, p->data->textures->east);
+	p->texture[2] = ft_get_texture_pxl(p, p->data->textures->west);
 	p->texture[4] = NULL;
 }

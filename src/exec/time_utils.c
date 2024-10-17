@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   time_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 17:10:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/16 11:56:26 by melmarti         ###   ########.fr       */
+/*   Created: 2024/10/15 16:24:02 by melmarti          #+#    #+#             */
+/*   Updated: 2024/10/17 16:21:07 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-size_t	ft_strlen(const char *s)
+long	ft_get_sec_time(void)
 {
-	int	i;
+	struct timeval	tv;
 
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec);
+}
+
+void	ft_print_fps(t_data *data)
+{
+	if (data->actual_time - data->old_time >= 1)
 	{
-		
-		i++;
+		printf("%ld fps\n", data->fps / (data->actual_time - data->old_time));
+		data->old_time = data->actual_time;
+		data->fps = 0;
 	}
-	return (i);
 }

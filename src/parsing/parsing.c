@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 14:00:11 by albestae         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/10/17 16:55:56 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "cub3d.h"
 
@@ -86,25 +87,25 @@ int	missing_textures(t_textures *textures)
 	return (0);
 }
 
-int	parsing(int argc, char **argv, t_textures *textures, t_data *data)
+int	parsing(int argc, char **argv, t_data *data)
 {
 	if (arg_valid(argc, argv))
 		return (1);
-	init_parsing(textures, argv[1]);
-	if (textures->fd == -1)
+	init_parsing(data->textures, argv[1]);
+	if (data->textures->fd == -1)
 	{
 		printf("Error\nCould not open file\n");
 		return (1);
 	}
-	if (read_file(textures))
+	if (read_file(data->textures))
 		return (1);
-	if (missing_textures(textures))
+	if (missing_textures(data->textures))
 		return (1);
-	if (invalid_char(textures))
+	if (invalid_char(data->textures))
 		return (1);
-	if (parse_map(textures, data))
+	if (parse_map(data->textures, data))
 		return (1);
-	if (is_door_valid(textures, data))
+	if (is_door_valid(data->textures, data))
 		return (1);
 	return (0);
 }

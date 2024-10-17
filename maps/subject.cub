@@ -1,10 +1,10 @@
 NO textures/eagle.xpm
-SO textures/greystone.xpm
-WE textures/purplestone.xpm
-EA textures/red.xpm
+SO textures/eagle.xpm
+WE textures/eagle.xpm
+EA textures/eagle.xpm
 
-F 220,100,0
-C 225,30,0
+F 100,100,0
+C 000,30,0
 
         1111111111111111111111111
         1000000000110000000000001

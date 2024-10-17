@@ -17,9 +17,13 @@ SRC = main.c \
 	src/exec/ft_mlx_event.c \
 	src/exec/utils.c \
 	src/exec/init.c \
+	src/exec/init_01.c \
 	src/exec/minimap_render.c \
+	src/exec/minimap_render_01.c \
 	src/exec/init_textures.c \
 	src/exec/raycast.c \
+	src/exec/time_utils.c \
+	src/exec/graphic_utils.c \
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

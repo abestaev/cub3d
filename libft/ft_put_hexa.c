@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_put_hexa.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 17:10:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/16 11:56:26 by melmarti         ###   ########.fr       */
+/*   Created: 2024/10/15 13:24:55 by melmarti          #+#    #+#             */
+/*   Updated: 2024/10/15 13:28:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_put_hexa(unsigned int nbr)
 {
-	int	i;
+	char	*base;
+	int		count;
 
-	if (!s)
-		return (0);
-	i = 0;
-	while (s[i])
+	count = 0;
+	base = "0123456789abcdef";
+	if (nbr > 15)
 	{
-		
-		i++;
+		ft_put_hexa(nbr / 16);
+		ft_put_hexa(nbr % 16);
 	}
-	return (i);
+	else
+	{
+		write(1, &base[nbr], 1);
+		count++;
+	}
+	return (count);
 }
