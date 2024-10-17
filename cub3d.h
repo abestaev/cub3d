@@ -36,8 +36,8 @@
 
 # define S_WIDTH 1920
 # define S_HEIGHT 1020
-# define SPEED 0.04
-# define ROT_SPEED 0.04
+# define SPEED 0.05
+# define ROT_SPEED 0.05
 
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
@@ -89,6 +89,7 @@ typedef struct s_player
 	int					move_right;
 	int					rotate_left;
 	int					rotate_right;
+	int					mouse_x;
 }						t_player;
 
 typedef struct s_ray
@@ -237,7 +238,7 @@ int						is_map_open(t_data *data, t_textures *textures);
 int						is_surrounded(int i, int j, t_data *data);
 int						check_top_bottom(t_data *data, t_textures *textures);
 int						check_sides(t_data *data, t_textures *textures);
-int						is_image_png(char *path);
+int						is_image_xpm(char *path);
 int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);

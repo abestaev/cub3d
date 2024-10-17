@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/14 20:09:32 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/17 02:35:09 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	ft_init_xpm(t_player *p, t_image *img, char *text_name)
 
 	text_size = TEXTURE_SIZE;
 	ft_memset(img, 0, sizeof(t_image));
-	
 	img->img = mlx_xpm_file_to_image(p->img->mlx, text_name, &text_size,
 			&text_size);
 	if (!img->img)
@@ -50,7 +49,8 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 		x = 0;
 		while (x < TEXTURE_SIZE)
 		{
-			text_buff[y * TEXTURE_SIZE + x] = *(int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8)));
+			text_buff[y * TEXTURE_SIZE + x] = *(int *)(img->addr + (y
+						* img->line_length + x * (img->bits_per_pixel / 8)));
 			++x;
 		}
 		y++;
@@ -63,9 +63,9 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 void	ft_init_textures(t_player *p)
 {
 	p->texture = malloc(sizeof(int *) * 5);
-	p->texture[0] = ft_get_texture_pxl(p, "./textures/eagle.xpm");
-	p->texture[1] = ft_get_texture_pxl(p, "./textures/greystone.xpm");
-	p->texture[2] = ft_get_texture_pxl(p, "./textures/purplestone.xpm");
-	p->texture[3] = ft_get_texture_pxl(p, "./textures/red.xpm");
+	p->texture[0] = ft_get_texture_pxl(p, p->data->textures.north);
+	p->texture[1] = ft_get_texture_pxl(p, p->data->textures.south);
+	p->texture[3] = ft_get_texture_pxl(p, p->data->textures.east);
+	p->texture[2] = ft_get_texture_pxl(p, p->data->textures.west);
 	p->texture[4] = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/05 13:11:51 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 02:31:40 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ static int	ft_arrlen(char **array)
 		i++;
 	return (i);
 }
+//todo check rgv values
+// static int check_rgb_values(t_textures *textures)
+// {
+// 	while
+// }
 
 int	parse_rgb(t_textures *textures)
 {
@@ -36,18 +41,29 @@ int	parse_rgb(t_textures *textures)
 		printf("Error\nInvalid RGB format\n");
 		return (1);
 	}
+	textures->ceiling_r = ft_atoi(tmp1[0]);
+	textures->ceiling_g = ft_atoi(tmp1[1]);
+	textures->ceiling_b = ft_atoi(tmp1[2]);
+	textures->floor_r = ft_atoi(tmp2[0]);
+	textures->floor_g = ft_atoi(tmp2[1]);
+	textures->floor_b = ft_atoi(tmp2[2]);
+	// if (check_rgb_values(textures))
+	// {
+	// 	printf("Error\nInvalid RGB values\n");
+	// 	return (1);
+	// }	
 	free_tab(tmp1);
 	free_tab(tmp2);
 	return (0);
 }
 
-int	is_image_png(char *path)
+int	is_image_xpm(char *path)
 {
-	// int	i;
-(void)path;
-	// i = ft_strlen(path) - 5;
-	// if (ft_strncmp(path + i, ".png", 4) || ft_strncmp(path + i, ".xpm", 4))
-	// 	return (1);
+	int	i;
+
+	i = ft_strlen(path) - 4;
+	if (i > 0 && ft_strncmp(path+i, ".xpm", 5))
+		return (1);
 	return (0);
 }
 

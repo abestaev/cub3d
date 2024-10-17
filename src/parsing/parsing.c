@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/10 16:07:37 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/28 12:22:21 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 02:23:28 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,17 @@ int	arg_valid(int argc, char **argv)
 int	compare_texture_line(char *s1, char *s2, t_textures *textures)
 {
 	if (textures->north == NULL && ft_strncmp(s1, "NO", 2) == 0)
-		textures->north = s2;
+		textures->north = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->south == NULL && ft_strncmp(s1, "SO", 2) == 0)
-		textures->south = s2;
+		textures->south = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->west == NULL && ft_strncmp(s1, "WE", 2) == 0)
-		textures->west = s2;
+		textures->west = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->east == NULL && ft_strncmp(s1, "EA", 2) == 0)
-		textures->east = s2;
+		textures->east = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->floor == NULL && ft_strncmp(s1, "F", 1) == 0)
-		textures->floor = s2;
+		textures->floor = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->ceiling == NULL && ft_strncmp(s1, "C", 1) == 0)
-		textures->ceiling = s2;
+		textures->ceiling = ft_strjoin_free(ft_strdup("./"), s2);
 	else
 	{
 		printf("Error\nInvalid texture line\n");
@@ -75,8 +75,8 @@ int	missing_textures(t_textures *textures)
 		printf("Error\nMissing texture\n");
 		return (1);
 	}
-	if (is_image_png(textures->north) || is_image_png(textures->south)
-		|| is_image_png(textures->west) || is_image_png(textures->east))
+	if (is_image_xpm(textures->north) || is_image_xpm(textures->south)
+		|| is_image_xpm(textures->west) || is_image_xpm(textures->east))
 	{
 		printf("Error\nInvalid texture file extension\n");
 		return (1);

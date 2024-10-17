@@ -1,5 +1,5 @@
-NO IMG/Wolfenstein/bluestone.png
-SO IMG/Wolfenstein/greystone.png
+NO IMG/Wolfenstein/bluestone.png   
+SO IMG/Wolfenstein/greystone.png 
 WE IMG/Wolfenstein/wood.png
 EA IMG/Wolfenstein/redbrick.png
 
@@ -7,8 +7,8 @@ F 220,100,0
 C 225,30,0
 
 11111111111111
-100000W0000001
-10000000000001
+100001N1000001
+10000101000001
 10000000000001
 10000000000001
 10000000000001

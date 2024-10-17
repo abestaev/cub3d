@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/15 13:37:21 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/17 02:08:54 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	ft_mlx_init(t_player *p)
 		return;
 	p->img->addr = mlx_get_data_addr(p->img->img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
-	mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
-	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 }
 
 void	ft_init_player_orientation_01(char c, t_player *p)
