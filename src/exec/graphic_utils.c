@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time_utils.c                                       :+:      :+:    :+:   */
+/*   graphic_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/15 16:24:02 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 16:21:07 by melmarti         ###   ########.fr       */
+/*   Created: 2024/10/17 16:16:09 by melmarti          #+#    #+#             */
+/*   Updated: 2024/10/17 16:16:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-long	ft_get_sec_time(void)
+int	ft_calcul_darkness(int color, double factor)
 {
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec);
-}
-
-void	ft_print_fps(t_data *data)
-{
-	if (data->actual_time - data->old_time >= 1)
-	{
-		printf("%ld fps\n", data->fps / (data->actual_time - data->old_time));
-		data->old_time = data->actual_time;
-		data->fps = 0;
-	}
+	return((int)((color >> 16 & 0xFF) * factor) << 16) + ((int)((color >> 8 & 0xFF) * factor) << 8) + (int)((color & 0xFF) * factor);
 }

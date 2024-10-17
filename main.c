@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 10:53:37 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 15:08:10 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@ void	ft_refresh(t_player *p)
 	p->data->actual_time = ft_get_sec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
-	ft_player_render(p);
+	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
-	ft_draw_mini_background(p->img, 0,  20 * MINIMAP_TILE, (S_HEIGHT * 5 / 6) - 10 * MINIMAP_TILE, (S_HEIGHT * 5 / 6) + 10 * MINIMAP_TILE);
-	// ft_minimap_render(p, p->map);
-	ft_player_render(p);
-	ft_countouring_render(p);
 	ft_print_fps(p->data);
 	p->data->fps++;
 }
@@ -33,7 +29,6 @@ void	ft_free_all_struct(t_player *p)
 {
 	free(p->img);
 	free(p->ray);
-	free(p->mini);
 	free(p);
 }
 
@@ -60,6 +55,7 @@ int	main(int argc, char **argv)
 	ft_player_init(p, data);
 	ft_mlx_init(p);
 	ft_init_textures(p);
+	ft_init_minimap(p);
 	ft_refresh(p);
 	ft_print_fps(data);
 	mlx_loop(p->img->mlx);

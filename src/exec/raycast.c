@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 00:51:37 by renard           ###   ########.fr       */
+/*   Updated: 2024/10/17 16:22:10 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	ft_calcul_wall_text(t_player *p, int x)
 	int		text_y;
 	double	text_step;
 	double	pos;
+	int		color;
+	double	dist_factor;
 	t_ray	*ray;
 
 	ray = p->ray;
@@ -31,13 +33,13 @@ void	ft_calcul_wall_text(t_player *p, int x)
 	text_step = (double)TEXTURE_SIZE / p->ray->wall_height;
 	pos = (ray->start_pxl - S_HEIGHT / 2 + p->ray->wall_height / 2) * text_step;
 	y = ray->start_pxl;
+	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.1);
 	while (y < ray->end_pxl)
 	{
 		text_y = (int)pos & (TEXTURE_SIZE - 1);
 		pos += text_step;
-		// if (text_index == 0 || text_index == 1)
-		// 	color = (color >> 1) & 8355711;
-		my_pixel_put(p->img, x, y, p->texture[text_index][TEXTURE_SIZE * text_y + text_x]);
+		color = p->texture[text_index][TEXTURE_SIZE * text_y + text_x];
+		my_pixel_put(p->img, x, y, ft_calcul_darkness(color, dist_factor));
 		y++;
 	}
 }
@@ -47,15 +49,14 @@ void	ft_calcul_wall_text(t_player *p, int x)
 if we increment some points along the camera vectore the distance will always have good proportion according to the distance from the wall to the camera vector */
 void	ft_get_wall_size(t_player *p)
 {
-	double	wall_dist;
 	t_ray	*ray;
 
 	ray = p->ray;
 	if (ray->side == 0)
-		wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+		p->ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
-		wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	ray->wall_height = (int)(S_HEIGHT / wall_dist);
+		p->ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	ray->wall_height = (int)(S_HEIGHT / p->ray->wall_dist);
 	ray->start_pxl = -ray->wall_height / 2 + S_HEIGHT / 2;
 	if (ray->start_pxl < 0)
 		ray->start_pxl = 0;
@@ -63,9 +64,9 @@ void	ft_get_wall_size(t_player *p)
 	if (ray->end_pxl >= S_HEIGHT)
 		ray->end_pxl = S_HEIGHT - 1;
 	if (ray->side == 0)
-		ray->wall_x = p->pos.y + wall_dist * ray->dir_y;
+		ray->wall_x = p->pos.y + p->ray->wall_dist * ray->dir_y;
 	else
-		ray->wall_x = p->pos.x + wall_dist * ray->dir_x;
+		ray->wall_x = p->pos.x + p->ray->wall_dist * ray->dir_x;
 	ray->wall_x -= floor(ray->wall_x);
 }
 
@@ -122,7 +123,7 @@ void	ft_calcul_dda(t_player *p)
 
 void	ft_cast_ray(t_player *p)
 {
-	int		x;
+	int	x;
 
 	x = 0;
 	while (x < S_WIDTH)
