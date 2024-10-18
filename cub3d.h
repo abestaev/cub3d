@@ -36,7 +36,7 @@
 # define TEXTURE_HEIGHT 64
 
 # define S_WIDTH 1920
-# define S_HEIGHT 1080
+# define S_HEIGHT 1040
 # define SPEED 0.10
 # define ROT_SPEED 0.03
 # define MOUSE_SPEED 20

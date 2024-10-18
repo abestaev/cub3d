@@ -15,17 +15,19 @@
 
 int	is_in_wall(t_player *p, double x, double y)
 {
-	return (ft_inside_wall(p, x - HITBOX_SIZE, y - HITBOX_SIZE) ||
-			ft_inside_wall(p, x + HITBOX_SIZE, y - HITBOX_SIZE) ||
-			ft_inside_wall(p, x - HITBOX_SIZE, y + HITBOX_SIZE) ||
-			ft_inside_wall(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
+	return (ft_inside_wall(p, x - HITBOX_SIZE, y - HITBOX_SIZE)
+		|| ft_inside_wall(p, x + HITBOX_SIZE, y - HITBOX_SIZE)
+		|| ft_inside_wall(p, x - HITBOX_SIZE, y + HITBOX_SIZE)
+		|| ft_inside_wall(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
 }
 
 void	ft_go_down(t_player *p)
 {
-	double new_x = p->pos.x - p->p_dir_x * p->plr_speed;
-	double new_y = p->pos.y - p->p_dir_y * p->plr_speed;
+	double	new_x;
+	double	new_y;
 
+	new_x = p->pos.x - p->p_dir_x * p->plr_speed;
+	new_y = p->pos.y - p->p_dir_y * p->plr_speed;
 	if (!is_in_wall(p, new_x, p->pos.y))
 		p->pos.x = new_x;
 	if (!is_in_wall(p, p->pos.x, new_y))
@@ -34,9 +36,11 @@ void	ft_go_down(t_player *p)
 
 void	ft_go_up(t_player *p)
 {
-	double new_x = p->pos.x + p->p_dir_x * p->plr_speed;
-	double new_y = p->pos.y + p->p_dir_y * p->plr_speed;
+	double	new_x;
+	double	new_y;
 
+	new_x = p->pos.x + p->p_dir_x * p->plr_speed;
+	new_y = p->pos.y + p->p_dir_y * p->plr_speed;
 	if (!is_in_wall(p, new_x, p->pos.y))
 		p->pos.x = new_x;
 	if (!is_in_wall(p, p->pos.x, new_y))
@@ -45,11 +49,15 @@ void	ft_go_up(t_player *p)
 
 void	ft_go_right(t_player *p)
 {
-	double perp_dir_x = p->p_dir_y;
-	double perp_dir_y = -p->p_dir_x;
-	double new_x = p->pos.x + perp_dir_x * p->plr_speed;
-	double new_y = p->pos.y + perp_dir_y * p->plr_speed;
+	double	perp_dir_x;
+	double	perp_dir_y;
+	double	new_x;
+	double	new_y;
 
+	perp_dir_x = p->p_dir_y;
+	perp_dir_y = -p->p_dir_x;
+	new_x = p->pos.x + perp_dir_x * p->plr_speed;
+	new_y = p->pos.y + perp_dir_y * p->plr_speed;
 	if (!is_in_wall(p, new_x, p->pos.y))
 		p->pos.x = new_x;
 	if (!is_in_wall(p, p->pos.x, new_y))
@@ -58,11 +66,15 @@ void	ft_go_right(t_player *p)
 
 void	ft_go_left(t_player *p)
 {
-	double perp_dir_x = -p->p_dir_y;
-	double perp_dir_y = p->p_dir_x;
-	double new_x = p->pos.x + perp_dir_x * p->plr_speed;
-	double new_y = p->pos.y + perp_dir_y * p->plr_speed;
+	double	perp_dir_x;
+	double	perp_dir_y;
+	double	new_x;
+	double	new_y;
 
+	perp_dir_x = -p->p_dir_y;
+	perp_dir_y = p->p_dir_x;
+	new_x = p->pos.x + perp_dir_x * p->plr_speed;
+	new_y = p->pos.y + perp_dir_y * p->plr_speed;
 	if (!is_in_wall(p, new_x, p->pos.y))
 		p->pos.x = new_x;
 	if (!is_in_wall(p, p->pos.x, new_y))
@@ -82,7 +94,7 @@ void	ft_turn_right(t_player *p)
 	p->plane_x = p->plane_x * cos(-p->speed_rot) - p->plane_y
 		* sin(-p->speed_rot);
 	p->plane_y = tmp_dir_x * sin(-p->speed_rot) + p->plane_y
-		* cos(-p->speed_rot);	
+		* cos(-p->speed_rot);
 }
 
 void	ft_turn_left(t_player *p)
@@ -99,48 +111,64 @@ void	ft_turn_left(t_player *p)
 	p->plane_y = tmp_dir_x * sin(p->speed_rot) + p->plane_y * cos(p->speed_rot);
 }
 
-int key_press(int keycode, t_player *p)
+int	key_press(int keycode, t_player *p)
 {
 	if (keycode == K_ESC)
 		exit(0);
-    if (keycode == K_UP)
-        p->move_forward = 1;
-    if (keycode == K_DOWN)
-        p->move_backward = 1;
-    if (keycode == K_LEFT)
-        p->move_left = 1;
-    if (keycode == K_RIGHT)
-        p->move_right = 1;
-    if (keycode == K_LOOK_LEFT)
-        p->rotate_left = 1;
-    if (keycode == K_LOOK_RIGHT)
-        p->rotate_right = 1;
-    return (0);
+	if (keycode == K_UP)
+		p->move_forward = 1;
+	if (keycode == K_DOWN)
+		p->move_backward = 1;
+	if (keycode == K_LEFT)
+		p->move_left = 1;
+	if (keycode == K_RIGHT)
+		p->move_right = 1;
+	if (keycode == K_LOOK_LEFT)
+		p->rotate_left = 1;
+	if (keycode == K_LOOK_RIGHT)
+		p->rotate_right = 1;
+	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
+	{
+		if (p->doors->index == 8)
+			p->doors->index = 0;
+		while(p->doors->index < 8)
+		{
+
+			p->doors->index++;
+			// sleep(1);
+			printf("test\n");
+			ft_cast_ray_doors(p);
+			mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
+
+		}
+	}
+	return (0);
 }
 
-int key_release(int keycode, t_player *p)
+int	key_release(int keycode, t_player *p)
 {
-    if (keycode == K_UP)
-        p->move_forward = 0;
-    if (keycode == K_DOWN)
-        p->move_backward = 0;
-    if (keycode == K_LEFT)
-        p->move_left = 0;
-    if (keycode == K_RIGHT)
-        p->move_right = 0;
-    if (keycode == K_LOOK_LEFT)
-        p->rotate_left = 0;
-    if (keycode == K_LOOK_RIGHT)
-        p->rotate_right = 0;
-    return (0);
+	if (keycode == K_UP)
+		p->move_forward = 0;
+	if (keycode == K_DOWN)
+		p->move_backward = 0;
+	if (keycode == K_LEFT)
+		p->move_left = 0;
+	if (keycode == K_RIGHT)
+		p->move_right = 0;
+	if (keycode == K_LOOK_LEFT)
+		p->rotate_left = 0;
+	if (keycode == K_LOOK_RIGHT)
+		p->rotate_right = 0;
+	return (0);
 }
 
-// int ft_is_in_front_of_door(t_player *p)
-// {
-// 	if(p->map[(int)p->pos.x + 1][(int)p->pos.y + 1] == 'P' || p->map[(int)p->pos.x - 1][(int)p->pos.y - 1] == 'P')
-// 		return(1);
-// 	return(0);
-// }
+int	ft_is_in_front_of_door(t_player *p)
+{
+	if (p->map[(int)p->pos.x + 1][(int)p->pos.y + 1] == 'P'
+		|| p->map[(int)p->pos.x - 1][(int)p->pos.y - 1] == 'P')
+		return (1);
+	return (0);
+}
 
 int	ft_handle_hook(int keycode, t_player *p)
 {
@@ -158,12 +186,13 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_turn_left(p);
 	if (keycode == K_ESC)
 		exit(0);
-	// if(keycode == K_O && ft_is_in_front_of_door(p))
-	// {
-	// 	if(p->doors->index == 8)
-	// 		p->doors->index = 0;
-	// 	p->doors->index++;
-	// }
-	ft_refresh(p); // besoin de le laisser ???
+	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
+	{
+		if (p->doors->index == 8)
+			p->doors->index = 0;
+		printf("index %d\n", p->doors->index);
+		while(p->doors->index)
+			p->doors->index++;
+	}
 	return (0);
 }

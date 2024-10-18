@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/18 18:34:59 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:44:19 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_cast_ray_doors(t_player *p)
 		ft_get_wall_size(p);
 		if (p->doors->hit_flag)
 		{
-			ft_calcul_doors_text(p, x, 0);
+			ft_calcul_doors_text(p, x, p->doors->index);
 		}
 		x++;
 	}
