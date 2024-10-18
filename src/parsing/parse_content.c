@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 14:11:17 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:28:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int	parse_rgb(t_textures *textures)
 		printf("Error\nInvalid RGB values\n");
 		return (1);
 	}	
-	free_tab(tmp1);
-	free_tab(tmp2);
+	free_tab((void *)tmp1);
+	free_tab((void *)tmp2);
 	return (0);
 }
 

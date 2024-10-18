@@ -135,6 +135,13 @@ int key_release(int keycode, t_player *p)
     return (0);
 }
 
+// int ft_is_in_front_of_door(t_player *p)
+// {
+// 	if(p->map[(int)p->pos.x + 1][(int)p->pos.y + 1] == 'P' || p->map[(int)p->pos.x - 1][(int)p->pos.y - 1] == 'P')
+// 		return(1);
+// 	return(0);
+// }
+
 int	ft_handle_hook(int keycode, t_player *p)
 {
 	if (keycode == K_RIGHT)
@@ -151,6 +158,12 @@ int	ft_handle_hook(int keycode, t_player *p)
 		ft_turn_left(p);
 	if (keycode == K_ESC)
 		exit(0);
-	ft_refresh(p);
+	// if(keycode == K_O && ft_is_in_front_of_door(p))
+	// {
+	// 	if(p->doors->index == 8)
+	// 		p->doors->index = 0;
+	// 	p->doors->index++;
+	// }
+	ft_refresh(p); // besoin de le laisser ???
 	return (0);
 }

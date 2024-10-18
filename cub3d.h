@@ -46,6 +46,7 @@
 # define K_RIGHT 0x64 // 'd' key
 # define K_DOWN 0x73  // 's' key
 # define K_ESC 0xFF1B // ESC key
+# define K_O 0x6F     // 'o' key
 
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
@@ -74,6 +75,14 @@ typedef struct s_minimap
 
 }						t_minimap;
 
+typedef struct s_doors
+{
+	int					**text_doors;
+	int					doors;
+	int					hit_flag;
+	int					index;
+}						t_doors;
+
 typedef struct s_player
 {
 	int					**texture;
@@ -91,6 +100,7 @@ typedef struct s_player
 	double				speed_rot;
 	char				**map;
 	t_point				pos;
+	t_doors				*doors;
 	struct s_image		*img;
 	struct s_data		*data;
 	struct s_ray		*ray;
@@ -102,7 +112,7 @@ typedef struct s_player
 	int					rotate_left;
 	int					rotate_right;
 	int					mouse_x;
-	int					doors;
+
 }						t_player;
 
 typedef struct s_ray
@@ -149,7 +159,7 @@ typedef struct textures
 	size_t				longest_line;
 	int					nb_lines;
 	int					i;
-
+	int					**doors;
 	struct s_player		*p;
 	int					text_size;
 }						t_textures;
@@ -209,6 +219,7 @@ void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p);
 void					ft_cast_ray(t_player *p);
+void					ft_calcul_dda(t_player *p);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_player *p, t_ray *ray);
 
@@ -226,10 +237,12 @@ void					ft_countouring_render_00(t_player *p);
 // TEXTURES
 void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
+void					ft_calcul_doors_text(t_player *p, int x,
+							int doors_index);
 void					ft_color_background(t_image *img);
 int						ft_calcul_darkness(int color, double factor);
 void					ft_cast_ray_doors(t_player *p);
-int						ft_inside_wall_doors(t_player *p, int x, int y);
+int						ft_inside_doors(t_player *p, int x, int y);
 void					ft_find_walls_doors(t_player *p);
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);

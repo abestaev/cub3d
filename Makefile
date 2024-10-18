@@ -22,6 +22,7 @@ SRC = main.c \
 	src/exec/minimap_render_01.c \
 	src/exec/init_textures.c \
 	src/exec/raycast.c \
+	src/exec/raycast_doors.c \
 	src/exec/time_utils.c \
 	src/exec/graphic_utils.c \
 

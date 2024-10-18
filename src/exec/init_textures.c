@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 19:26:21 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/18 18:28:20 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,38 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name)
 	return (text_buff);
 }
 
-void	ft_init_textures(t_player *p)
+static void	ft_init_doors_text(t_player *p)
 {
-	p->texture = malloc(sizeof(int *) * 6);
+	t_doors *doors = malloc(sizeof(t_doors));
+	ft_memset(doors, 0, sizeof(t_doors));
+
+	p->doors = doors;
+	p->doors->text_doors = malloc(sizeof(int *) * 9);
+	p->doors->text_doors[0] = ft_get_texture_pxl(p, "./textures/openning_gate_00.xpm");
+	p->doors->text_doors[1] = ft_get_texture_pxl(p, "./textures/openning_gate_01.xpm");
+	p->doors->text_doors[2] = ft_get_texture_pxl(p, "./textures/openning_gate_02.xpm");
+	p->doors->text_doors[3] = ft_get_texture_pxl(p, "./textures/openning_gate_03.xpm");
+	p->doors->text_doors[4] = ft_get_texture_pxl(p, "./textures/openning_gate_04.xpm");
+	p->doors->text_doors[5] = ft_get_texture_pxl(p, "./textures/openning_gate_05.xpm");
+	p->doors->text_doors[6] = ft_get_texture_pxl(p, "./textures/openning_gate_06.xpm");
+	p->doors->text_doors[7] = ft_get_texture_pxl(p, "./textures/openning_gate_07.xpm");
+	p->doors->text_doors[8] = ft_get_texture_pxl(p, "./textures/openning_gate_08.xpm");
+	p->doors->text_doors[9] = NULL;
+}
+
+static void	ft_init_wall_textures(t_player *p)
+{
+	p->texture = malloc(sizeof(int *) * 5);
 	p->texture[0] = ft_get_texture_pxl(p, p->data->textures->north);
 	p->texture[1] = ft_get_texture_pxl(p, p->data->textures->south);
-	p->texture[3] = ft_get_texture_pxl(p, p->data->textures->east);
-	p->texture[2] = ft_get_texture_pxl(p, p->data->textures->west);
-	p->texture[4] = ft_get_texture_pxl(p, "./textures/gate.xpm");
-	p->texture[5] = NULL;
-
-	// int i = 0;
+	p->texture[2] = ft_get_texture_pxl(p, p->data->textures->east);
+	p->texture[3] = ft_get_texture_pxl(p, p->data->textures->west);
+	p->texture[4] = NULL;
 	
-	// while(p->texture[4][i])
-	// {
-	// 	printf("%d\n", p->texture[4][i]);
-	// 	i++;
-	// }
+}
+
+void ft_init_textures(t_player *p)
+{
+	ft_init_wall_textures(p);
+	ft_init_doors_text(p);
 }
