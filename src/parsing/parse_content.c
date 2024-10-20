@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/20 21:31:22 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_arrlen(char **array)
 	return (i);
 }
 
-static int check_rgb_values(t_textures *textures)
+static int	check_rgb_values(t_textures *textures)
 {
 	char	**tmp1;
 	char	**tmp2;
@@ -44,9 +44,12 @@ static int check_rgb_values(t_textures *textures)
 		|| textures->floor_g < 0 || textures->floor_g > 255
 		|| textures->floor_b < 0 || textures->floor_b > 255)
 	{
-		printf("insecte\n");
 		return (1);
 	}
+	textures->ceiling_col = get_hexa_color(textures->ceiling_r,
+			textures->ceiling_g, textures->ceiling_b);
+	textures->floor_col = get_hexa_color(textures->floor_r, textures->floor_g,
+			textures->floor_b);
 	return (0);
 }
 
@@ -66,7 +69,8 @@ int	parse_rgb(t_textures *textures)
 		|| ft_strlen(tmp1[1]) > 4 || ft_strlen(tmp2[1]) > 4
 		|| ft_strlen(tmp1[2]) > 4 || ft_strlen(tmp2[2]) > 4)
 	{
-		printf("%s %s %zu %zu %zu %zu\n", tmp1[0], tmp2[0], ft_strlen(tmp1[1]), ft_strlen(tmp2[1]), ft_strlen(tmp1[2]), ft_strlen(tmp2[2]));
+		printf("%s %s %zu %zu %zu %zu\n", tmp1[0], tmp2[0], ft_strlen(tmp1[1]),
+			ft_strlen(tmp2[1]), ft_strlen(tmp1[2]), ft_strlen(tmp2[2]));
 		printf("Error\nInvalid RGB format\n");
 		return (1);
 	}
@@ -74,7 +78,7 @@ int	parse_rgb(t_textures *textures)
 	{
 		printf("Error\nInvalid RGB values\n");
 		return (1);
-	}	
+	}
 	free_tab((void *)tmp1);
 	free_tab((void *)tmp2);
 	return (0);
@@ -85,7 +89,7 @@ int	is_image_xpm(char *path)
 	int	i;
 
 	i = ft_strlen(path) - 4;
-	if (i > 0 && ft_strncmp(path+i, ".xpm", 5))
+	if (i > 0 && ft_strncmp(path + i, ".xpm", 5))
 		return (1);
 	return (0);
 }

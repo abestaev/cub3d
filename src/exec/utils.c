@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/18 18:15:22 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/20 21:31:42 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,30 +128,8 @@ void	ft_draw_alpha_tile(t_image *img, int start_x, int start_y, int size,
 }
 int	get_hexa_color(int r, int g, int b)
 {
-	return ((r << 24) | (g << 16) | (b << 8));
+	return (r << 16 | g << 8 | b);
 }
-
-static void	ft_init_floor_and_ceiling_color(t_textures *textures)
-{
-	char	**rgb_split_ceiling;
-	char	**rgb_split_floor;
-
-	rgb_split_floor = ft_split(textures->floor, ",");
-	rgb_split_ceiling = ft_split(textures->ceiling, ",");
-	textures->floor_r = ft_atoi(rgb_split_floor[0]);
-	textures->floor_g = ft_atoi(rgb_split_floor[1]);
-	textures->floor_b = ft_atoi(rgb_split_floor[2]);
-	textures->ceiling_r = ft_atoi(rgb_split_ceiling[0]);
-	textures->ceiling_g = ft_atoi(rgb_split_ceiling[1]);
-	textures->ceiling_b = ft_atoi(rgb_split_ceiling[2]);
-	textures->ceiling_col = get_hexa_color(textures->ceiling_r,
-			textures->ceiling_g, textures->ceiling_b);
-	textures->floor_col = get_hexa_color(textures->floor_r, textures->floor_g,
-			textures->floor_b);
-	free(rgb_split_floor);
-	free(rgb_split_ceiling);
-}
-/* optimize calcul to work directly with the memory where the pixels are store */
 
 void	ft_color_background(t_image *img)
 {
@@ -164,7 +142,6 @@ void	ft_color_background(t_image *img)
 	textures = img->p->data->textures;
 	total_pixels = S_WIDTH * S_HEIGHT;
 	dst = img->addr;
-	ft_init_floor_and_ceiling_color(textures);
 	i = 0;
 	while (i < total_pixels)
 	{
