@@ -111,6 +111,19 @@ void	ft_turn_left(t_player *p)
 	p->plane_y = tmp_dir_x * sin(p->speed_rot) + p->plane_y * cos(p->speed_rot);
 }
 
+int	ft_is_in_adjacent_cells(t_player *p, char c)
+{
+	int x = (int)p->pos.x;
+	int y = (int)p->pos.y;
+
+	if (p->map[x + 1][y] == c ||
+		p->map[x - 1][y] == c ||
+		p->map[x][y + 1] == c ||
+		p->map[x][y - 1] == c)
+		return (1);
+	return (0);
+}
+
 int	key_press(int keycode, t_player *p)
 {
 	if (keycode == K_ESC)
@@ -127,20 +140,9 @@ int	key_press(int keycode, t_player *p)
 		p->rotate_left = 1;
 	if (keycode == K_LOOK_RIGHT)
 		p->rotate_right = 1;
-	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
+	if (keycode == K_O && ft_is_in_adjacent_cells(p, 'P'))
 	{
-		if (p->doors->index == 8)
-			p->doors->index = 0;
-		while(p->doors->index < 8)
-		{
-
-			p->doors->index++;
-			// sleep(1);
-			printf("test\n");
-			ft_cast_ray_doors(p);
-			mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
-
-		}
+		p->doors->doors = 1;
 	}
 	return (0);
 }
@@ -162,37 +164,30 @@ int	key_release(int keycode, t_player *p)
 	return (0);
 }
 
-int	ft_is_in_front_of_door(t_player *p)
-{
-	if (p->map[(int)p->pos.x + 1][(int)p->pos.y + 1] == 'P'
-		|| p->map[(int)p->pos.x - 1][(int)p->pos.y - 1] == 'P')
-		return (1);
-	return (0);
-}
 
-int	ft_handle_hook(int keycode, t_player *p)
-{
-	if (keycode == K_RIGHT)
-		ft_go_left(p);
-	if (keycode == K_LEFT)
-		ft_go_right(p);
-	if (keycode == K_DOWN)
-		ft_go_down(p);
-	if (keycode == K_UP)
-		ft_go_up(p);
-	if (keycode == K_LOOK_LEFT)
-		ft_turn_right(p);
-	if (keycode == K_LOOK_RIGHT)
-		ft_turn_left(p);
-	if (keycode == K_ESC)
-		exit(0);
-	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
-	{
-		if (p->doors->index == 8)
-			p->doors->index = 0;
-		printf("index %d\n", p->doors->index);
-		while(p->doors->index)
-			p->doors->index++;
-	}
-	return (0);
-}
+// int	ft_handle_hook(int keycode, t_player *p)
+// {
+// 	if (keycode == K_RIGHT)
+// 		ft_go_left(p);
+// 	if (keycode == K_LEFT)
+// 		ft_go_right(p);
+// 	if (keycode == K_DOWN)
+// 		ft_go_down(p);
+// 	if (keycode == K_UP)
+// 		ft_go_up(p);
+// 	if (keycode == K_LOOK_LEFT)
+// 		ft_turn_right(p);
+// 	if (keycode == K_LOOK_RIGHT)
+// 		ft_turn_left(p);
+// 	if (keycode == K_ESC)
+// 		exit(0);
+// 	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
+// 	{
+// 		if (p->doors->index == 8)
+// 			p->doors->index = 0;
+// 		printf("index %d\n", p->doors->index);
+// 		while(p->doors->index)
+// 			p->doors->index++;
+// 	}
+// 	return (0);
+// }

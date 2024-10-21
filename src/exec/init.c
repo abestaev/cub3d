@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 06:12:26 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:33:53 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,13 @@ void	ft_init_minimap(t_player *p)
 void	ft_player_init(t_player *p, t_data *data)
 {
 	t_ray	*ray;
+	t_ray *ray_doors;
 
 	ray = malloc(sizeof(t_ray));
+	ray_doors = malloc(sizeof(t_ray));
 	ft_memset(ray, 0, sizeof(t_ray));
+	ft_memset(ray_doors, 0, sizeof(t_ray));
+	p->ray_doors = ray_doors;
 	p->map = data->map;
 	ft_init_player_pos(p);
 	ft_init_minimap(p);

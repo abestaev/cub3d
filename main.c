@@ -3,28 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 08:08:12 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:32:32 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+void	ft_handle_doors(t_player *p)
+{
+	double	curr_time;
+
+	if (p->doors->doors)
+	{
+		if (p->doors->index < 6)
+		{
+			curr_time = ft_get_usec_time();
+			if (curr_time - p->doors->old_time > 90)
+			{
+				p->doors->index++;
+				p->doors->old_time = curr_time;
+			}
+		}
+	}
+}
+
 int	ft_refresh(t_player *p)
 {
 	update_position(p);
-	if (!p->data->old_time)
-		p->data->old_time = ft_get_sec_time();
-	p->data->actual_time = ft_get_sec_time();
+	// if (!p->data->old_time)
+	// 	p->data->old_time = ft_get_usec_time();
+	// p->data->actual_time = ft_get_usec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
-	ft_cast_ray_doors(p);
 	ft_minimap(p);
+	ft_handle_doors(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
-	ft_print_fps(p->data);
-	p->data->fps++;
+	// ft_print_fps(p->data);
+	// p->data->fps++;
 	return (0);
 }
 
@@ -97,7 +115,7 @@ int	main(int argc, char **argv)
 	ft_player_init(p, data);
 	ft_mlx_init(p);
 	ft_init_textures(p);
-	// mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
+	mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);
 	mlx_hook(p->img->win_ptr, 3, 1L << 1, key_release, p);
 	mlx_hook(p->img->win_ptr, 6, 1L << 6, mouse_move, p);

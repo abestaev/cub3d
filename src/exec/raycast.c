@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 03:49:07 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/21 17:38:22 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,13 @@ void	ft_calcul_wall_text(t_player *p, int x)
 /* We will take the distance from the camera plane to avoid the fish eyes effect */
 /* If we get the sizeonly throuht the coordinate of the player we'll have the distortion,
 if we increment some points along the camera vectore the distance will always have good proportion according to the distance from the wall to the camera vector */
-void	ft_get_wall_size(t_player *p)
+void	ft_get_wall_size(t_player *p, t_ray *ray)
 {
-	t_ray	*ray;
-
-	ray = p->ray;
 	if (ray->side == 0)
-		p->ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
 	else
-		p->ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	ray->wall_height = (int)(S_HEIGHT / p->ray->wall_dist);
+		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	ray->wall_height = (int)(S_HEIGHT / ray->wall_dist);
 	ray->start_pxl = -ray->wall_height / 2 + S_HEIGHT / 2;
 	if (ray->start_pxl < 0)
 		ray->start_pxl = 0;
@@ -64,9 +61,29 @@ void	ft_get_wall_size(t_player *p)
 	if (ray->end_pxl >= S_HEIGHT)
 		ray->end_pxl = S_HEIGHT - 1;
 	if (ray->side == 0)
-		ray->wall_x = p->pos.y + p->ray->wall_dist * ray->dir_y;
+		ray->wall_x = p->pos.y + ray->wall_dist * ray->dir_y;
 	else
-		ray->wall_x = p->pos.x + p->ray->wall_dist * ray->dir_x;
+		ray->wall_x = p->pos.x + ray->wall_dist * ray->dir_x;
+	ray->wall_x -= floor(ray->wall_x);
+}
+
+void	ft_get_doors_size(t_player *p, t_ray *ray)
+{
+	if (ray->side == 0)
+		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+	else
+		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+	ray->wall_height = (int)(S_HEIGHT / ray->wall_dist);
+	ray->start_pxl = -ray->wall_height / 2 + S_HEIGHT / 2;
+	if (ray->start_pxl < 0)
+		ray->start_pxl = 0;
+	ray->end_pxl = ray->wall_height / 2 + S_HEIGHT / 2;
+	if (ray->end_pxl >= S_HEIGHT)
+		ray->end_pxl = S_HEIGHT - 1;
+	if (ray->side == 0)
+		ray->wall_x = p->pos.y + ray->wall_dist * ray->dir_y;
+	else
+		ray->wall_x = p->pos.x + ray->wall_dist * ray->dir_x;
 	ray->wall_x -= floor(ray->wall_x);
 }
 
@@ -94,12 +111,8 @@ void	ft_find_walls(t_player *p)
 	}
 }
 
-
-void	ft_calcul_dda(t_player *p)
+void	ft_calcul_dda(t_player *p, t_ray *ray)
 {
-	t_ray	*ray;
-
-	ray = p->ray;
 	if (ray->dir_x < 0)
 	{
 		ray->step_x = -1;
@@ -122,6 +135,12 @@ void	ft_calcul_dda(t_player *p)
 	}
 }
 
+void ft_init_raycast(t_player *p, int x)
+{
+	ft_init_ray(p, p->ray, x);
+	ft_init_ray(p, p->ray_doors, x);
+}
+
 void	ft_cast_ray(t_player *p)
 {
 	int	x;
@@ -129,12 +148,15 @@ void	ft_cast_ray(t_player *p)
 	x = 0;
 	while (x < S_WIDTH)
 	{
-		ft_init_ray(p, x);
-		ft_calcul_dda(p);
+		ft_init_raycast(p, x);
+		ft_calcul_dda(p, p->ray);
+		ft_calcul_dda(p, p->ray_doors);
 		ft_find_walls(p);
-		ft_get_wall_size(p);
+		ft_find_walls_doors(p, p->ray_doors);
 		ft_calcul_wall_text(p, x);
+		ft_get_wall_size(p, p->ray);
+		ft_get_doors_size(p, p->ray_doors);
+		ft_calcul_doors_text(p, x, p->doors->index);
 		x++;
 	}
 }
-

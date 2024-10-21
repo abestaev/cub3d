@@ -35,9 +35,9 @@
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 
-# define S_WIDTH 1920
-# define S_HEIGHT 1040
-# define SPEED 0.10
+# define S_WIDTH 800
+# define S_HEIGHT 500
+# define SPEED 0.01
 # define ROT_SPEED 0.03
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
@@ -50,6 +50,13 @@
 
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
+
+typedef enum doors
+{
+	OPEN,
+	CLOSE,
+
+}						doors;
 
 typedef struct s_rgba
 {
@@ -79,6 +86,8 @@ typedef struct s_doors
 {
 	int					**text_doors;
 	int					doors;
+	char				**doors_tab;
+	double				old_time;
 	int					hit_flag;
 	int					index;
 }						t_doors;
@@ -104,6 +113,7 @@ typedef struct s_player
 	struct s_image		*img;
 	struct s_data		*data;
 	struct s_ray		*ray;
+	struct s_ray		*ray_doors;
 	struct s_minimap	*mini;
 	int					move_forward;
 	int					move_backward;
@@ -179,6 +189,7 @@ typedef struct s_image
 typedef struct s_data
 {
 	char				**map;
+	t_doors				*doors;
 	long				fps;
 	int					fps_flag;
 	long				old_time;
@@ -196,7 +207,6 @@ void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
 // movement
-int						ft_handle_hook(int keycode, t_player *p);
 int						key_press(int keycode, t_player *p);
 int						key_release(int keycode, t_player *p);
 void					update_position(t_player *p);
@@ -217,11 +227,12 @@ void					ft_draw_tile(t_image *img, int start_x, int start_y,
 int						ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
-void					ft_get_wall_size(t_player *p);
+void					ft_get_wall_size(t_player *p, t_ray *ray);
 void					ft_cast_ray(t_player *p);
-void					ft_calcul_dda(t_player *p);
+void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_player *p, t_ray *ray);
+// int						ft_handle_hook(int keycode, t_player *p);
 
 // MINIMAP
 int						ft_count_columns(char **map);
@@ -241,9 +252,8 @@ void					ft_calcul_doors_text(t_player *p, int x,
 							int doors_index);
 void					ft_color_background(t_image *img);
 int						ft_calcul_darkness(int color, double factor);
-void					ft_cast_ray_doors(t_player *p);
 int						ft_inside_doors(t_player *p, int x, int y);
-void					ft_find_walls_doors(t_player *p);
+void					ft_find_walls_doors(t_player *p, t_ray *ray);
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);
 int						parsing(int argc, char **argv, t_data *data);
@@ -269,10 +279,9 @@ int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					free_parsing(t_textures *textures, t_data *data);
-int	check_rgb_values(t_textures *textures);
+int						check_rgb_values(t_textures *textures);
 
-
-void					ft_init_ray(t_player *p, int x);
+void					ft_init_ray(t_player *p, t_ray *ray, int x);
 void					ft_draw_horizontal_line(int y_val, int start, int end,
 							t_image *img, long color);
 void					ft_draw_alpha_tile(t_image *img, int start_x,
@@ -282,7 +291,7 @@ void					ft_draw_alpha_tile(t_image *img, int start_x,
 void					print_map(char **map);
 
 // TIME_UTILS
-long					ft_get_sec_time(void);
+long					ft_get_usec_time(void);
 void					ft_print_fps(t_data *data);
 int						get_hexa_color(int r, int g, int b);
 
