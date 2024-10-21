@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/18 18:28:46 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/21 08:08:12 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_refresh(t_player *p)
 void	ft_free_all_struct(t_player *p)
 {
 	free(p->img);
-	free(p->ray);
 	free(p->texture);
 	free(p->data);
 	// free_tab((void *)p->data->textures->doors);
@@ -98,14 +97,13 @@ int	main(int argc, char **argv)
 	ft_player_init(p, data);
 	ft_mlx_init(p);
 	ft_init_textures(p);
-	mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
+	// mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);
 	mlx_hook(p->img->win_ptr, 3, 1L << 1, key_release, p);
 	mlx_hook(p->img->win_ptr, 6, 1L << 6, mouse_move, p);
 	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 	mlx_loop_hook(p->img->mlx, ft_refresh, p); // Appelle en boucle main_loop
 	mlx_loop(p->img->mlx);
-	ft_free_all_struct(p);
-	free_parsing(data->textures, data);
+	mlx_destroy_display(p->img->mlx);
 	return (0);
 }

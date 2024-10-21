@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/20 21:31:22 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/21 06:57:38 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_arrlen(char **array)
 	return (i);
 }
 
-static int	check_rgb_values(t_textures *textures)
+int	check_rgb_values(t_textures *textures)
 {
 	char	**tmp1;
 	char	**tmp2;
@@ -50,6 +50,8 @@ static int	check_rgb_values(t_textures *textures)
 			textures->ceiling_g, textures->ceiling_b);
 	textures->floor_col = get_hexa_color(textures->floor_r, textures->floor_g,
 			textures->floor_b);
+	free_tab(tmp1);
+	free_tab(tmp2);
 	return (0);
 }
 

@@ -269,6 +269,9 @@ int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					free_parsing(t_textures *textures, t_data *data);
+int	check_rgb_values(t_textures *textures);
+
+
 void					ft_init_ray(t_player *p, int x);
 void					ft_draw_horizontal_line(int y_val, int start, int end,
 							t_image *img, long color);

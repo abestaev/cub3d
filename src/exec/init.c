@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 17:31:08 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/21 06:12:26 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,4 +106,7 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->move_right = 0;
 	p->rotate_left = 0;
 	p->rotate_right = 0;
+	p->data->old_time = 0;
+	p->data->actual_time = 0;
+	p->data->fps = 0;
 }

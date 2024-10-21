@@ -114,7 +114,7 @@ void	ft_turn_left(t_player *p)
 int	key_press(int keycode, t_player *p)
 {
 	if (keycode == K_ESC)
-		exit(0);
+		ft_escape(p);
 	if (keycode == K_UP)
 		p->move_forward = 1;
 	if (keycode == K_DOWN)

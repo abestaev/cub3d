@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 06:32:57 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/21 07:52:36 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	parse_map(t_textures *textures, t_data *data)
 	}
 	data->map[i] = NULL;
 	textures->map_tab_tmp = ft_split(textures->map_str_tmp, "\n");
-	free(textures->map_str_tmp);
 	if (copy_and_check_walls(textures, data))
 		return (1);
 	return (0);

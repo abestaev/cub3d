@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/18 18:17:46 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/21 03:49:07 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_calcul_wall_text(t_player *p, int x)
 	text_step = (double)TEXTURE_SIZE / p->ray->wall_height;
 	pos = (ray->start_pxl - S_HEIGHT / 2 + p->ray->wall_height / 2) * text_step;
 	y = ray->start_pxl;
-	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.1);
+	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.05);
 	while (y < ray->end_pxl)
 	{
 		text_y = (int)pos & (TEXTURE_SIZE - 1);

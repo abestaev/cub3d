@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/18 16:28:56 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/21 07:07:27 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,17 @@ int	parse_line(char *str, t_textures *textures)
 		{
 			printf("Error\nInvalid line content number\n");
 			free(str);
-			free_tab((void *)tab);
+			free_tab(tab);
 			return (1);
 		}
 		if (compare_texture_line(tab[0], tab[1], textures) == 1)
 		{
 			free(str);
-			free_tab((void *)tab);
+			free_tab(tab);
 			return (1);
 		}
 	}
-	free(tab[0]);
-	free(tab);
+	free_tab(tab);
 	return (0);
 }
 
