@@ -35,9 +35,9 @@
 # define TEXTURE_WIDTH 64
 # define TEXTURE_HEIGHT 64
 
-# define S_WIDTH 800
-# define S_HEIGHT 500
-# define SPEED 0.01
+# define S_WIDTH 1000
+# define S_HEIGHT 1000
+# define SPEED 0.4
 # define ROT_SPEED 0.03
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
@@ -122,6 +122,8 @@ typedef struct s_player
 	int					rotate_left;
 	int					rotate_right;
 	int					mouse_x;
+	int nb_col;
+	int nb_line;
 
 }						t_player;
 
@@ -221,7 +223,7 @@ void					ft_draw_line(int x_start, int y_start, int x_end,
 							int y_end, t_image *img);
 int						ft_count_columns(char **map);
 int						ft_count_lines(char **map);
-double					ft_get_tile_size(char **map);
+// double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
 int						ft_refresh(t_player *p);
@@ -232,6 +234,10 @@ void					ft_cast_ray(t_player *p);
 void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_player *p, t_ray *ray);
+int						ft_is_in_adjacent_cells(t_player *p, int x, int y, char c);
+void					ft_get_doors_size(t_player *p, t_ray *ray);
+int	ft_is_door_around_player(t_player *p, int x, int y);
+
 // int						ft_handle_hook(int keycode, t_player *p);
 
 // MINIMAP

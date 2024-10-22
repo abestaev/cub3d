@@ -111,16 +111,11 @@ void	ft_turn_left(t_player *p)
 	p->plane_y = tmp_dir_x * sin(p->speed_rot) + p->plane_y * cos(p->speed_rot);
 }
 
-int	ft_is_in_adjacent_cells(t_player *p, char c)
+int	ft_is_in_adjacent_cells(t_player *p, int x, int y, char c)
 {
-	int x = (int)p->pos.x;
-	int y = (int)p->pos.y;
-
-	if (p->map[x + 1][y] == c ||
-		p->map[x - 1][y] == c ||
-		p->map[x][y + 1] == c ||
-		p->map[x][y - 1] == c)
-		return (1);
+		if (p->map[y][x + 1] == c || p->map[y][x - 1] == c || p->map[y
+			+ 1][x] == c || p->map[y - 1][x] == c)
+			return (1);
 	return (0);
 }
 
@@ -140,10 +135,9 @@ int	key_press(int keycode, t_player *p)
 		p->rotate_left = 1;
 	if (keycode == K_LOOK_RIGHT)
 		p->rotate_right = 1;
-	if (keycode == K_O && ft_is_in_adjacent_cells(p, 'P'))
-	{
+	if (keycode == K_O && (ft_is_in_adjacent_cells(p, (int)p->pos.x, (int)p->pos.y,  'P')
+			|| ft_is_in_adjacent_cells(p,(int)p->pos.x, (int)p->pos.y, 'O')))
 		p->doors->doors = 1;
-	}
 	return (0);
 }
 
@@ -163,7 +157,6 @@ int	key_release(int keycode, t_player *p)
 		p->rotate_right = 0;
 	return (0);
 }
-
 
 // int	ft_handle_hook(int keycode, t_player *p)
 // {

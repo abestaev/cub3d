@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 14:33:53 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:36:30 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,13 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->map = data->map;
 	ft_init_player_pos(p);
 	ft_init_minimap(p);
-	p->tile_size = ft_get_tile_size(p->map);
+	// p->tile_size = ft_get_tile_size(p->map);
 	p->ray = ray;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
 	p->data = data;
+	p->nb_line = ft_count_lines(p->map);
+	p->nb_col = ft_count_columns(p->map);
 	p->move_forward = 0;
 	p->move_backward = 0;
 	p->move_left = 0;

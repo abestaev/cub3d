@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/17 17:35:32 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:35:00 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	ft_minimap_render(t_player *p, char **map)
 
 	y = ft_get_mini_y_offset(p);
 	index_y = 0;
-	while (index_y < ft_count_lines(map))
+	while (index_y < p->nb_line)
 	{
 		index_x = 0;
 		x = ft_get_mini_x_offset(p);
-		while (index_x < ft_count_columns(map))
+		while (index_x < p->nb_col)
 		{
 			if (map[index_y][index_x] == '1')
 				ft_draw_tile(p->img, x, y, p->mini->tile_size, COLOR_CYAN);

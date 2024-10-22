@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 17:38:22 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:24:07 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,7 @@ void	ft_get_wall_size(t_player *p, t_ray *ray)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
-void	ft_get_doors_size(t_player *p, t_ray *ray)
-{
-	if (ray->side == 0)
-		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
-	else
-		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
-	ray->wall_height = (int)(S_HEIGHT / ray->wall_dist);
-	ray->start_pxl = -ray->wall_height / 2 + S_HEIGHT / 2;
-	if (ray->start_pxl < 0)
-		ray->start_pxl = 0;
-	ray->end_pxl = ray->wall_height / 2 + S_HEIGHT / 2;
-	if (ray->end_pxl >= S_HEIGHT)
-		ray->end_pxl = S_HEIGHT - 1;
-	if (ray->side == 0)
-		ray->wall_x = p->pos.y + ray->wall_dist * ray->dir_y;
-	else
-		ray->wall_x = p->pos.x + ray->wall_dist * ray->dir_x;
-	ray->wall_x -= floor(ray->wall_x);
-}
+
 
 void	ft_find_walls(t_player *p)
 {
@@ -152,9 +134,9 @@ void	ft_cast_ray(t_player *p)
 		ft_calcul_dda(p, p->ray);
 		ft_calcul_dda(p, p->ray_doors);
 		ft_find_walls(p);
-		ft_find_walls_doors(p, p->ray_doors);
 		ft_calcul_wall_text(p, x);
 		ft_get_wall_size(p, p->ray);
+		ft_find_walls_doors(p, p->ray_doors);
 		ft_get_doors_size(p, p->ray_doors);
 		ft_calcul_doors_text(p, x, p->doors->index);
 		x++;

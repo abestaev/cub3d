@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/21 08:07:50 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:23:43 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	ft_get_text_index(t_player *p, t_ray *ray)
 }
 int	ft_inside_doors(t_player *p, int x, int y)
 {
-	if ((x > 0 && x < S_WIDTH) && (y > 0 && y < S_HEIGHT)
-		&& x < ft_count_columns(p->map) && y < ft_count_lines(p->map))
+	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
 	{
-		if (p->map[y][x] == 'P')
-			return (1);
+		if (p->map[y][x] == 'P' || p->map[y][x] == 'O')
+			return(1);
+			
 	}
 	return (0);
 }
@@ -68,22 +68,22 @@ double	ft_divide(double i, double j)
 	return (i / j);
 }
 
-double	ft_get_tile_size(char **map)
-{
-	int	col;
+// double	ft_get_tile_size(char **map)
+// {
+// 	int	col;
 
-	if (ft_divide(ft_count_columns(map),
-			ft_count_lines(map)) >= ft_divide(S_WIDTH, S_HEIGHT))
-	{
-		col = ft_count_columns(map);
-		return (S_WIDTH / col);
-	}
-	else
-	{
-		col = ft_count_lines(map);
-		return (S_HEIGHT / col);
-	}
-}
+// 	if (ft_divide(p->nb_col,
+// 			p->nb_line) >= ft_divide(S_WIDTH, S_HEIGHT))
+// 	{
+// 		col = p->nb_col;
+// 		return (S_WIDTH / col);
+// 	}
+// 	else
+// 	{
+// 		col = ft_count_lines(map);
+// 		return (S_HEIGHT / col);
+// 	}
+// }
 
 void	ft_draw_tile(t_image *img, int start_x, int start_y, int size,
 		int color)
@@ -163,7 +163,6 @@ int	ft_escape(t_player *p)
 	free_tab((char **)p->doors->text_doors);
 	free(p->doors);
 	free(p->ray);
-
 	mlx_loop_end(p->img->mlx);
 	mlx_destroy_window(p->img->mlx, p->img->win_ptr);
 	mlx_destroy_image(p->img->mlx, p->img->img);
