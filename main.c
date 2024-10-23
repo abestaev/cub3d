@@ -6,24 +6,24 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/22 17:31:50 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:11:53 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void ft_change_map_status(t_player *p)
+void	ft_change_map_status(t_player *p)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
-	while(p->map[y])
+	while (p->map[y])
 	{
 		x = 0;
-		while(p->map[y][x])
+		while (p->map[y][x])
 		{
-			if(p->map[y][x] == 'P' && ft_is_door_around_player(p, x, y))
+			if (p->map[y][x] == 'P' && ft_is_door_around_player(p, x, y))
 			{
 				p->map[y][x] = 'O';
 			}
@@ -48,14 +48,13 @@ void	ft_handle_doors(t_player *p)
 				p->doors->old_time = curr_time;
 			}
 		}
-		if(p->doors->index == 6)
+		if (p->doors->index == 6)
 		{
 			ft_change_map_status(p);
 			p->doors->index = 0;
 			p->doors->doors = 0;
 		}
 	}
-	
 }
 
 int	ft_refresh(t_player *p)
@@ -66,7 +65,7 @@ int	ft_refresh(t_player *p)
 	// p->data->actual_time = ft_get_usec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
-	ft_handle_doors(p);
+	// ft_handle_doors(p);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	// int i = 0;
@@ -126,6 +125,69 @@ int	mouse_move(int w, int h, t_player *p)
 	return (0);
 }
 
+int	ft_count_sprite(char **map)
+{
+	int	y;
+	int	x;
+	int	size;
+
+	size = 0;
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'P' || map[y][x] == 'V')
+			{
+				size++;
+			}
+			x++;
+		}
+		y++;
+	}
+	return (size);
+}
+
+void	ft_init_maps_sprite(t_player *p)
+{
+	t_sprite	*sprite;
+	int			y;
+	int			x;
+	int			i;
+
+	sprite = calloc(sizeof(t_sprite), ft_count_sprite(p->map));
+	p->sprite = sprite;
+	p->nb_sprite = ft_count_sprite(p->map);
+	i = 0;
+	y = 0;
+	while (p->map[y])
+	{
+		x = 0;
+		while (p->map[y][x] && i < p->nb_sprite)
+		{
+			if (p->map[y][x] == 'P')
+			{
+				p->sprite[i].type = DOOR;
+				p->sprite[i].door_state = CLOSE;
+				p->sprite[i].pos.x = x;
+				p->sprite[i].pos.y = y;
+				i++;
+
+			}
+			else if (p->map[y][x] == 'V')
+			{
+				p->sprite[i].type = VILAIN;
+				p->sprite[i].pos.x = x;
+				p->sprite[i].pos.y = y;
+				i++;
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_player	*p;
@@ -148,6 +210,7 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_player_init(p, data);
 	ft_mlx_init(p);
+	ft_init_maps_sprite(p);
 	ft_init_textures(p);
 	mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);

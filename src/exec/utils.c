@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/22 16:23:43 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/23 16:57:05 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,6 @@ int	ft_escape(t_player *p)
 {
 	free_parsing(p->data->textures, p->data);
 	free_tab((char **)p->texture);
-	free_tab((char **)p->doors->text_doors);
-	free(p->doors);
 	free(p->ray);
 	mlx_loop_end(p->img->mlx);
 	mlx_destroy_window(p->img->mlx, p->img->win_ptr);

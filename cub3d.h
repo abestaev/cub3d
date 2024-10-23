@@ -37,8 +37,8 @@
 
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
-# define SPEED 0.4
-# define ROT_SPEED 0.03
+# define SPEED 0.06
+# define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
 # define K_LEFT 0x61  // 'a' key
@@ -51,82 +51,24 @@
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
-typedef enum doors
+typedef enum type
+{
+	DOOR,
+	VILAIN,
+}						type;
+
+typedef enum door_state
 {
 	OPEN,
 	CLOSE,
+	IS_OPENING,
+}						door_state;
 
-}						doors;
-
-typedef struct s_rgba
-{
-	unsigned char		r;
-	unsigned char		g;
-	unsigned char		b;
-	unsigned char		a;
-
-}						t_rgba;
 typedef struct s_point
 {
 	double				x;
 	double				y;
 }						t_point;
-
-typedef struct s_minimap
-{
-	t_point				pos;
-	int					x_offset;
-	int					y_offset;
-	int					nb_tile;
-	int					tile_size;
-
-}						t_minimap;
-
-typedef struct s_doors
-{
-	int					**text_doors;
-	int					doors;
-	char				**doors_tab;
-	double				old_time;
-	int					hit_flag;
-	int					index;
-}						t_doors;
-
-typedef struct s_player
-{
-	int					**texture;
-	int					**text_buff;
-	double				p_angl;
-	double				p_dir_x;
-	double				p_dir_y;
-	int					p_y;
-	int					p_x;
-	double				plane_x;
-	double				plane_y;
-	double				tile_size;
-	double				plr_offset;
-	double				plr_speed;
-	double				speed_rot;
-	char				**map;
-	t_point				pos;
-	t_doors				*doors;
-	struct s_image		*img;
-	struct s_data		*data;
-	struct s_ray		*ray;
-	struct s_ray		*ray_doors;
-	struct s_minimap	*mini;
-	int					move_forward;
-	int					move_backward;
-	int					move_left;
-	int					move_right;
-	int					rotate_left;
-	int					rotate_right;
-	int					mouse_x;
-	int nb_col;
-	int nb_line;
-
-}						t_player;
-
 typedef struct s_ray
 {
 	double				dir_x;
@@ -146,6 +88,86 @@ typedef struct s_ray
 	int					end_pxl;
 	double				wall_x;
 }						t_ray;
+
+typedef struct s_image
+{
+	void				*mlx;
+	void				*img;
+	void				*win_ptr;
+	char				*addr;
+	int					bits_per_pixel;
+	int					line_length;
+	int					endian;
+	struct s_player			*p;
+}						t_image;
+typedef struct s_sprite
+{
+	type				type;
+	door_state			door_state;
+	t_ray				ray;
+	t_point				pos;
+	t_image				*img;
+	int					door_animation_index;
+	int					**text;
+	int 				already_print;
+}						t_sprite;
+
+typedef struct s_minimap
+{
+	t_point				pos;
+	int					x_offset;
+	int					y_offset;
+	int					nb_tile;
+	int					tile_size;
+
+}						t_minimap;
+typedef struct s_player
+{
+	int					**texture;
+	int					**text_buff;
+	double				p_angl;
+	double				p_dir_x;
+	double				p_dir_y;
+	int					p_y;
+	int					p_x;
+	double				plane_x;
+	double				plane_y;
+	double				tile_size;
+	double				plr_offset;
+	double				plr_speed;
+	double				speed_rot;
+	char				**map;
+	t_point				pos;
+	struct s_doors				*doors;
+	struct s_image		*img;
+	struct s_data		*data;
+	struct s_ray		*ray;
+	struct s_ray		*ray_doors;
+	struct s_minimap	*mini;
+	int					move_forward;
+	int					move_backward;
+	int					move_left;
+	int					move_right;
+	int					rotate_left;
+	int					rotate_right;
+	int					mouse_x;
+	int					nb_col;
+	int					nb_line;
+	t_sprite			*sprite;
+	int					nb_sprite;
+
+}						t_player;
+
+typedef struct s_doors
+{
+	int					**text_doors;
+	int					doors;
+	char				**doors_tab;
+	double				old_time;
+	int					hit_flag;
+	int					index;
+}						t_doors;
+
 
 typedef struct textures
 {
@@ -175,18 +197,6 @@ typedef struct textures
 	struct s_player		*p;
 	int					text_size;
 }						t_textures;
-
-typedef struct s_image
-{
-	void				*mlx;
-	void				*img;
-	void				*win_ptr;
-	char				*addr;
-	int					bits_per_pixel;
-	int					line_length;
-	int					endian;
-	t_player			*p;
-}						t_image;
 
 typedef struct s_data
 {
@@ -234,9 +244,10 @@ void					ft_cast_ray(t_player *p);
 void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_player *p, t_ray *ray);
-int						ft_is_in_adjacent_cells(t_player *p, int x, int y, char c);
+int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
+							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
-int	ft_is_door_around_player(t_player *p, int x, int y);
+int						ft_is_door_around_player(t_player *p, int x, int y);
 
 // int						ft_handle_hook(int keycode, t_player *p);
 

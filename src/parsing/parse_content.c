@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_content.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/21 06:57:38 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/23 11:56:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	invalid_char(t_textures *t)
 			&& t->map_str_tmp[i] != '0' && t->map_str_tmp[i] != '\n'
 			&& t->map_str_tmp[i] != 'N' && t->map_str_tmp[i] != 'S'
 			&& t->map_str_tmp[i] != 'W' && t->map_str_tmp[i] != 'E'
-			&& t->map_str_tmp[i] != 'P') // bonus
+			&& t->map_str_tmp[i] != 'P' && t->map_str_tmp[i] != 'V') // bonus
 		{
 			printf("Error\nInvalid character '%c' in map\n", t->map_str_tmp[i]);
 			return (1);
