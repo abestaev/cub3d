@@ -15,10 +15,9 @@
 
 int	is_in_wall(t_player *p, double x, double y)
 {
-	return (ft_inside_wall(p, x - HITBOX_SIZE, y - HITBOX_SIZE)
-		|| ft_inside_wall(p, x + HITBOX_SIZE, y - HITBOX_SIZE)
-		|| ft_inside_wall(p, x - HITBOX_SIZE, y + HITBOX_SIZE)
-		|| ft_inside_wall(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
+	return (ft_colision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_colision(p, x
+			+ HITBOX_SIZE, y - HITBOX_SIZE) || ft_colision(p, x - HITBOX_SIZE, y
+			+ HITBOX_SIZE) || ft_colision(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
 }
 
 void	ft_go_down(t_player *p)
@@ -113,14 +112,48 @@ void	ft_turn_left(t_player *p)
 
 int	ft_is_in_adjacent_cells(t_player *p, int x, int y, char c)
 {
-		if (p->map[y][x + 1] == c || p->map[y][x - 1] == c || p->map[y
-			+ 1][x] == c || p->map[y - 1][x] == c)
-			return (1);
+	if (p->map[y][x + 1] == c || p->map[y][x - 1] == c || p->map[y + 1][x] == c
+		|| p->map[y - 1][x] == c)
+		return (1);
 	return (0);
+}
+int	ft_get_door_id(t_player *p, int y, int x)
+{
+	int	i;
+
+	i = 0;
+	while (i < p->nb_sprite)
+	{
+		if (p->sprite[i].pos.x == x && p->sprite[i].pos.y == y)
+			return (i);
+		i++;
+	}
+	return (0);
+}
+// the flag allow me to find a door or a sprite whenever I start from the hit rays or from the relative position of the player,
+// the 2 possibilities
+int	ft_which_doors(t_player *p, int x, int y, char c, int flag)
+{
+	int	i;
+
+	i = 0;
+	if (flag)
+		i = 1;
+	if (p->map[y][x + i] == c)
+		return (ft_get_door_id(p, y, x + i));
+	if (p->map[y][x - i] == c)
+		return (ft_get_door_id(p, y, x - i));
+	if (p->map[y + i][x] == c)
+		return (ft_get_door_id(p, y + i, x));
+	if (p->map[y - i][x] == c)
+		return (ft_get_door_id(p, y - i, x));
+	return (ft_get_door_id(p, y, x));
 }
 
 int	key_press(int keycode, t_player *p)
 {
+	int	i;
+
 	if (keycode == K_ESC)
 		ft_escape(p);
 	if (keycode == K_UP)
@@ -135,9 +168,12 @@ int	key_press(int keycode, t_player *p)
 		p->rotate_left = 1;
 	if (keycode == K_LOOK_RIGHT)
 		p->rotate_right = 1;
-	if (keycode == K_O && (ft_is_in_adjacent_cells(p, (int)p->pos.x, (int)p->pos.y,  'P')
-			|| ft_is_in_adjacent_cells(p,(int)p->pos.x, (int)p->pos.y, 'O')))
-		p->doors->doors = 1;
+	if (keycode == K_O && ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P'))
+	{
+		i = ft_which_doors(p, p->pos.x, p->pos.y, 'P', 1);
+		if (p->sprite[i].door_state == CLOSE)
+			p->sprite[i].door_state = IS_OPENING;
+	}
 	return (0);
 }
 
@@ -157,30 +193,3 @@ int	key_release(int keycode, t_player *p)
 		p->rotate_right = 0;
 	return (0);
 }
-
-// int	ft_handle_hook(int keycode, t_player *p)
-// {
-// 	if (keycode == K_RIGHT)
-// 		ft_go_left(p);
-// 	if (keycode == K_LEFT)
-// 		ft_go_right(p);
-// 	if (keycode == K_DOWN)
-// 		ft_go_down(p);
-// 	if (keycode == K_UP)
-// 		ft_go_up(p);
-// 	if (keycode == K_LOOK_LEFT)
-// 		ft_turn_right(p);
-// 	if (keycode == K_LOOK_RIGHT)
-// 		ft_turn_left(p);
-// 	if (keycode == K_ESC)
-// 		exit(0);
-// 	if (keycode == K_O /* && ft_is_in_front_of_door(p) */)
-// 	{
-// 		if (p->doors->index == 8)
-// 			p->doors->index = 0;
-// 		printf("index %d\n", p->doors->index);
-// 		while(p->doors->index)
-// 			p->doors->index++;
-// 	}
-// 	return (0);
-// }

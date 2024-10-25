@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/23 18:11:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:41:30 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,19 +125,19 @@ void	ft_raycast_walls(t_player *p)
 		ft_init_ray(p, p->ray, x);
 		ft_calcul_dda(p, p->ray);
 		ft_find_walls(p);
-		ft_calcul_wall_text(p, x);
 		ft_get_wall_size(p, p->ray);
+		ft_calcul_wall_text(p, x);
 		x++;
 	}
 }
 
-int	ft_hit(t_player *p, int x, int y, int type)
+int	ft_hit(t_player *p, int x, int y)
 {
 	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
 	{
-		if (p->map[y][x] == 'P' && type == DOOR)
+		if (p->map[y][x] == 'P')
 			return (1);
-		if (p->map[y][x] == 'V' && type == VILAIN)
+		if (p->map[y][x] == 'V')
 			return (1);
 	}
 	return (0);
@@ -153,7 +153,7 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 	else
 		end = p->nb_col;
 	i = -1;
-	while (++i < end)
+	while (++i < 800)
 	{
 		if (sprite->ray.side_dist_x < sprite->ray.side_dist_y)
 		{
@@ -167,8 +167,13 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 			sprite->ray.map_y += sprite->ray.step_y;
 			sprite->ray.side = 1;
 		}
-		if (ft_hit(p, sprite->ray.map_x, sprite->ray.map_y, sprite->type))
+		if (ft_hit(p, sprite->ray.map_x, sprite->ray.map_y)
+			&& (int)sprite->pos.x == (int)sprite->ray.map_x
+			&& (int)sprite->pos.y == (int)sprite->ray.map_y)
+		{
+			p->sprite->hit_flag = 1;
 			break ;
+		}
 	}
 }
 
@@ -201,7 +206,7 @@ void	ft_get_door_text(t_player *p, t_sprite *sprite, t_ray *ray, int x)
 	double	pos;
 	int		color;
 	double	dist_factor;
-	
+
 	(void)p;
 	text_x = (int)(ray->wall_x * TEXTURE_SIZE);
 	if ((ray->side == 0 && ray->dir_x < 0) || (ray->side == 1
@@ -217,18 +222,17 @@ void	ft_get_door_text(t_player *p, t_sprite *sprite, t_ray *ray, int x)
 		pos += text_step;
 		if (sprite->door_state == CLOSE)
 			color = sprite->text[0][TEXTURE_SIZE * text_y + text_x];
-		// else if (sprite->door_state == CLOSE)
-		// {
-		// 	color = p->doors->text_doors[0][TEXTURE_SIZE * text_y + text_x];
-		// }
-		// else if (sprite->door_state == IS_OPENING)
-		// {
-		// 	color = p->doors->text_doors[sprite->door_animation_index][TEXTURE_SIZE
-		// 		* text_y + text_x];
-		// }
+		else if (sprite->door_state == OPEN)
+		{
+			color = sprite->text[6][TEXTURE_SIZE * text_y + text_x];
+		}
+		else if (sprite->door_state == IS_OPENING)
+		{
+			color = sprite->text[sprite->door_animation_index][TEXTURE_SIZE
+				* text_y + text_x];
+		}
 		if (color > 0)
-			my_pixel_put(sprite->img, x, y, ft_calcul_darkness(color,
-					dist_factor));
+			my_pixel_put(p->img, x, y, ft_calcul_darkness(color, dist_factor));
 		y++;
 	}
 }
@@ -270,7 +274,8 @@ t_sprite	*ft_find_next_layer(t_sprite *sprite, int nb_sprite)
 
 void	ft_copy_sprite_in_main_img(t_image *main_img, t_image *img)
 {
-	int	offset;
+	int	offset_main;
+	int	offset_sprite;
 
 	int x, y;
 	y = 0;
@@ -279,8 +284,11 @@ void	ft_copy_sprite_in_main_img(t_image *main_img, t_image *img)
 		x = 0;
 		while (x < S_WIDTH)
 		{
-			offset = (y * main_img->line_length) + (x * sizeof(int));
-			*(int *)(main_img->addr + offset) = *(int *)(img->addr + offset);
+			offset_main = (y * main_img->line_length) + (x * 4);
+			offset_sprite = (y * img->line_length) + (x * 4);
+			if (*(int *)(img->addr + offset_sprite) != 0x00000000)
+				*(int *)(main_img->addr + offset_main) = *(int *)(img->addr
+						+ offset_sprite);
 			x++;
 		}
 		y++;
@@ -293,18 +301,15 @@ void	ft_superpose_sprite(t_player *p)
 	t_sprite	*next_sprite;
 
 	next_sprite = NULL;
-	(void)p;
 	i = 0;
 	while (i < p->nb_sprite)
 	{
-		next_sprite = ft_find_next_layer(p->sprite, p->nb_sprite);
-		if (!next_sprite || !next_sprite->img)
-		{
-			break ;
-		}
-		ft_copy_sprite_in_main_img(p->img, next_sprite->img);
-		mlx_destroy_image(p->img->mlx, next_sprite->img->img);
-		free(next_sprite->img);
+		// next_sprite = ft_find_next_layer(p->sprite, p->nb_sprite);
+		// if(!next_sprite)
+		// 	break ;
+		// ft_copy_sprite_in_main_img(p->img, p->sprite[i].img);
+		// mlx_destroy_image(p->img->mlx, p->sprite[i].img->img);
+		// free(next_sprite->img);
 		i++;
 	}
 }
@@ -315,26 +320,23 @@ void	ft_cast_ray(t_player *p)
 	int	i;
 
 	ft_raycast_walls(p);
+	ft_sort_sprites_by_dist(p);
 	i = -1;
 	while (++i < p->nb_sprite)
 	{
 		x = 0;
-		p->sprite[i].img = ft_calloc(sizeof(t_image), 1);
-		p->sprite[i].img->img = mlx_new_image(p->img->mlx, S_WIDTH, S_HEIGHT);
-		// if (!sprite->img->img)
-		p->sprite[i].img->addr = mlx_get_data_addr(p->sprite[i].img->img,
-				&p->sprite[i].img->bits_per_pixel, &p->sprite[i].img->line_length,
-				&p->sprite[i].img->endian);
 		while (x < S_WIDTH)
 		{
 			ft_init_ray(p, &p->sprite[i].ray, x);
 			ft_calcul_dda(p, &p->sprite[i].ray);
 			ft_find_hits(p, &p->sprite[i]);
+			// if (p->sprite[i].hit_flag)
+			// {
 			ft_get_sprite_size(p, &p->sprite[i].ray);
 			ft_get_sprite_text(p, &p->sprite[i], &p->sprite[i].ray, x);
+			// p->sprite[i].hit_flag = 0;
+			// }
 			x++;
 		}
 	}
-	mlx_put_image_to_window(p->img->mlx, p->sprite->img->win_ptr, p->sprite->img->img, 0, 0);
-	// ft_superpose_sprite(p);
 }

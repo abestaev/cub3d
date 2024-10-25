@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/23 18:11:53 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:08:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,26 +33,31 @@ void	ft_change_map_status(t_player *p)
 	}
 }
 
-void	ft_handle_doors(t_player *p)
+void	ft_handle_doors(t_player *p, t_sprite *sprite)
 {
-	double	curr_time;
+	double			curr_time;
+	static double	old_time = 0;
+	int				i;
 
-	if (p->doors->doors)
+	i = -1;
+	while (++i < p->nb_sprite)
 	{
-		if (p->doors->index < 6)
+		if (sprite[i].door_state == IS_OPENING)
 		{
-			curr_time = ft_get_usec_time();
-			if (curr_time - p->doors->old_time > 90)
+			if (sprite[i].door_animation_index < 6)
 			{
-				p->doors->index++;
-				p->doors->old_time = curr_time;
+				curr_time = ft_get_usec_time();
+				if (curr_time - old_time > 90)
+				{
+					sprite[i].door_animation_index++;
+					old_time = curr_time;
+				}
 			}
-		}
-		if (p->doors->index == 6)
-		{
-			ft_change_map_status(p);
-			p->doors->index = 0;
-			p->doors->doors = 0;
+			if (sprite[i].door_animation_index == 6)
+			{
+				sprite[i].door_state = OPEN;
+				sprite[i].door_animation_index = 0;
+			}
 		}
 	}
 }
@@ -65,7 +70,7 @@ int	ft_refresh(t_player *p)
 	// p->data->actual_time = ft_get_usec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
-	// ft_handle_doors(p);
+	ft_handle_doors(p, p->sprite);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	// int i = 0;
@@ -173,7 +178,6 @@ void	ft_init_maps_sprite(t_player *p)
 				p->sprite[i].pos.x = x;
 				p->sprite[i].pos.y = y;
 				i++;
-
 			}
 			else if (p->map[y][x] == 'V')
 			{

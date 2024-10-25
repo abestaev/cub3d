@@ -59,8 +59,8 @@ typedef enum type
 
 typedef enum door_state
 {
-	OPEN,
 	CLOSE,
+	OPEN,
 	IS_OPENING,
 }						door_state;
 
@@ -98,7 +98,7 @@ typedef struct s_image
 	int					bits_per_pixel;
 	int					line_length;
 	int					endian;
-	struct s_player			*p;
+	struct s_player		*p;
 }						t_image;
 typedef struct s_sprite
 {
@@ -109,7 +109,9 @@ typedef struct s_sprite
 	t_image				*img;
 	int					door_animation_index;
 	int					**text;
-	int 				already_print;
+	int					already_print;
+	int					hit_flag;
+	int 				dist;
 }						t_sprite;
 
 typedef struct s_minimap
@@ -138,7 +140,7 @@ typedef struct s_player
 	double				speed_rot;
 	char				**map;
 	t_point				pos;
-	struct s_doors				*doors;
+	struct s_doors		*doors;
 	struct s_image		*img;
 	struct s_data		*data;
 	struct s_ray		*ray;
@@ -167,7 +169,6 @@ typedef struct s_doors
 	int					hit_flag;
 	int					index;
 }						t_doors;
-
 
 typedef struct textures
 {
@@ -248,7 +249,10 @@ int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
 int						ft_is_door_around_player(t_player *p, int x, int y);
-
+int						ft_which_doors(t_player *p, int x, int y, char c,
+							int flag);
+int						ft_get_door_id(t_player *p, int y, int x);
+int						ft_colision(t_player *p, int x, int y);
 // int						ft_handle_hook(int keycode, t_player *p);
 
 // MINIMAP
@@ -316,5 +320,9 @@ int						get_hexa_color(int r, int g, int b);
 int						ft_escape(t_player *p);
 
 void					ft_free_all_struct(t_player *p);
+
+
+void 					ft_sort_sprites_by_dist(t_player *p);
+
 
 #endif
