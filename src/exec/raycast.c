@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 17:41:30 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/25 18:09:17 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_calcul_wall_text(t_player *p, int x)
 	t_ray	*ray;
 
 	ray = p->ray;
-	text_index = ft_get_text_index(p, p->ray);
+	text_index = ft_get_text_index(p->ray);
 	text_x = (int)(p->ray->wall_x * TEXTURE_SIZE);
 	if ((p->ray->side == 0 && p->ray->dir_x < 0) || (p->ray->side == 1
 			&& p->ray->dir_y > 0))
@@ -39,7 +39,7 @@ void	ft_calcul_wall_text(t_player *p, int x)
 		text_y = (int)pos & (TEXTURE_SIZE - 1);
 		pos += text_step;
 		color = p->texture[text_index][TEXTURE_SIZE * text_y + text_x];
-		my_pixel_put(p->img, x, y, ft_calcul_darkness(color, dist_factor));
+		my_pixel_put(p->img, x, y, ft_calc_dark(color, dist_factor));
 		y++;
 	}
 }
@@ -146,12 +146,7 @@ int	ft_hit(t_player *p, int x, int y)
 void	ft_find_hits(t_player *p, t_sprite *sprite)
 {
 	int	i;
-	int	end;
 
-	if (p->nb_col < p->nb_line)
-		end = p->nb_line;
-	else
-		end = p->nb_col;
 	i = -1;
 	while (++i < 800)
 	{
@@ -200,40 +195,32 @@ void	ft_get_sprite_size(t_player *p, t_ray *ray)
 void	ft_get_door_text(t_player *p, t_sprite *sprite, t_ray *ray, int x)
 {
 	int		y;
-	int		text_x;
-	int		text_y;
-	double	text_step;
-	double	pos;
-	int		color;
 	double	dist_factor;
 
-	(void)p;
-	text_x = (int)(ray->wall_x * TEXTURE_SIZE);
+	ray->text_x = (int)(ray->wall_x * TEXTURE_SIZE);
 	if ((ray->side == 0 && ray->dir_x < 0) || (ray->side == 1
 			&& ray->dir_y > 0))
-		text_x = TEXTURE_SIZE - text_x - 1;
-	text_step = (double)TEXTURE_SIZE / ray->wall_height;
-	pos = (ray->start_pxl - S_HEIGHT / 2 + ray->wall_height / 2) * text_step;
-	y = ray->start_pxl;
+		ray->text_x = TEXTURE_SIZE - ray->text_x - 1;
+	ray->text_step = (double)TEXTURE_SIZE / ray->wall_height;
+	ray->pos = (ray->start_pxl - S_HEIGHT / 2 + ray->wall_height / 2)
+		* ray->text_step;
+	y = ray->start_pxl - 1;
 	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.1);
-	while (y < ray->end_pxl)
+	while (++y < ray->end_pxl)
 	{
-		text_y = (int)pos & (TEXTURE_SIZE - 1);
-		pos += text_step;
+		ray->text_y = (int)ray->pos & (TEXTURE_SIZE - 1);
+		ray->pos += ray->text_step;
 		if (sprite->door_state == CLOSE)
-			color = sprite->text[0][TEXTURE_SIZE * text_y + text_x];
+			ray->color = sprite->text[0][TEXTURE_SIZE * ray->text_y
+				+ ray->text_x];
 		else if (sprite->door_state == OPEN)
-		{
-			color = sprite->text[6][TEXTURE_SIZE * text_y + text_x];
-		}
+			ray->color = sprite->text[6][TEXTURE_SIZE * ray->text_y
+				+ ray->text_x];
 		else if (sprite->door_state == IS_OPENING)
-		{
-			color = sprite->text[sprite->door_animation_index][TEXTURE_SIZE
-				* text_y + text_x];
-		}
-		if (color > 0)
-			my_pixel_put(p->img, x, y, ft_calcul_darkness(color, dist_factor));
-		y++;
+			ray->color = sprite->text[sprite->door_animation_index][TEXTURE_SIZE
+				* ray->text_y + ray->text_x];
+		if (ray->color > 0)
+			my_pixel_put(p->img, x, y, ft_calc_dark(ray->color, dist_factor));
 	}
 }
 

@@ -6,28 +6,27 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 17:42:15 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/25 17:54:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	ft_get_text_index(t_player *p, t_ray *ray)
+int	ft_get_text_index(t_ray *ray)
 {
-	(void)p;
 	if (ray->side == 0)
 	{
 		if (ray->dir_x < 0)
-			return (0);
+			return (WEST);
 		else
-			return (1);
+			return (EAST);
 	}
 	else
 	{
 		if (ray->dir_y > 0)
-			return (2);
+			return (NORTH);
 		else
-			return (3);
+			return (SOUTH);
 	}
 }
 int	ft_inside_doors(t_player *p, int x, int y)
@@ -41,7 +40,7 @@ int	ft_inside_doors(t_player *p, int x, int y)
 	return (0);
 }
 
-int ft_colision(t_player *p, int x, int y)
+int ft_collision(t_player *p, int x, int y)
 {
 	if(ft_inside_wall(p, x, y) || ft_inside_doors(p, x, y))
 		return(1);

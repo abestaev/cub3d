@@ -15,9 +15,9 @@
 
 int	is_in_wall(t_player *p, double x, double y)
 {
-	return (ft_colision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_colision(p, x
-			+ HITBOX_SIZE, y - HITBOX_SIZE) || ft_colision(p, x - HITBOX_SIZE, y
-			+ HITBOX_SIZE) || ft_colision(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
+	return (ft_collision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x
+			+ HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x - HITBOX_SIZE, y
+			+ HITBOX_SIZE) || ft_collision(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
 }
 
 void	ft_go_down(t_player *p)

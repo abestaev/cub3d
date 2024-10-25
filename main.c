@@ -6,32 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 17:08:09 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/25 18:10:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_change_map_status(t_player *p)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (p->map[y])
-	{
-		x = 0;
-		while (p->map[y][x])
-		{
-			if (p->map[y][x] == 'P' && ft_is_door_around_player(p, x, y))
-			{
-				p->map[y][x] = 'O';
-			}
-			x++;
-		}
-		y++;
-	}
-}
 
 void	ft_handle_doors(t_player *p, t_sprite *sprite)
 {
@@ -65,22 +44,11 @@ void	ft_handle_doors(t_player *p, t_sprite *sprite)
 int	ft_refresh(t_player *p)
 {
 	update_position(p);
-	// if (!p->data->old_time)
-	// 	p->data->old_time = ft_get_usec_time();
-	// p->data->actual_time = ft_get_usec_time();
 	ft_color_background(p->img);
 	ft_cast_ray(p);
 	ft_handle_doors(p, p->sprite);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
-	// int i = 0;
-	// while(p->map[i])
-	// {
-	// 	printf("%s\n", p->map[i]);
-	// 	i++;
-	// }
-	// ft_print_fps(p->data);
-	// p->data->fps++;
 	return (0);
 }
 

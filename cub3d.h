@@ -57,6 +57,14 @@ typedef enum type
 	VILAIN,
 }						type;
 
+typedef enum orientation
+{
+	WEST,
+	EAST,
+	NORTH,
+	SOUTH,
+}						orientation;
+
 typedef enum door_state
 {
 	CLOSE,
@@ -87,6 +95,11 @@ typedef struct s_ray
 	int					start_pxl;
 	int					end_pxl;
 	double				wall_x;
+	int		text_x;
+	int		text_y;
+	double	text_step;
+	double	pos;
+	int color;
 }						t_ray;
 
 typedef struct s_image
@@ -244,7 +257,7 @@ void					ft_get_wall_size(t_player *p, t_ray *ray);
 void					ft_cast_ray(t_player *p);
 void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
-int						ft_get_text_index(t_player *p, t_ray *ray);
+int						ft_get_text_index(t_ray *ray);
 int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
@@ -252,7 +265,7 @@ int						ft_is_door_around_player(t_player *p, int x, int y);
 int						ft_which_doors(t_player *p, int x, int y, char c,
 							int flag);
 int						ft_get_door_id(t_player *p, int y, int x);
-int						ft_colision(t_player *p, int x, int y);
+int						ft_collision(t_player *p, int x, int y);
 // int						ft_handle_hook(int keycode, t_player *p);
 
 // MINIMAP
@@ -272,7 +285,7 @@ void					ft_calcul_wall_text(t_player *p, int x);
 void					ft_calcul_doors_text(t_player *p, int x,
 							int doors_index);
 void					ft_color_background(t_image *img);
-int						ft_calcul_darkness(int color, double factor);
+int						ft_calc_dark(int color, double factor);
 int						ft_inside_doors(t_player *p, int x, int y);
 void					ft_find_walls_doors(t_player *p, t_ray *ray);
 // PARSING FUNCTIONS
