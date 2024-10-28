@@ -152,8 +152,6 @@ int	ft_which_doors(t_player *p, int x, int y, char c, int flag)
 
 int	key_press(int keycode, t_player *p)
 {
-	int	i;
-
 	if (keycode == K_ESC)
 		ft_escape(p);
 	if (keycode == K_UP)
@@ -168,11 +166,10 @@ int	key_press(int keycode, t_player *p)
 		p->rotate_left = 1;
 	if (keycode == K_LOOK_RIGHT)
 		p->rotate_right = 1;
-	if (keycode == K_O && ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P'))
+	if (keycode == K_O /* && ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P') */)
 	{
-		i = ft_which_doors(p, p->pos.x, p->pos.y, 'P', 1);
-		if (p->sprite[i].door_state == CLOSE)
-			p->sprite[i].door_state = IS_OPENING;
+		if (p->sprite[p->nb_sprite - 1].door_state == CLOSE)
+			p->sprite[p->nb_sprite - 1].door_state = IS_OPENING;
 	}
 	return (0);
 }

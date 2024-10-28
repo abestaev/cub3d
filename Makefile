@@ -25,6 +25,7 @@ SRC = main.c \
 	src/exec/raycast_doors.c \
 	src/exec/time_utils.c \
 	src/exec/graphic_utils.c \
+	src/exec/sprite_raycast.c \
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)

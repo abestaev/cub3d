@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/22 13:36:30 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/28 18:29:47 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	ft_init_player_pos(t_player *p)
 		{
 			if (isplayer(p->map[i][j]))
 			{
-				p->pos.x = j + 0.2;
-				p->pos.y = i + 0.2;
+				p->pos.x = j + 0.5;
+				p->pos.y = i + 0.5;
 				ft_init_player_orientation_00(p->map[i][j], p);
 				break ;
 			}
@@ -99,7 +99,6 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->map = data->map;
 	ft_init_player_pos(p);
 	ft_init_minimap(p);
-	// p->tile_size = ft_get_tile_size(p->map);
 	p->ray = ray;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;

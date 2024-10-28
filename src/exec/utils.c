@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 17:54:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/28 15:07:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_inside_doors(t_player *p, int x, int y)
 {
 	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
 	{
-		if (p->map[y][x] == 'P' && p->sprite[ft_which_doors(p, x, y, 'P', 1)].door_state == CLOSE)
+		if (p->map[y][x] == 'P' && p->sprite[p->nb_sprite - 1].door_state == CLOSE)
 			return(1);
 			
 	}
@@ -295,38 +295,39 @@ void	ft_draw_line(int x_start, int y_start, int x_end, int y_end,
 
 static void ft_calcul_sprite_dist(t_player *p, t_sprite *sprite)
 {
-        int i;
+	int i;
 
-        i = 0;
-        while (i < p->nb_sprite)
-        {
-                sprite[i].dist = pow(p->pos.x - sprite[i].pos.x, 2) +\
-                        pow(p->pos.y - sprite[i].pos.y, 2);
-                i++;
-        }
+	i = 0;
+	while (i < p->nb_sprite)
+	{
+		sprite[i].dist = pow(p->pos.x - sprite[i].pos.x, 2) +\
+				pow(p->pos.y - sprite[i].pos.y, 2);
+		i++;
+	}
+	
 }
 
 void ft_sort_sprites_by_dist(t_player *p)
 {
-        int i;
-        int j;
-        t_sprite tmp;
+	int 	i;
+	int 	j;
+	t_sprite tmp;
 
-        ft_calcul_sprite_dist(p, p->sprite);
-        i = 0;
-        while (i < p->nb_sprite)
-        {
-                j = 0;
-                while (j < p->nb_sprite - 1)
-                {
-                        if (p->sprite[j].dist < p->sprite[j + 1].dist)
-                        {
-                                tmp = p->sprite[j];
-                                p->sprite[j] = p->sprite[j + 1];
-                                p->sprite[j + 1] = tmp;
-                        }
-                        j++;
-                }
-                i++;
-        }
+	ft_calcul_sprite_dist(p, p->sprite);
+	i = 0;
+	while (i < p->nb_sprite)
+	{
+		j = 0;
+		while (j < p->nb_sprite - 1)
+		{
+			if (p->sprite[j].dist < p->sprite[j + 1].dist)
+			{
+				tmp = p->sprite[j];
+				p->sprite[j] = p->sprite[j + 1];
+				p->sprite[j + 1] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
 }

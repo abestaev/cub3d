@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 18:09:17 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:59:56 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,27 @@ void	ft_calcul_wall_text(t_player *p, int x)
 {
 	int		y;
 	int		text_index;
-	int		text_x;
-	int		text_y;
-	double	text_step;
-	double	pos;
-	int		color;
 	double	dist_factor;
 	t_ray	*ray;
 
 	ray = p->ray;
 	text_index = ft_get_text_index(p->ray);
-	text_x = (int)(p->ray->wall_x * TEXTURE_SIZE);
+	ray->text_x = (int)(p->ray->wall_x * WALL_TEXT_SIZE);
 	if ((p->ray->side == 0 && p->ray->dir_x < 0) || (p->ray->side == 1
 			&& p->ray->dir_y > 0))
-		text_x = TEXTURE_SIZE - text_x - 1;
-	text_step = (double)TEXTURE_SIZE / p->ray->wall_height;
-	pos = (ray->start_pxl - S_HEIGHT / 2 + p->ray->wall_height / 2) * text_step;
+		ray->text_x = WALL_TEXT_SIZE - ray->text_x - 1;
+	ray->text_step = (double)WALL_TEXT_SIZE / p->ray->wall_height;
+	ray->pos = (ray->start_pxl - S_HEIGHT / 2 + p->ray->wall_height / 2)
+		* ray->text_step;
 	y = ray->start_pxl;
 	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.05);
 	while (y < ray->end_pxl)
 	{
-		text_y = (int)pos & (TEXTURE_SIZE - 1);
-		pos += text_step;
-		color = p->texture[text_index][TEXTURE_SIZE * text_y + text_x];
-		my_pixel_put(p->img, x, y, ft_calc_dark(color, dist_factor));
+		ray->text_y = (int)ray->pos & (WALL_TEXT_SIZE - 1);
+		ray->pos += ray->text_step;
+		ray->color = p->texture[text_index][WALL_TEXT_SIZE * ray->text_y
+			+ ray->text_x];
+		my_pixel_put(p->img, x, y, ft_calc_dark(ray->color, dist_factor));
 		y++;
 	}
 }
@@ -127,6 +124,7 @@ void	ft_raycast_walls(t_player *p)
 		ft_find_walls(p);
 		ft_get_wall_size(p, p->ray);
 		ft_calcul_wall_text(p, x);
+		p->ray->dist_buffer[x] = p->ray->wall_dist;
 		x++;
 	}
 }
@@ -148,7 +146,7 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 	int	i;
 
 	i = -1;
-	while (++i < 800)
+	while (++i < 40)
 	{
 		if (sprite->ray.side_dist_x < sprite->ray.side_dist_y)
 		{
@@ -166,7 +164,6 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 			&& (int)sprite->pos.x == (int)sprite->ray.map_x
 			&& (int)sprite->pos.y == (int)sprite->ray.map_y)
 		{
-			p->sprite->hit_flag = 1;
 			break ;
 		}
 	}
@@ -175,9 +172,9 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 void	ft_get_sprite_size(t_player *p, t_ray *ray)
 {
 	if (ray->side == 0)
-		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x);
+		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x) + 0.5;
 	else
-		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y);
+		ray->wall_dist = (ray->side_dist_y - ray->delta_dist_y) + 0.5;
 	ray->wall_height = (int)(S_HEIGHT / ray->wall_dist);
 	ray->start_pxl = -ray->wall_height / 2 + S_HEIGHT / 2;
 	if (ray->start_pxl < 0)
@@ -192,113 +189,42 @@ void	ft_get_sprite_size(t_player *p, t_ray *ray)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
-void	ft_get_door_text(t_player *p, t_sprite *sprite, t_ray *ray, int x)
+void	ft_get_door_text(t_player *p, t_sprite *door, t_ray *ray, int x)
 {
 	int		y;
 	double	dist_factor;
 
-	ray->text_x = (int)(ray->wall_x * TEXTURE_SIZE);
+	ray->text_x = (int)(ray->wall_x * DOOR_TEXT_SIZE);
 	if ((ray->side == 0 && ray->dir_x < 0) || (ray->side == 1
 			&& ray->dir_y > 0))
-		ray->text_x = TEXTURE_SIZE - ray->text_x - 1;
-	ray->text_step = (double)TEXTURE_SIZE / ray->wall_height;
+		ray->text_x = DOOR_TEXT_SIZE - ray->text_x - 1;
+	ray->text_step = (double)DOOR_TEXT_SIZE / ray->wall_height;
 	ray->pos = (ray->start_pxl - S_HEIGHT / 2 + ray->wall_height / 2)
 		* ray->text_step;
 	y = ray->start_pxl - 1;
 	dist_factor = 1.0 / (1.0 + ray->wall_dist * ray->wall_dist * 0.1);
 	while (++y < ray->end_pxl)
 	{
-		ray->text_y = (int)ray->pos & (TEXTURE_SIZE - 1);
+		ray->text_y = (int)ray->pos & (DOOR_TEXT_SIZE - 1);
 		ray->pos += ray->text_step;
-		if (sprite->door_state == CLOSE)
-			ray->color = sprite->text[0][TEXTURE_SIZE * ray->text_y
+		if (door->door_state == CLOSE)
+			ray->color = door->text[0][DOOR_TEXT_SIZE * ray->text_y
 				+ ray->text_x];
-		else if (sprite->door_state == OPEN)
-			ray->color = sprite->text[6][TEXTURE_SIZE * ray->text_y
+		else if (door->door_state == OPEN)
+			ray->color = door->text[5][DOOR_TEXT_SIZE * ray->text_y
 				+ ray->text_x];
-		else if (sprite->door_state == IS_OPENING)
-			ray->color = sprite->text[sprite->door_animation_index][TEXTURE_SIZE
+		else if (door->door_state == IS_OPENING)
+			ray->color = door->text[door->door_animation_index][DOOR_TEXT_SIZE
 				* ray->text_y + ray->text_x];
-		if (ray->color > 0)
+		if (ray->color > 0 && ray->wall_dist < p->ray->dist_buffer[x])
 			my_pixel_put(p->img, x, y, ft_calc_dark(ray->color, dist_factor));
 	}
 }
 
-void	ft_get_sprite_text(t_player *p, t_sprite *sprite, t_ray *ray, int x)
+void	ft_get_sprite_text(t_player *p, t_sprite *door, t_ray *ray, int x)
 {
-	ft_get_door_text(p, sprite, ray, x);
+	ft_get_door_text(p, door, ray, x);
 	// ft_get_vilain_text();
-}
-t_sprite	*ft_find_next_layer(t_sprite *sprite, int nb_sprite)
-{
-	int			i;
-	t_sprite	*last_sprite;
-
-	last_sprite = NULL;
-	i = 0;
-	while (i < nb_sprite)
-	{
-		if (!sprite[i].already_print)
-		{
-			last_sprite = &sprite[i];
-			break ;
-		}
-		i++;
-	}
-	while (i < nb_sprite - 1)
-	{
-		if (last_sprite->ray.wall_dist < sprite[i + 1].ray.wall_dist)
-		{
-			if (!sprite[i].already_print)
-				last_sprite = &sprite[i + 1];
-		}
-		i++;
-	}
-	if (last_sprite)
-		last_sprite->already_print = 1;
-	return (last_sprite);
-}
-
-void	ft_copy_sprite_in_main_img(t_image *main_img, t_image *img)
-{
-	int	offset_main;
-	int	offset_sprite;
-
-	int x, y;
-	y = 0;
-	while (y < S_HEIGHT)
-	{
-		x = 0;
-		while (x < S_WIDTH)
-		{
-			offset_main = (y * main_img->line_length) + (x * 4);
-			offset_sprite = (y * img->line_length) + (x * 4);
-			if (*(int *)(img->addr + offset_sprite) != 0x00000000)
-				*(int *)(main_img->addr + offset_main) = *(int *)(img->addr
-						+ offset_sprite);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	ft_superpose_sprite(t_player *p)
-{
-	int			i;
-	t_sprite	*next_sprite;
-
-	next_sprite = NULL;
-	i = 0;
-	while (i < p->nb_sprite)
-	{
-		// next_sprite = ft_find_next_layer(p->sprite, p->nb_sprite);
-		// if(!next_sprite)
-		// 	break ;
-		// ft_copy_sprite_in_main_img(p->img, p->sprite[i].img);
-		// mlx_destroy_image(p->img->mlx, p->sprite[i].img->img);
-		// free(next_sprite->img);
-		i++;
-	}
 }
 
 void	ft_cast_ray(t_player *p)
@@ -307,23 +233,26 @@ void	ft_cast_ray(t_player *p)
 	int	i;
 
 	ft_raycast_walls(p);
-	ft_sort_sprites_by_dist(p);
 	i = -1;
 	while (++i < p->nb_sprite)
 	{
+		ft_calcul_sprite(p, &p->sprite[i].sprite_ray, &p->sprite[i]);
+		ft_calc_sprite_hight(&p->sprite[i].sprite_ray);
+		ft_draw_sprites(p, &p->sprite[i].sprite_ray);
+	}
+	i = -1;
+	while (++i < p->nb_door)
+	{
 		x = 0;
-		while (x < S_WIDTH)
+		while (p->nb_door > 0 && x < S_WIDTH)
 		{
-			ft_init_ray(p, &p->sprite[i].ray, x);
-			ft_calcul_dda(p, &p->sprite[i].ray);
-			ft_find_hits(p, &p->sprite[i]);
-			// if (p->sprite[i].hit_flag)
-			// {
-			ft_get_sprite_size(p, &p->sprite[i].ray);
-			ft_get_sprite_text(p, &p->sprite[i], &p->sprite[i].ray, x);
-			// p->sprite[i].hit_flag = 0;
-			// }
+			ft_init_ray(p, &p->door[i].ray, x);
+			ft_calcul_dda(p, &p->door[i].ray);
+			ft_find_hits(p, &p->door[i]);
+			ft_get_sprite_size(p, &p->door[i].ray);
+			ft_get_sprite_text(p, &p->door[i], &p->door[i].ray, x);
 			x++;
 		}
 	}
 }
+

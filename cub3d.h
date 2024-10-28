@@ -31,9 +31,9 @@
 # define COLOR_PINK 0xFFC0CB
 # define COLOR_LIME 0x00FF00
 
-# define TEXTURE_SIZE 64
-# define TEXTURE_WIDTH 64
-# define TEXTURE_HEIGHT 64
+# define WALL_TEXT_SIZE 64
+# define DOOR_TEXT_SIZE 256
+# define SPRITE_TEXT_SIZE 32
 
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
@@ -95,12 +95,26 @@ typedef struct s_ray
 	int					start_pxl;
 	int					end_pxl;
 	double				wall_x;
-	int		text_x;
-	int		text_y;
-	double	text_step;
-	double	pos;
-	int color;
+	double				dist_buffer[S_WIDTH];
+	int					text_x;
+	int					text_y;
+	double				text_step;
+	double				pos;
+	int					color;
 }						t_ray;
+
+typedef struct s_spriteray
+{
+	t_point				ray;
+	t_point				trans;
+	t_point				draw_start;
+	t_point				draw_end;
+	t_point				tex;
+	double				inv_det;
+	int					screen_x;
+	int					sprite_height;
+	int					sprite_width;
+}						t_spriteray;
 
 typedef struct s_image
 {
@@ -118,13 +132,15 @@ typedef struct s_sprite
 	type				type;
 	door_state			door_state;
 	t_ray				ray;
+	t_spriteray			sprite_ray;
 	t_point				pos;
 	t_image				*img;
 	int					door_animation_index;
+	int					sprite_animation_index;
 	int					**text;
 	int					already_print;
 	int					hit_flag;
-	int 				dist;
+	int					dist;
 }						t_sprite;
 
 typedef struct s_minimap
@@ -169,7 +185,10 @@ typedef struct s_player
 	int					nb_col;
 	int					nb_line;
 	t_sprite			*sprite;
+	t_sprite			*door;
+	int					nb_door;
 	int					nb_sprite;
+	int					**sprite_text;
 
 }						t_player;
 
@@ -261,12 +280,10 @@ int						ft_get_text_index(t_ray *ray);
 int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
-int						ft_is_door_around_player(t_player *p, int x, int y);
 int						ft_which_doors(t_player *p, int x, int y, char c,
 							int flag);
 int						ft_get_door_id(t_player *p, int y, int x);
 int						ft_collision(t_player *p, int x, int y);
-// int						ft_handle_hook(int keycode, t_player *p);
 
 // MINIMAP
 int						ft_count_columns(char **map);
@@ -282,12 +299,15 @@ void					ft_countouring_render_00(t_player *p);
 // TEXTURES
 void					ft_init_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
-void					ft_calcul_doors_text(t_player *p, int x,
-							int doors_index);
 void					ft_color_background(t_image *img);
 int						ft_calc_dark(int color, double factor);
 int						ft_inside_doors(t_player *p, int x, int y);
-void					ft_find_walls_doors(t_player *p, t_ray *ray);
+
+// SPRITE
+void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray);
+void					ft_calc_sprite_hight(t_spriteray *sprite_ray);
+void					ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite);
+
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);
 int						parsing(int argc, char **argv, t_data *data);
@@ -334,8 +354,6 @@ int						ft_escape(t_player *p);
 
 void					ft_free_all_struct(t_player *p);
 
-
-void 					ft_sort_sprites_by_dist(t_player *p);
-
+void					ft_sort_sprites_by_dist(t_player *p);
 
 #endif

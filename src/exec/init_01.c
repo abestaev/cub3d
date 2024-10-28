@@ -6,12 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/25 16:15:56 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/28 16:50:25 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 void	ft_init_ray(t_player *p, t_ray *ray, int x)
 {
@@ -36,7 +35,6 @@ void	ft_mlx_init(t_player *p)
 		return;
 	p->img->addr = mlx_get_data_addr(p->img->img, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
-	// mlx_hook(p->img->win_ptr, KeyPress, KeyPressMask, ft_handle_hook, p);
 	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 	p->img->p = p;
 }
