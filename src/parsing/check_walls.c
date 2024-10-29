@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 06:21:57 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 06:30:44 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:03:01 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int	check_top_bottom(t_data *data, t_textures *textures)
 	{
 		if (data->map[0][i] == '0' || isplayer(data->map[0][i])
 			|| data->map[0][i] == 'P') // bonus
-		{
-			printf("Error\nMap is not closed (top)\n");
-			return (1);
-		}
+			return (printf("Error\nMap is not closed (top)\n"), 1);
 		i++;
 	}
 	i = 0;
@@ -33,10 +30,7 @@ int	check_top_bottom(t_data *data, t_textures *textures)
 		if (data->map[textures->nb_lines - 1][i] == '0'
 			|| isplayer(data->map[textures->nb_lines - 1][i])
 			|| data->map[textures->nb_lines - 1][i] == 'P') // bonus
-		{
-			printf("Error\nMap is not closed (bottom)\n");
-			return (1);
-		}
+			return (printf("Error\nMap is not closed (bottom)\n"), 1);
 		i++;
 	}
 	return (0);

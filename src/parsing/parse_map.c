@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 06:32:57 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:04:35 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int	is_map_open(t_data *data, t_textures *textures)
 		j = 1;
 		while (j < (textures->longest_line - 1))
 		{
-			if (data->map[i][j] == '0' || isplayer(data->map[i][j]) || data->map[i][j] == 'P') //bonus
+			if (data->map[i][j] == '0' || isplayer(data->map[i][j])
+				|| data->map[i][j] == 'P') // bonus
 			{
 				if (is_surrounded(i, j, data))
 				{
