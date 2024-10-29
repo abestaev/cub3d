@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/17 16:55:56 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:55:10 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	parsing(int argc, char **argv, t_data *data)
 	if (read_file(data->textures))
 		return (1);
 	if (missing_textures(data->textures))
+		return (1);
+	if (check_file_valid(data->textures))
 		return (1);
 	if (invalid_char(data->textures))
 		return (1);

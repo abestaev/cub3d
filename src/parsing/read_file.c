@@ -6,11 +6,34 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/17 02:26:36 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:56:44 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	check_open(char *str)
+{
+	int	fd;
+
+	fd = open(str, O_RDONLY);
+	if (fd == -1)
+		return (1);
+	else
+		close(fd);
+	return (0);
+}
+
+int	check_file_valid(t_textures *t)
+{
+	if (check_open(t->north) || check_open(t->east) || check_open(t->south)
+		|| check_open(t->west))
+	{
+		printf("Error\nCouldn't open texture file\n");
+		return (1);
+	}
+	return (0);
+}
 
 int	parse_line(char *str, t_textures *textures)
 {
@@ -34,6 +57,7 @@ int	parse_line(char *str, t_textures *textures)
 	}
 	free(tab[0]);
 	free(tab);
+	
 	return (0);
 }
 
@@ -62,10 +86,10 @@ int	read_file(t_textures *textures)
 		else
 		{
 			if (textures->i++ < 6)
-			{
-				if (parse_line(line, textures))
-					return (1);
-			}
+				{
+					if (parse_line(line, textures))
+						return (1);
+				}
 			else
 				get_map_line(line, textures);
 			free(line);

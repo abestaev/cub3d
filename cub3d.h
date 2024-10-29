@@ -257,7 +257,7 @@ void					ft_draw_horizontal_line(int y_val, int start, int end,
 							t_image *img, long color);
 void					ft_draw_alpha_tile(t_image *img, int start_x,
 							int start_y, int size, int color);
-
+int	check_file_valid(t_textures *t);
 // debug functions
 void					print_map(char **map);
 
