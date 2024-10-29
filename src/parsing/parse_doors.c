@@ -6,11 +6,18 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 02:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 12:05:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 16:10:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static int	is_valid(char c)
+{
+	if (c == '0' || c == 'V' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
+		return (1);
+	return (0);
+}
 
 int	is_door_valid(t_textures *textures, t_data *data)
 {
@@ -23,17 +30,17 @@ int	is_door_valid(t_textures *textures, t_data *data)
 		j = 1;
 		while (j < (textures->longest_line - 1))
 		{
-			if (data->map[i][j] == 'P' && (!(data->map[i - 1][j] == '0'
-						&& data->map[i + 1][j] == '0' && data->map[i][j
+			if (data->map[i][j] == 'P' && (!(is_valid(data->map[i - 1][j])
+						&& is_valid(data->map[i + 1][j]) && data->map[i][j
 						- 1] == '1' && data->map[i][j + 1] == '1')
 					&& !(data->map[i - 1][j] == '1' && data->map[i
-						+ 1][j] == '1' && data->map[i][j - 1] == '0'
-						&& data->map[i][j + 1] == '0')))
+						+ 1][j] == '1' && is_valid(data->map[i][j - 1])
+						&& is_valid(data->map[i][j + 1]))))
 			{
 				printf("Error\nInvalid door\n");
 				return (1);
 			}
-			j++;
+				j++;
 		}
 		i++;
 	}

@@ -6,14 +6,14 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:09:18 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 12:20:33 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:11:26 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite)
+void	ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite, int i)
 {
+	ft_hanle_sprite_animation(sprite, i * 20);
 	sprite_ray->vMove = 400;
 	sprite_ray->ray.x = sprite->pos.x - p->pos.x;
 	sprite_ray->ray.y = sprite->pos.y - p->pos.y;
@@ -87,11 +87,11 @@ void	ft_draw_sprites(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite)
 	int	x;
 	int	y;
 
-	sprite_ray->vMovescreen = sprite_ray->vMove / sprite_ray->trans.y;
-	x = sprite_ray->draw_start.x - 1;
+	sprite_ray->vMovescreen = (int)(sprite_ray->vMove / sprite_ray->trans.y);
+	x = sprite_ray->draw_start.x + 2;
 	while (++x < sprite_ray->draw_end.x)
 	{
-		y = sprite_ray->draw_start.y - 1;
+		y = sprite_ray->draw_start.y + 2;
 		sprite_ray->tex.x = (int)(256 * (x - (-sprite_ray->sprite_width / 2
 						+ sprite_ray->screen_x)) * SPRITE_TEXT_SIZE
 				/ sprite_ray->sprite_width) / 256;

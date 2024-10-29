@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/21 07:52:36 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:04:35 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	parse_map(t_textures *textures, t_data *data)
 	}
 	data->map[i] = NULL;
 	textures->map_tab_tmp = ft_split(textures->map_str_tmp, "\n");
+	free(textures->map_str_tmp);
 	if (copy_and_check_walls(textures, data))
 		return (1);
 	return (0);
@@ -63,7 +64,8 @@ int	is_map_open(t_data *data, t_textures *textures)
 		j = 1;
 		while (j < (textures->longest_line - 1))
 		{
-			if (data->map[i][j] == '0' || isplayer(data->map[i][j]) || data->map[i][j] == 'P') //bonus
+			if (data->map[i][j] == '0' || isplayer(data->map[i][j])
+				|| data->map[i][j] == 'P') // bonus
 			{
 				if (is_surrounded(i, j, data))
 				{

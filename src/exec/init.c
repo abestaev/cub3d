@@ -6,13 +6,13 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/28 18:29:47 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 13:14:29 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_init_player_orientation_01(char c, t_player *p)
+void	ft_init_player_orientation_EW(char c, t_player *p)
 {
 	if (c == 'E')
 	{
@@ -30,7 +30,7 @@ void	ft_init_player_orientation_01(char c, t_player *p)
 	}
 }
 
-void	ft_init_player_orientation_00(char c, t_player *p)
+void	ft_init_player_orientation_NS(char c, t_player *p)
 {
 	if (c == 'N')
 	{
@@ -46,7 +46,7 @@ void	ft_init_player_orientation_00(char c, t_player *p)
 		p->plane_x = -0.66;
 		p->plane_y = 0;
 	}
-	ft_init_player_orientation_01(c, p);
+	ft_init_player_orientation_EW(c, p);
 }
 
 void	ft_init_player_pos(t_player *p)
@@ -64,7 +64,7 @@ void	ft_init_player_pos(t_player *p)
 			{
 				p->pos.x = j + 0.5;
 				p->pos.y = i + 0.5;
-				ft_init_player_orientation_00(p->map[i][j], p);
+				ft_init_player_orientation_NS(p->map[i][j], p);
 				break ;
 			}
 			j++;

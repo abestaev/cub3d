@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/28 19:38:57 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:27:45 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_init_wall_textures(t_player *p)
 	p->texture[4] = NULL;
 }
 
-int	**ft_init_vilain_text(t_player *p)
+int	**ft_init_sprite_text(t_player *p)
 {
 	int	**text;
 
@@ -121,15 +121,7 @@ int	**ft_init_vilain_text(t_player *p)
 
 void	ft_init_textures(t_player *p)
 {
-	int	i;
-
 	ft_init_wall_textures(p);
-	i = 0;
-	p->sprite_text = ft_init_vilain_text(p);
-	while (i < p->nb_door)
-	{
-		if (p->door[i].type == DOOR)
-			p->door[i].text = ft_init_doors_text(p);
-		i++;
-	}
+	p->sprite_text = ft_init_sprite_text(p);
+	p->door_text = ft_init_doors_text(p);
 }

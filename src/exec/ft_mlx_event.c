@@ -15,9 +15,10 @@
 
 int	is_in_wall(t_player *p, double x, double y)
 {
-	return (ft_collision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x
-			+ HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x - HITBOX_SIZE, y
-			+ HITBOX_SIZE) || ft_collision(p, x + HITBOX_SIZE, y + HITBOX_SIZE));
+	return (ft_collision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p,
+			x + HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x
+			- HITBOX_SIZE, y + HITBOX_SIZE) || ft_collision(p, x + HITBOX_SIZE,
+			y + HITBOX_SIZE));
 }
 
 void	ft_go_down(t_player *p)
@@ -117,38 +118,6 @@ int	ft_is_in_adjacent_cells(t_player *p, int x, int y, char c)
 		return (1);
 	return (0);
 }
-int	ft_get_door_id(t_player *p, int y, int x)
-{
-	int	i;
-
-	i = 0;
-	while (i < p->nb_sprite)
-	{
-		if (p->sprite[i].pos.x == x && p->sprite[i].pos.y == y)
-			return (i);
-		i++;
-	}
-	return (0);
-}
-// the flag allow me to find a door or a sprite whenever I start from the hit rays or from the relative position of the player,
-// the 2 possibilities
-int	ft_which_doors(t_player *p, int x, int y, char c, int flag)
-{
-	int	i;
-
-	i = 0;
-	if (flag)
-		i = 1;
-	if (p->map[y][x + i] == c)
-		return (ft_get_door_id(p, y, x + i));
-	if (p->map[y][x - i] == c)
-		return (ft_get_door_id(p, y, x - i));
-	if (p->map[y + i][x] == c)
-		return (ft_get_door_id(p, y + i, x));
-	if (p->map[y - i][x] == c)
-		return (ft_get_door_id(p, y - i, x));
-	return (ft_get_door_id(p, y, x));
-}
 
 int	key_press(int keycode, t_player *p)
 {
@@ -166,10 +135,14 @@ int	key_press(int keycode, t_player *p)
 		p->rotate_left = 1;
 	if (keycode == K_LOOK_RIGHT)
 		p->rotate_right = 1;
-	if (keycode == K_O /* && ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P') */)
+	if (keycode == K_O && ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P'))
 	{
-		if (p->sprite[p->nb_sprite - 1].door_state == CLOSE)
-			p->sprite[p->nb_sprite - 1].door_state = IS_OPENING;
+		int i = ft_find_closest_door(p, p->all_elem);
+		printf("i = %d\n", i);
+		if (p->all_elem[i].door_state == CLOSE)
+		{
+			p->all_elem[i].door_state = IS_OPENING;
+		}
 	}
 	return (0);
 }

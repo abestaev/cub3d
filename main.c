@@ -6,44 +6,63 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 12:10:51 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:19:32 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/* The sprites are sorted from farthest to closest, so the last is always the closest to the player */
-void	ft_handle_doors(t_sprite *door, int door_nb)
+int	ft_find_closest_door(t_player *p, t_sprite *all_elem)
+{
+	int	i;
+
+	i = p->nb_door + p->nb_sprite - 1;
+	while (i >= 0)
+	{
+		if (all_elem[i].type == DOOR)
+			return (i);
+		i--;
+	}
+	return (0);
+}
+
+/* The sprites are sorted from farthest to closest,
+	so the last is always the closest to the player */
+void	ft_handle_doors(t_player *p, t_sprite *all_elem)
 {
 	double			curr_time;
 	static double	old_time = 0;
+	int				i;
 
-		if (door[door_nb].door_state == IS_OPENING)
+	i = ft_find_closest_door(p, all_elem);
+	if (all_elem[i].door_state == IS_OPENING)
+	{
+		if (all_elem[i].animation_index < 5)
 		{
-			if (door[door_nb].animation_index < 5)
+			curr_time = ft_get_usec_time();
+			if (curr_time - old_time > 100)
 			{
-				curr_time = ft_get_usec_time();
-				if (curr_time - old_time > 100)
-				{
-					door[door_nb].animation_index++;
-					old_time = curr_time;
-				}
-			}
-			if (door[door_nb].animation_index == 5)
-			{
-				door[door_nb].door_state = OPEN;
-				door[door_nb].animation_index = 0;
+				all_elem[i].animation_index++;
+				old_time = curr_time;
 			}
 		}
+		if (all_elem[i].animation_index == 5)
+		{
+			all_elem[i].door_state = OPEN;
+			all_elem[i].animation_index = 0;
+			old_time = 0;
+		}
+	}
 }
 
 int	ft_refresh(t_player *p)
 {
 	update_position(p);
-	ft_sort_sprites_by_dist(p);
+	ft_sort_elem_by_dist(p, p->all_elem, p->nb_door + p->nb_sprite);
+	ft_handle_doors(p, p->all_elem);
 	ft_color_background(p->img);
-	ft_cast_ray(p);
-	ft_handle_doors(p->door, p->nb_door - 1);
+	ft_raycast_walls(p);
+	ft_raycast_elem(p);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	return (0);
@@ -109,9 +128,7 @@ int	ft_count_door(char **map)
 		while (map[y][x])
 		{
 			if (map[y][x] == 'P')
-			{
 				size++;
-			}
 			x++;
 		}
 		y++;
@@ -133,9 +150,7 @@ int	ft_count_sprite(char **map)
 		while (map[y][x])
 		{
 			if (map[y][x] == 'V')
-			{
 				size++;
-			}
 			x++;
 		}
 		y++;
@@ -162,12 +177,12 @@ void	ft_init_maps_door(t_player *p)
 		{
 			if (p->map[y][x] == 'P')
 			{
+				p->door[i].type = DOOR;
 				p->door[i].door_state = CLOSE;
 				p->door[i].pos.x = x;
 				p->door[i].pos.y = y;
 				i++;
 			}
-			
 			x++;
 		}
 		y++;
@@ -176,13 +191,11 @@ void	ft_init_maps_door(t_player *p)
 
 void	ft_init_maps_sprite(t_player *p)
 {
-	t_sprite	*sprite;
-	int			y;
-	int			x;
-	int			i;
+	int	y;
+	int	x;
+	int	i;
 
-	sprite = calloc(sizeof(t_sprite), ft_count_sprite(p->map));
-	p->sprite = sprite;
+	p->sprite = calloc(sizeof(t_sprite), ft_count_sprite(p->map));
 	p->nb_sprite = ft_count_sprite(p->map);
 	i = 0;
 	y = 0;
@@ -193,6 +206,7 @@ void	ft_init_maps_sprite(t_player *p)
 		{
 			if (p->map[y][x] == 'V')
 			{
+				p->sprite[i].type = SPRITE;
 				p->sprite[i].pos.x = x + 0.5;
 				p->sprite[i].pos.y = y + 0.5;
 				i++;
@@ -200,6 +214,31 @@ void	ft_init_maps_sprite(t_player *p)
 			x++;
 		}
 		y++;
+	}
+}
+
+void	ft_init_elements(t_player *p)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	ft_init_maps_door(p);
+	ft_init_maps_sprite(p);
+	p->all_elem = ft_calloc(p->nb_sprite + p->nb_door + 1, sizeof(t_sprite));
+	while (j < p->nb_door)
+	{
+		p->all_elem[i] = p->door[j];
+		j++;
+		i++;
+	}
+	j = 0;
+	while (j < p->nb_sprite)
+	{
+		p->all_elem[i] = p->sprite[j];
+		j++;
+		i++;
 	}
 }
 
@@ -225,8 +264,7 @@ int	main(int argc, char **argv)
 		return (1);
 	ft_player_init(p, data);
 	ft_mlx_init(p);
-	ft_init_maps_door(p);
-	ft_init_maps_sprite(p);
+	ft_init_elements(p);
 	ft_init_textures(p);
 	mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);

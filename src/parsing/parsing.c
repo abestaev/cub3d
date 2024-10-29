@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/10/21 07:53:34 by albestae         ###   ########.fr       */
+/*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
+/*   Updated: 2024/10/29 16:18:29 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "cub3d.h"
 
@@ -39,9 +38,9 @@ int	compare_texture_line(char *s1, char *s2, t_textures *textures)
 	else if (textures->east == NULL && ft_strncmp(s1, "EA", 2) == 0)
 		textures->east = ft_strjoin_free(ft_strdup("./"), s2);
 	else if (textures->floor == NULL && ft_strncmp(s1, "F", 1) == 0)
-		textures->floor = ft_strdup(s2);
+		textures->floor = s2;
 	else if (textures->ceiling == NULL && ft_strncmp(s1, "C", 1) == 0)
-		textures->ceiling = ft_strdup(s2);
+		textures->ceiling = s2;
 	else
 	{
 		printf("Error\nInvalid texture line\n");
@@ -100,6 +99,12 @@ int	parsing(int argc, char **argv, t_data *data)
 	if (read_file(data->textures))
 		return (1);
 	if (missing_textures(data->textures))
+		return (1);
+	data->textures->ceiling_col = get_hexa_color(data->textures->ceiling_r,
+			data->textures->ceiling_g, data->textures->ceiling_b);
+	data->textures->floor_col = get_hexa_color(data->textures->floor_r,
+			data->textures->floor_g, data->textures->floor_b);
+	if (check_file_valid(data->textures))
 		return (1);
 	if (invalid_char(data->textures))
 		return (1);

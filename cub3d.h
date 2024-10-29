@@ -54,7 +54,7 @@
 typedef enum type
 {
 	DOOR,
-	VILAIN,
+	SPRITE,
 }						type;
 
 typedef enum orientation
@@ -138,9 +138,9 @@ typedef struct s_sprite
 	t_point				pos;
 	t_image				*img;
 	int					animation_index;
-	double 				old_time;
+	double				old_time;
 	int					sprite_animation_index;
-	int					**text;
+	// int					**text;
 	int					already_print;
 	int					hit_flag;
 	int					dist;
@@ -187,11 +187,13 @@ typedef struct s_player
 	int					mouse_x;
 	int					nb_col;
 	int					nb_line;
-	t_sprite			*sprite;
-	t_sprite			*door;
 	int					nb_door;
 	int					nb_sprite;
 	int					**sprite_text;
+	int					**door_text;
+	t_sprite			*sprite;
+	t_sprite			*door;
+	t_sprite			*all_elem;
 
 }						t_player;
 
@@ -254,6 +256,10 @@ void					ft_player_init(t_player *p, t_data *data);
 void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
+
+// RAYCAST
+void					ft_raycast_walls(t_player *p);
+
 // movement
 int						key_press(int keycode, t_player *p);
 int						key_release(int keycode, t_player *p);
@@ -276,7 +282,7 @@ int						ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
 							t_image *img, long color);
 void					ft_get_wall_size(t_player *p, t_ray *ray);
-void					ft_cast_ray(t_player *p);
+void					ft_raycast_elem(t_player *p);
 void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_ray *ray);
@@ -307,13 +313,15 @@ int						ft_calc_dark(int color, double factor);
 int						ft_inside_doors(t_player *p, int x, int y);
 
 // SPRITE
-void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite);
+void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray,
+							t_sprite *sprite);
 void					ft_calc_sprite_hight(t_spriteray *sprite_ray);
 void					ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray,
-							t_sprite *sprite);
-void	ft_hanle_sprite_animation(t_sprite *sprite, int i);
+							t_sprite *sprite, int i);
+void					ft_hanle_sprite_animation(t_sprite *sprite, int i);
 
 // PARSING FUNCTIONS
+int						check_file_valid(t_textures *t);
 int						is_door_valid(t_textures *textures, t_data *data);
 int						parsing(int argc, char **argv, t_data *data);
 int						arg_valid(int argc, char **argv);
@@ -338,8 +346,6 @@ int						missing_textures(t_textures *textures);
 int						parse_rgb(t_textures *textures);
 int						isplayer(char c);
 void					free_parsing(t_textures *textures, t_data *data);
-int						check_rgb_values(t_textures *textures);
-
 void					ft_init_ray(t_player *p, t_ray *ray, int x);
 void					ft_draw_horizontal_line(int y_val, int start, int end,
 							t_image *img, long color);
@@ -359,6 +365,7 @@ int						ft_escape(t_player *p);
 
 void					ft_free_all_struct(t_player *p);
 
-void					ft_sort_sprites_by_dist(t_player *p);
+void					ft_sort_elem_by_dist(t_player *p, t_sprite *elem, int nb);
+int ft_find_closest_door(t_player *p, t_sprite *all_elem);
 
 #endif
