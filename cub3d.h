@@ -37,7 +37,7 @@
 
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
-# define SPEED 0.06
+# define SPEED 0.03
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
@@ -110,6 +110,8 @@ typedef struct s_spriteray
 	t_point				draw_start;
 	t_point				draw_end;
 	t_point				tex;
+	int					vMovescreen;
+	int					vMove;
 	double				inv_det;
 	int					screen_x;
 	int					sprite_height;
@@ -135,7 +137,8 @@ typedef struct s_sprite
 	t_spriteray			sprite_ray;
 	t_point				pos;
 	t_image				*img;
-	int					door_animation_index;
+	int					animation_index;
+	double 				old_time;
 	int					sprite_animation_index;
 	int					**text;
 	int					already_print;
@@ -304,9 +307,11 @@ int						ft_calc_dark(int color, double factor);
 int						ft_inside_doors(t_player *p, int x, int y);
 
 // SPRITE
-void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray);
+void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite);
 void					ft_calc_sprite_hight(t_spriteray *sprite_ray);
-void					ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite);
+void					ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray,
+							t_sprite *sprite);
+void	ft_hanle_sprite_animation(t_sprite *sprite, int i);
 
 // PARSING FUNCTIONS
 int						is_door_valid(t_textures *textures, t_data *data);

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/28 19:59:56 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:16:40 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void	ft_find_hits(t_player *p, t_sprite *sprite)
 	}
 }
 
-void	ft_get_sprite_size(t_player *p, t_ray *ray)
+void	ft_get_door_size(t_player *p, t_ray *ray)
 {
 	if (ray->side == 0)
 		ray->wall_dist = (ray->side_dist_x - ray->delta_dist_x) + 0.5;
@@ -214,18 +214,13 @@ void	ft_get_door_text(t_player *p, t_sprite *door, t_ray *ray, int x)
 			ray->color = door->text[5][DOOR_TEXT_SIZE * ray->text_y
 				+ ray->text_x];
 		else if (door->door_state == IS_OPENING)
-			ray->color = door->text[door->door_animation_index][DOOR_TEXT_SIZE
+			ray->color = door->text[p->door->animation_index][DOOR_TEXT_SIZE
 				* ray->text_y + ray->text_x];
 		if (ray->color > 0 && ray->wall_dist < p->ray->dist_buffer[x])
 			my_pixel_put(p->img, x, y, ft_calc_dark(ray->color, dist_factor));
 	}
 }
 
-void	ft_get_sprite_text(t_player *p, t_sprite *door, t_ray *ray, int x)
-{
-	ft_get_door_text(p, door, ray, x);
-	// ft_get_vilain_text();
-}
 
 void	ft_cast_ray(t_player *p)
 {
@@ -236,9 +231,10 @@ void	ft_cast_ray(t_player *p)
 	i = -1;
 	while (++i < p->nb_sprite)
 	{
+		ft_hanle_sprite_animation(&p->sprite[i], i * 20);
 		ft_calcul_sprite(p, &p->sprite[i].sprite_ray, &p->sprite[i]);
 		ft_calc_sprite_hight(&p->sprite[i].sprite_ray);
-		ft_draw_sprites(p, &p->sprite[i].sprite_ray);
+		ft_draw_sprites(p, &p->sprite[i].sprite_ray, &p->sprite[i]);
 	}
 	i = -1;
 	while (++i < p->nb_door)
@@ -249,8 +245,8 @@ void	ft_cast_ray(t_player *p)
 			ft_init_ray(p, &p->door[i].ray, x);
 			ft_calcul_dda(p, &p->door[i].ray);
 			ft_find_hits(p, &p->door[i]);
-			ft_get_sprite_size(p, &p->door[i].ray);
-			ft_get_sprite_text(p, &p->door[i], &p->door[i].ray, x);
+			ft_get_door_size(p, &p->door[i].ray);
+			ft_get_door_text(p, &p->door[i], &p->door[i].ray, x);
 			x++;
 		}
 	}

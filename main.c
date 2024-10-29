@@ -6,33 +6,33 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/28 19:58:56 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:10:51 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 /* The sprites are sorted from farthest to closest, so the last is always the closest to the player */
-void	ft_handle_doors(t_sprite *sprite, int sprite_nb)
+void	ft_handle_doors(t_sprite *door, int door_nb)
 {
 	double			curr_time;
 	static double	old_time = 0;
 
-		if (sprite[sprite_nb].door_state == IS_OPENING)
+		if (door[door_nb].door_state == IS_OPENING)
 		{
-			if (sprite[sprite_nb].door_animation_index < 5)
+			if (door[door_nb].animation_index < 5)
 			{
 				curr_time = ft_get_usec_time();
 				if (curr_time - old_time > 100)
 				{
-					sprite[sprite_nb].door_animation_index++;
+					door[door_nb].animation_index++;
 					old_time = curr_time;
 				}
 			}
-			if (sprite[sprite_nb].door_animation_index == 5)
+			if (door[door_nb].animation_index == 5)
 			{
-				sprite[sprite_nb].door_state = OPEN;
-				sprite[sprite_nb].door_animation_index = 0;
+				door[door_nb].door_state = OPEN;
+				door[door_nb].animation_index = 0;
 			}
 		}
 }
@@ -43,7 +43,7 @@ int	ft_refresh(t_player *p)
 	ft_sort_sprites_by_dist(p);
 	ft_color_background(p->img);
 	ft_cast_ray(p);
-	ft_handle_doors(p->sprite, p->nb_sprite - 1);
+	ft_handle_doors(p->door, p->nb_door - 1);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	return (0);
@@ -158,11 +158,10 @@ void	ft_init_maps_door(t_player *p)
 	while (p->map[y])
 	{
 		x = 0;
-		while (p->map[y][x] && i < p->nb_door)
+		while (p->map[y][x])
 		{
 			if (p->map[y][x] == 'P')
 			{
-				p->door[i].type = DOOR;
 				p->door[i].door_state = CLOSE;
 				p->door[i].pos.x = x;
 				p->door[i].pos.y = y;
@@ -190,11 +189,10 @@ void	ft_init_maps_sprite(t_player *p)
 	while (p->map[y])
 	{
 		x = 0;
-		while (p->map[y][x] && i < p->nb_door)
+		while (p->map[y][x])
 		{
 			if (p->map[y][x] == 'V')
 			{
-				p->sprite[i].type = VILAIN;
 				p->sprite[i].pos.x = x + 0.5;
 				p->sprite[i].pos.y = y + 0.5;
 				i++;
@@ -234,7 +232,6 @@ int	main(int argc, char **argv)
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);
 	mlx_hook(p->img->win_ptr, 3, 1L << 1, key_release, p);
 	mlx_hook(p->img->win_ptr, 6, 1L << 6, mouse_move, p);
-	//mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
 	mlx_loop_hook(p->img->mlx, ft_refresh, p); // Appelle en boucle main_loop
 	mlx_loop(p->img->mlx);
 	mlx_destroy_display(p->img->mlx);
