@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:09:18 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 19:11:26 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:48:42 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,10 @@ void	ft_draw_sprites(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite)
 	int	y;
 
 	sprite_ray->vMovescreen = (int)(sprite_ray->vMove / sprite_ray->trans.y);
-	x = sprite_ray->draw_start.x + 2;
+	x = sprite_ray->draw_start.x + 5;
 	while (++x < sprite_ray->draw_end.x)
 	{
-		y = sprite_ray->draw_start.y + 2;
+		y = sprite_ray->draw_start.y + 5;
 		sprite_ray->tex.x = (int)(256 * (x - (-sprite_ray->sprite_width / 2
 						+ sprite_ray->screen_x)) * SPRITE_TEXT_SIZE
 				/ sprite_ray->sprite_width) / 256;

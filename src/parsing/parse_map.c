@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 14:04:35 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:39:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	parse_map(t_textures *textures, t_data *data)
 	i = 0;
 	while (i < textures->nb_lines)
 	{
-		data->map[i] = (char *)malloc(sizeof(char) * (textures->longest_line
+		data->map[i] = (char *)malloc(sizeof(char) * (textures->col
 					+ 1));
 		if (data->map[i] == NULL)
 			return (1);
-		ft_memset(data->map[i], ' ', textures->longest_line + 1);
-		data->map[i][textures->longest_line] = '\0';
+		ft_memset(data->map[i], ' ', textures->col + 1);
+		data->map[i][textures->col] = '\0';
 		i++;
 	}
 	data->map[i] = NULL;
@@ -62,7 +62,7 @@ int	is_map_open(t_data *data, t_textures *textures)
 	while (i < (textures->nb_lines - 1))
 	{
 		j = 1;
-		while (j < (textures->longest_line - 1))
+		while (j < (textures->col - 1))
 		{
 			if (data->map[i][j] == '0' || isplayer(data->map[i][j])
 				|| data->map[i][j] == 'P') // bonus
@@ -87,7 +87,7 @@ int	map_size(t_textures *textures)
 		printf("Error\nMap is too small\n");
 		return (1);
 	}
-	if (textures->longest_line <= 3)
+	if (textures->col <= 3)
 	{
 		printf("Error\nMap is too small\n");
 		return (1);

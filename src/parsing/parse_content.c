@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 15:46:07 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:47:50 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	check_rgb_values(t_textures *textures)
 		printf("insecte\n");
 		return (1);
 	}
+	free_tab(tmp1);
+	free_tab(tmp2);
 	return (0);
 }
 

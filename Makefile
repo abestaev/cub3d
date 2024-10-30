@@ -15,9 +15,14 @@ SRC = main.c \
 	src/parsing/free_parsing.c \
 	src/parsing/parse_doors.c \
 	src/exec/ft_mlx_event.c \
+	src/exec/moves.c \
+	src/exec/animations.c \
+	src/exec/collision.c \
+	src/exec/refresh_frame.c \
 	src/exec/utils.c \
 	src/exec/init.c \
 	src/exec/init_01.c \
+	src/exec/init_02.c \
 	src/exec/minimap_render.c \
 	src/exec/minimap_render_01.c \
 	src/exec/init_textures.c \

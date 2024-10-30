@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 14:06:09 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:48:23 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 void	free_parsing(t_textures *textures, t_data *data)
 {
-	free_tab(textures->map_tab_tmp);
-	free_tab(data->map);
+	// free(textures->north);
+    // free(textures->south);
+    // free(textures->west);
+    // free(textures->east);
+    // free(textures->floor);
+    // free(textures->ceiling);
+    // free_tab(textures->map_tab_tmp);
+    free(textures->map_str_tmp);
+    free_tab((void *)data->map);
 }
 
 int	get_map_line(char *str, t_textures *textures)
@@ -33,8 +40,8 @@ int	get_map_line(char *str, t_textures *textures)
 	ft_strlcpy(tmp, str, i + 2);
 	tmp[i + 1] = '\n';
 	tmp[i + 2] = '\0';
-	if (tmp && ft_strlen(tmp) > textures->longest_line)
-		textures->longest_line = ft_strlen(tmp);
+	if (tmp && ft_strlen(tmp) > textures->col)
+		textures->col = ft_strlen(tmp);
 	if (textures->map_str_tmp == NULL)
 		textures->map_str_tmp = ft_strdup(tmp);
 	else if (textures->map_str_tmp)

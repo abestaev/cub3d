@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:07:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 17:33:03 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:31:17 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,44 +28,6 @@ int	ft_get_text_index(t_ray *ray)
 		else
 			return (SOUTH);
 	}
-}
-int	ft_inside_doors(t_player *p, int x, int y)
-{
-	int i = ft_find_closest_door(p, p->all_elem);
-	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
-	{
-		if (p->map[y][x] == 'P' && p->all_elem[i].door_state == CLOSE)
-			return(1);	
-	}
-	return (0);
-}
-
-int ft_collision(t_player *p, int x, int y)
-{
-	if(ft_inside_wall(p, x, y) || ft_inside_doors(p, x, y))
-		return(1);
-	return (0);
-}
-int	ft_inside_wall(t_player *p, int x, int y)
-{
-	if (p->map[y][x] == '1')
-		return (1);
-	return (0);
-}
-
-int	ft_count_lines(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	return (i);
-}
-
-int	ft_count_columns(char **map)
-{
-	return (ft_strlen(map[0]));
 }
 
 double	ft_divide(double i, double j)
@@ -164,7 +126,7 @@ void	ft_color_background(t_image *img)
 int	ft_escape(t_player *p)
 {
 	free_parsing(p->data->textures, p->data);
-	free_tab((char **)p->texture);
+	free((char **)p->texture);
 	free(p->ray);
 	mlx_loop_end(p->img->mlx);
 	mlx_destroy_window(p->img->mlx, p->img->win_ptr);
@@ -175,6 +137,18 @@ int	ft_escape(t_player *p)
 	free(p->data->textures);
 	free(p->data);
 	free(p->mini);
+	free(p->ray_doors);
+	// free(p->door_text[0]);
+	// free(p->door_text[1]);
+	// free(p->door_text[2]);
+	// free(p->door_text[3]);
+	// free(p->door_text[4]);
+	// free(p->door_text[5]);
+	// free(p->door_text);
+	free_tab((char **)(p->door_text));
+	free_tab((char **)(p->sprite_text));
+	free(p->all_elem);
+	free(p->door);
 	free(p);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 02:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 16:10:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:39:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_door_valid(t_textures *textures, t_data *data)
 	while (i < (textures->nb_lines - 1))
 	{
 		j = 1;
-		while (j < (textures->longest_line - 1))
+		while (j < (textures->col - 1))
 		{
 			if (data->map[i][j] == 'P' && (!(is_valid(data->map[i - 1][j])
 						&& is_valid(data->map[i + 1][j]) && data->map[i][j

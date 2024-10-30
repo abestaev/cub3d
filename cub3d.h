@@ -228,7 +228,7 @@ typedef struct textures
 	int					ceiling_b;
 	char				*map_str_tmp;
 	char				**map_tab_tmp;
-	size_t				longest_line;
+	size_t				col;
 	int					nb_lines;
 	int					i;
 	int					**doors;
@@ -248,20 +248,21 @@ typedef struct s_data
 	t_textures			*textures;
 }						t_data;
 
-// EXEC FUNCTIONS
-
-// init
-
+// INIT
 void					ft_player_init(t_player *p, t_data *data);
 void					ft_mlx_init(t_player *p);
 int						ft_inside_wall(t_player *p, int x, int y);
 void					my_pixel_put(t_image *img, int x, int y, int color);
+void					ft_init_elements(t_player *p);
 
 // RAYCAST
+int						ft_refresh(t_player *p);
 void					ft_raycast_walls(t_player *p);
 
-// movement
+// MOVEMENTS
+void					ft_mlx_events(t_player *p);
 int						key_press(int keycode, t_player *p);
+int						mouse_move(int w, int h, t_player *p);
 int						key_release(int keycode, t_player *p);
 void					update_position(t_player *p);
 void					ft_go_down(t_player *p);
@@ -270,12 +271,10 @@ void					ft_go_left(t_player *p);
 void					ft_go_right(t_player *p);
 void					ft_turn_left(t_player *p);
 void					ft_turn_right(t_player *p);
+int						ft_hit(t_player *p, int x, int y);
 
 void					ft_draw_line(int x_start, int y_start, int x_end,
 							int y_end, t_image *img);
-int						ft_count_columns(char **map);
-int						ft_count_lines(char **map);
-// double					ft_get_tile_size(char **map);
 void					ft_draw_tile(t_image *img, int start_x, int start_y,
 							int size, int color);
 int						ft_refresh(t_player *p);
@@ -289,14 +288,10 @@ int						ft_get_text_index(t_ray *ray);
 int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
-int						ft_which_doors(t_player *p, int x, int y, char c,
-							int flag);
-int						ft_get_door_id(t_player *p, int y, int x);
 int						ft_collision(t_player *p, int x, int y);
+int						is_in_wall(t_player *p, double x, double y);
 
 // MINIMAP
-int						ft_count_columns(char **map);
-int						ft_count_lines(char **map);
 void					ft_minimap(t_player *p);
 void					ft_draw_mini_background(t_image *img, int x_start,
 							int x_end, int y_start, int y_end);
@@ -311,6 +306,8 @@ void					ft_calcul_wall_text(t_player *p, int x);
 void					ft_color_background(t_image *img);
 int						ft_calc_dark(int color, double factor);
 int						ft_inside_doors(t_player *p, int x, int y);
+int						ft_find_closest_door(t_player *p, t_sprite *all_elem);
+void					ft_handle_doors(t_player *p, t_sprite *all_elem);
 
 // SPRITE
 void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray,
@@ -352,7 +349,7 @@ void					ft_draw_horizontal_line(int y_val, int start, int end,
 void					ft_draw_alpha_tile(t_image *img, int start_x,
 							int start_y, int size, int color);
 
-// debug functions
+// DEBUG
 void					print_map(char **map);
 
 // TIME_UTILS
@@ -360,12 +357,13 @@ long					ft_get_usec_time(void);
 void					ft_print_fps(t_data *data);
 int						get_hexa_color(int r, int g, int b);
 
-// testing
+// TESTING
 int						ft_escape(t_player *p);
 
 void					ft_free_all_struct(t_player *p);
 
-void					ft_sort_elem_by_dist(t_player *p, t_sprite *elem, int nb);
-int ft_find_closest_door(t_player *p, t_sprite *all_elem);
+void					ft_sort_elem_by_dist(t_player *p, t_sprite *elem,
+							int nb);
+int						ft_find_closest_door(t_player *p, t_sprite *all_elem);
 
 #endif

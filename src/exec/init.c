@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 13:14:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:19:59 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,23 +88,19 @@ void	ft_init_minimap(t_player *p)
 
 void	ft_player_init(t_player *p, t_data *data)
 {
-	t_ray	*ray;
-	t_ray *ray_doors;
 
-	ray = malloc(sizeof(t_ray));
-	ray_doors = malloc(sizeof(t_ray));
-	ft_memset(ray, 0, sizeof(t_ray));
-	ft_memset(ray_doors, 0, sizeof(t_ray));
-	p->ray_doors = ray_doors;
+	p->ray = malloc(sizeof(t_ray));
+	p->ray_doors = malloc(sizeof(t_ray));
+	ft_memset(p->ray, 0, sizeof(t_ray));
+	ft_memset(p->ray_doors, 0, sizeof(t_ray));
 	p->map = data->map;
 	ft_init_player_pos(p);
 	ft_init_minimap(p);
-	p->ray = ray;
 	p->plr_speed = SPEED;
 	p->speed_rot = ROT_SPEED;
 	p->data = data;
-	p->nb_line = ft_count_lines(p->map);
-	p->nb_col = ft_count_columns(p->map);
+	p->nb_line = p->data->textures->nb_lines;
+	p->nb_col = p->data->textures->col;
 	p->move_forward = 0;
 	p->move_backward = 0;
 	p->move_left = 0;

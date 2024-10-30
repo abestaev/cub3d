@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 14:27:45 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 12:28:59 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name, int size)
 
 	img = malloc(sizeof(t_image));
 	ft_init_xpm(p, img, text_name);
-	text_buff = malloc(sizeof(int) * size * size);
+ 	text_buff = malloc(sizeof(int) * size * size);
 	if (!text_buff)
 		return (NULL);
 	y = 0;

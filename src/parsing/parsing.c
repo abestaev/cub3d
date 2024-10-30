@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 16:18:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:39:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	init_parsing(t_textures *textures, char *str)
 	textures->ceiling = NULL;
 	textures->map_str_tmp = NULL;
 	textures->map_tab_tmp = NULL;
-	textures->longest_line = 0;
+	textures->col = 0;
 	textures->nb_lines = 0;
 	textures->i = 0;
 	return (0);

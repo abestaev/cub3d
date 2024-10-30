@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_walls.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 06:21:57 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/29 14:03:01 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:39:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	check_sides(t_data *data, t_textures *textures)
 	i = 0;
 	while (i < textures->nb_lines)
 	{
-		if (data->map[i][textures->longest_line - 2] == '0'
-			|| data->map[i][textures->longest_line - 2] == 'P') // bonus
+		if (data->map[i][textures->col - 2] == '0'
+			|| data->map[i][textures->col - 2] == 'P') // bonus
 		{
 			printf("Error\nMap is not closed (right)\n");
 			return (1);

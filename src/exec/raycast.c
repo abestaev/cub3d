@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/29 19:06:08 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 11:32:05 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,6 @@ void	ft_raycast_walls(t_player *p)
 		p->ray->dist_buffer[x] = p->ray->wall_dist;
 		x++;
 	}
-}
-
-int	ft_hit(t_player *p, int x, int y)
-{
-	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
-		if (p->map[y][x] == 'P')
-			return (1);
-	return (0);
 }
 
 void	ft_find_hits(t_player *p, t_sprite *sprite)
