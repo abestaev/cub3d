@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:15:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 11:17:52 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 14:09:11 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_refresh(t_player *p)
 	ft_handle_doors(p, p->all_elem);
 	ft_color_background(p->img);
 	ft_raycast_walls(p);
-	ft_raycast_elem(p);
+	ft_raycast(p);
 	ft_minimap(p);
 	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
 	return (0);

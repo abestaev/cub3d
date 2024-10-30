@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:32:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 11:54:26 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:21:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ int	ft_count_sprite(char **map)
 
 static void	ft_init_maps_door(t_player *p)
 {
-	int			y;
-	int			x;
-	int			i;
+	int	y;
+	int	x;
+	int	i;
 
 	p->door = calloc(sizeof(t_sprite), ft_count_door(p->map));
 	ft_memset(p->door, 0, sizeof(t_sprite));
 	p->nb_door = ft_count_door(p->map);
 	i = 0;
-	y = 0;
-	while (p->map[y])
+	y = -1;
+	while (p->map[++y])
 	{
-		x = 0;
-		while (p->map[y][x])
+		x = -1;
+		while (p->map[y][++x])
 		{
 			if (p->map[y][x] == 'P')
 			{
@@ -78,12 +78,9 @@ static void	ft_init_maps_door(t_player *p)
 				p->door[i].type = DOOR;
 				p->door[i].door_state = CLOSE;
 				p->door[i].pos.x = x;
-				p->door[i].pos.y = y;
-				i++;
+				p->door[i++].pos.y = y;
 			}
-			x++;
 		}
-		y++;
 	}
 }
 
@@ -108,8 +105,7 @@ static void	ft_init_maps_sprite(t_player *p)
 				ft_memset(&p->sprite[i].sprite_ray, 0, sizeof(t_spriteray));
 				p->sprite[i].type = SPRITE;
 				p->sprite[i].pos.x = x + 0.5;
-				p->sprite[i].pos.y = y + 0.5;
-				i++;
+				p->sprite[i++].pos.y = y + 0.5;
 			}
 			x++;
 		}
@@ -119,14 +115,16 @@ static void	ft_init_maps_sprite(t_player *p)
 
 void	ft_init_elements(t_player *p)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
 	ft_init_maps_door(p);
 	ft_init_maps_sprite(p);
 	p->all_elem = ft_calloc(p->nb_sprite + p->nb_door + 1, sizeof(t_sprite));
+	if (!p->all_elem)
+		ft_escape(p);
 	while (j < p->nb_door)
 	{
 		p->all_elem[i] = p->door[j];

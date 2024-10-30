@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 06:21:57 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 11:39:28 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:36:14 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_top_bottom(t_data *data, t_textures *textures)
 	while (data->map[0][i])
 	{
 		if (data->map[0][i] == '0' || isplayer(data->map[0][i])
-			|| data->map[0][i] == 'P') // bonus
+			|| data->map[0][i] == 'P' || data->map[0][i] == 'V')
 			return (printf("Error\nMap is not closed (top)\n"), 1);
 		i++;
 	}
@@ -29,7 +29,8 @@ int	check_top_bottom(t_data *data, t_textures *textures)
 	{
 		if (data->map[textures->nb_lines - 1][i] == '0'
 			|| isplayer(data->map[textures->nb_lines - 1][i])
-			|| data->map[textures->nb_lines - 1][i] == 'P') // bonus
+			|| data->map[textures->nb_lines - 1][i] == 'P'
+			|| data->map[textures->nb_lines - 1][i] == 'V')
 			return (printf("Error\nMap is not closed (bottom)\n"), 1);
 		i++;
 	}
@@ -43,7 +44,8 @@ int	check_sides(t_data *data, t_textures *textures)
 	i = 0;
 	while (i < textures->nb_lines)
 	{
-		if (data->map[i][0] == '0' || data->map[i][0] == 'P') // bonus
+		if (data->map[i][0] == '0' || data->map[i][0] == 'P'
+			|| data->map[i][0] == 'V')
 		{
 			printf("Error\nMap is not closed (left)\n");
 			return (1);
@@ -53,8 +55,8 @@ int	check_sides(t_data *data, t_textures *textures)
 	i = 0;
 	while (i < textures->nb_lines)
 	{
-		if (data->map[i][textures->col - 2] == '0'
-			|| data->map[i][textures->col - 2] == 'P') // bonus
+		if (data->map[i][textures->col - 2] == '0' || data->map[i][textures->col
+			- 2] == 'P' || data->map[i][textures->col - 2] == 'V')
 		{
 			printf("Error\nMap is not closed (right)\n");
 			return (1);

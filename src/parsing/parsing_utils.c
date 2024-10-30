@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:29:56 by albestae          #+#    #+#             */
-/*   Updated: 2024/09/15 05:38:32 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:22:29 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,16 @@ void	ft_strcpy(char *dest, const char *src)
 		dest[i] = src[i];
 		i++;
 	}
+}
+
+int	ft_arrlen(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (array == NULL)
+		return (0);
+	while (array[i])
+		i++;
+	return (i);
 }

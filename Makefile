@@ -5,7 +5,6 @@ MLXFLAGS = -Lmlx -lmlx -lm -lX11 -lXext -lXrandr -lXi
 MLXLIB = mlx/libmlx_Linux.a
 
 SRC = main.c \
-	src/my_pixel_put.c \
 	src/parsing/parsing.c \
 	src/parsing/parse_map.c \
 	src/parsing/check_walls.c \
@@ -14,8 +13,12 @@ SRC = main.c \
 	src/parsing/read_file.c	\
 	src/parsing/free_parsing.c \
 	src/parsing/parse_doors.c \
+	src/exec/free.c \
 	src/exec/ft_mlx_event.c \
+	src/exec/init_textures.c \
+	src/exec/ft_draw_line.c \
 	src/exec/moves.c \
+	src/exec/moves_01.c \
 	src/exec/animations.c \
 	src/exec/collision.c \
 	src/exec/refresh_frame.c \
@@ -25,12 +28,13 @@ SRC = main.c \
 	src/exec/init_02.c \
 	src/exec/minimap_render.c \
 	src/exec/minimap_render_01.c \
-	src/exec/init_textures.c \
 	src/exec/raycast.c \
 	src/exec/raycast_doors.c \
 	src/exec/time_utils.c \
 	src/exec/graphic_utils.c \
-	src/exec/sprite_raycast.c \
+	src/exec/raycast_sprite.c \
+	src/exec/raycast_wall.c \
+	src/exec/sort_elements.c \
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -40,7 +44,7 @@ LIBFT_PATH = ./libft/
 LIBFT = $(LIBFT_PATH)libft.a
 
 NAME = cub3D
-
+NAME_BONUS = cub3D_bonus
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -56,6 +60,12 @@ $(NAME): $(OBJ) $(MLXLIB) $(LIBFT)
 $(LIBFT):
 	$(MAKE) -j4 -C $(LIBFT_PATH) all bonus
 
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJ) $(MLXLIB) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME_BONUS) $(OBJ) $(MLXFLAGS) $(MLXLIB) $(LIBFLAGS)
+
+
 -include $(DEP)
 
 clean:
@@ -65,6 +75,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -f $(NAME_BONUS)
 
 re: fclean all
 

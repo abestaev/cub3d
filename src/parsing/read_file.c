@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 12:51:33 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:56:28 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ int	check_open(char *str)
 
 	fd = open(str, O_RDONLY);
 	if (fd == -1)
+	{
+		printf("Error\nCouldn't open [ %s ]\n", str);
 		return (1);
+	}
 	else
 		close(fd);
 	return (0);
@@ -27,9 +30,19 @@ int	check_open(char *str)
 int	check_file_valid(t_textures *t)
 {
 	if (check_open(t->north) || check_open(t->east) || check_open(t->south)
-		|| check_open(t->west))
+		|| check_open(t->west) || check_open("./textures/candle_1.xpm")
+		|| check_open("./textures/candle_2.xpm")
+		|| check_open("./textures/candle_3.xpm")
+		|| check_open("./textures/candle_4.xpm")
+		|| check_open("./textures/candle_5.xpm")
+		|| check_open("./textures/candle_6.xpm")
+		|| check_open("./textures/doorframe_1.xpm")
+		|| check_open("./textures/doorframe_2.xpm")
+		|| check_open("./textures/doorframe_3.xpm")
+		|| check_open("./textures/doorframe_4.xpm")
+		|| check_open("./textures/doorframe_5.xpm")
+		|| check_open("./textures/doorframe_6.xpm"))
 	{
-		printf("Error\nCouldn't open texture file\n");
 		return (1);
 	}
 	return (0);
@@ -39,23 +52,21 @@ int	parse_line(char *str, t_textures *textures)
 {
 	char	**tab;
 
-	tab = ft_split(str, " \n");
+	tab = ft_split(str, " ");
 	{
 		if (ft_count_tab(tab) != 2)
 		{
 			printf("Error\nInvalid line content number\n");
-			free(str);
 			free_tab(tab);
 			return (1);
 		}
 		if (compare_texture_line(tab[0], tab[1], textures) == 1)
 		{
-			free(str);
 			free_tab(tab);
 			return (1);
 		}
 	}
-	// free_tab(tab);
+	free_tab(tab);
 	return (0);
 }
 
@@ -76,7 +87,7 @@ int	read_file(t_textures *textures)
 
 	line = get_next_line(textures->fd);
 	if (empty_line(textures, line))
-		return (1);
+		return (free(line), 1);
 	while (line)
 	{
 		if (line[0] == '\n')
@@ -86,7 +97,7 @@ int	read_file(t_textures *textures)
 			if (textures->i++ < 6)
 			{
 				if (parse_line(line, textures))
-					return (1);
+					return (free(line), 1);
 			}
 			else
 				get_map_line(line, textures);
@@ -94,7 +105,6 @@ int	read_file(t_textures *textures)
 		}
 		line = get_next_line(textures->fd);
 	}
-	free(line);
 	close(textures->fd);
 	return (0);
 }

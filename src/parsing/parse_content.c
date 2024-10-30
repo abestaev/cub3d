@@ -6,23 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 12:47:50 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:50:53 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static int	ft_arrlen(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (array == NULL)
-		return (0);
-	while (array[i])
-		i++;
-	return (i);
-}
 
 static int	check_rgb_values(t_textures *textures)
 {
@@ -44,8 +32,7 @@ static int	check_rgb_values(t_textures *textures)
 		|| textures->floor_g < 0 || textures->floor_g > 255
 		|| textures->floor_b < 0 || textures->floor_b > 255)
 	{
-		printf("insecte\n");
-		return (1);
+		return (free_tab(tmp1), free_tab(tmp2), 1);
 	}
 	free_tab(tmp1);
 	free_tab(tmp2);
@@ -60,13 +47,14 @@ int	parse_rgb(t_textures *textures)
 	tmp1 = ft_split(textures->ceiling, ",");
 	tmp2 = ft_split(textures->floor, ",");
 	if (ft_arrlen(tmp1) != 3 || ft_arrlen(tmp2) != 3)
-		return (printf("Error\nInvalid RGB format\n"), 1);
+		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1), free_tab(tmp2), 1);
 	if (ft_strlen(tmp1[0]) > 4 || ft_strlen(tmp2[0]) > 4
 		|| ft_strlen(tmp1[1]) > 4 || ft_strlen(tmp2[1]) > 4
 		|| ft_strlen(tmp1[2]) > 4 || ft_strlen(tmp2[2]) > 4)
-		return (printf("Error\nInvalid RGB format\n"), 1);
+		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1), free_tab(tmp2), 1);
 	if (check_rgb_values(textures))
-		return (printf("Error\nInvalid RGB values\n"), 1);
+		return (printf("Error\nInvalid RGB values\n"), free_tab(tmp1),
+			free_tab(tmp2), 1);
 	free_tab(tmp1);
 	free_tab(tmp2);
 	return (0);
@@ -102,7 +90,7 @@ int	invalid_char(t_textures *t)
 			&& t->map_str_tmp[i] != '0' && t->map_str_tmp[i] != '\n'
 			&& t->map_str_tmp[i] != 'N' && t->map_str_tmp[i] != 'S'
 			&& t->map_str_tmp[i] != 'W' && t->map_str_tmp[i] != 'E'
-			&& t->map_str_tmp[i] != 'P' && t->map_str_tmp[i] != 'V' ) // bonus
+			&& t->map_str_tmp[i] != 'P' && t->map_str_tmp[i] != 'V')
 			return (printf("Error\nInvalid character '%c' in map\n",
 					t->map_str_tmp[i]), 1);
 		if (isplayer(t->map_str_tmp[i]))

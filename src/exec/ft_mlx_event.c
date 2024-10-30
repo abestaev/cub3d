@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,46 +6,11 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/09/30 12:03:26 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:21:43 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_go_down(t_player *p)
-{
-	double	new_x;
-	double	new_y;
-
-	new_x = p->pos.x - p->p_dir_x * p->plr_speed;
-	new_y = p->pos.y - p->p_dir_y * p->plr_speed;
-	if (!is_in_wall(p, new_x, p->pos.y))
-		p->pos.x = new_x;
-	if (!is_in_wall(p, p->pos.x, new_y))
-		p->pos.y = new_y;
-}
-
-void	ft_go_up(t_player *p)
-{
-	double	new_x;
-	double	new_y;
-
-	new_x = p->pos.x + p->p_dir_x * p->plr_speed;
-	new_y = p->pos.y + p->p_dir_y * p->plr_speed;
-	if (!is_in_wall(p, new_x, p->pos.y))
-		p->pos.x = new_x;
-	if (!is_in_wall(p, p->pos.x, new_y))
-		p->pos.y = new_y;
-}
-
-
-int	ft_is_in_adjacent_cells(t_player *p, int x, int y, char c)
-{
-	if (p->map[y][x + 1] == c || p->map[y][x - 1] == c || p->map[y + 1][x] == c
-		|| p->map[y - 1][x] == c)
-		return (1);
-	return (0);
-}
 
 int	key_press(int keycode, t_player *p)
 {
@@ -111,13 +75,14 @@ int	mouse_move(int w, int h, t_player *p)
 	mlx_mouse_move(p->img->mlx, p->img->win_ptr, S_WIDTH / 2, S_HEIGHT / 2);
 	return (0);
 }
+// mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
+
 void	ft_mlx_events(t_player *p)
 {
 	mlx_hook(p->img->win_ptr, 33, 1L << 17, &ft_escape, p);
-	// mlx_mouse_hide(p->img->mlx, p->img->win_ptr);
 	mlx_hook(p->img->win_ptr, 2, 1L << 0, key_press, p);
 	mlx_hook(p->img->win_ptr, 3, 1L << 1, key_release, p);
 	mlx_hook(p->img->win_ptr, 6, 1L << 6, mouse_move, p);
-	mlx_loop_hook(p->img->mlx, ft_refresh, p); // Appelle en boucle main_loop
+	mlx_loop_hook(p->img->mlx, ft_refresh, p);
 	mlx_loop(p->img->mlx);
 }

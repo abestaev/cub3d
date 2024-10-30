@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 12:28:59 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:19:18 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	ft_init_xpm(t_player *p, t_image *img, char *text_name)
 	if (!img->img)
 	{
 		printf("Error, impossible to load texture.\n");
-		exit(0);
+		ft_escape(p);
 	}
 	img->addr = mlx_get_data_addr(img->img, &img->bits_per_pixel,
 			&img->line_length, &img->endian);
@@ -42,20 +42,19 @@ int	*ft_get_texture_pxl(t_player *p, char *text_name, int size)
 	t_image	*img;
 
 	img = malloc(sizeof(t_image));
+	if (!img)
+		ft_escape(p);
 	ft_init_xpm(p, img, text_name);
- 	text_buff = malloc(sizeof(int) * size * size);
+	text_buff = malloc(sizeof(int) * size * size);
 	if (!text_buff)
 		return (NULL);
 	y = 0;
 	while (y < size)
 	{
-		x = 0;
-		while (x < size)
-		{
+		x = -1;
+		while (++x < size)
 			text_buff[y * size + x] = *(int *)(img->addr + (y * img->line_length
 						+ x * (img->bits_per_pixel / 8)));
-			++x;
-		}
 		y++;
 	}
 	mlx_destroy_image(p->img->mlx, img->img);
@@ -68,6 +67,8 @@ int	**ft_init_doors_text(t_player *p)
 	int	**text;
 
 	text = malloc(sizeof(int *) * 7);
+	if (!text)
+		ft_escape(p);
 	text[0] = ft_get_texture_pxl(p, "./textures/doorframe_1.xpm",
 			DOOR_TEXT_SIZE);
 	text[1] = ft_get_texture_pxl(p, "./textures/doorframe_2.xpm",
@@ -87,6 +88,8 @@ int	**ft_init_doors_text(t_player *p)
 void	ft_init_wall_textures(t_player *p)
 {
 	p->texture = malloc(sizeof(int *) * 5);
+	if (!p->texture)
+		ft_escape(p);
 	p->texture[0] = ft_get_texture_pxl(p, p->data->textures->north,
 			WALL_TEXT_SIZE);
 	p->texture[1] = ft_get_texture_pxl(p, p->data->textures->south,
@@ -103,6 +106,8 @@ int	**ft_init_sprite_text(t_player *p)
 	int	**text;
 
 	text = malloc(sizeof(int *) * 7);
+	if (!text)
+		ft_escape(p);
 	text[0] = ft_get_texture_pxl(p, "./textures/candle_1.xpm",
 			SPRITE_TEXT_SIZE);
 	text[1] = ft_get_texture_pxl(p, "./textures/candle_2.xpm",
@@ -117,11 +122,4 @@ int	**ft_init_sprite_text(t_player *p)
 			SPRITE_TEXT_SIZE);
 	text[6] = NULL;
 	return (text);
-}
-
-void	ft_init_textures(t_player *p)
-{
-	ft_init_wall_textures(p);
-	p->sprite_text = ft_init_sprite_text(p);
-	p->door_text = ft_init_doors_text(p);
 }

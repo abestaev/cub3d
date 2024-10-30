@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 12:48:23 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:17:41 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	free_parsing(t_textures *textures, t_data *data)
 {
-	// free(textures->north);
-    // free(textures->south);
-    // free(textures->west);
-    // free(textures->east);
-    // free(textures->floor);
-    // free(textures->ceiling);
-    // free_tab(textures->map_tab_tmp);
-    free(textures->map_str_tmp);
-    free_tab((void *)data->map);
+	free(textures->north);
+	free(textures->south);
+	free(textures->west);
+	free(textures->east);
+	free(textures->floor);
+	free(textures->ceiling);
+	free_tab(textures->map_tab_tmp);
+	free(textures->map_str_tmp);
+	free_tab((void *)data->map);
 }
 
 int	get_map_line(char *str, t_textures *textures)

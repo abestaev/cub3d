@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
+/*   Updated: 2024/10/30 18:37:40 by melmarti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -37,7 +49,7 @@
 
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
-# define SPEED 0.03
+# define SPEED 0.02
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
@@ -51,32 +63,40 @@
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
-typedef enum type
+typedef enum s_type
 {
 	DOOR,
 	SPRITE,
-}						type;
+}						t_type;
 
-typedef enum orientation
+typedef enum s_orientation
 {
 	WEST,
 	EAST,
 	NORTH,
 	SOUTH,
-}						orientation;
+}						t_orientation;
 
-typedef enum door_state
+typedef enum s_door_state
 {
 	CLOSE,
 	OPEN,
 	IS_OPENING,
-}						door_state;
+}						t_door_state;
 
 typedef struct s_point
 {
 	double				x;
 	double				y;
 }						t_point;
+
+typedef struct s_bresenham
+{
+	struct s_point		delta;
+	struct s_point		p;
+	struct s_point		p_inc;
+}						t_bresenham;
+
 typedef struct s_ray
 {
 	double				dir_x;
@@ -110,8 +130,8 @@ typedef struct s_spriteray
 	t_point				draw_start;
 	t_point				draw_end;
 	t_point				tex;
-	int					vMovescreen;
-	int					vMove;
+	int					vmovescreen;
+	int					vmove;
 	double				inv_det;
 	int					screen_x;
 	int					sprite_height;
@@ -131,8 +151,8 @@ typedef struct s_image
 }						t_image;
 typedef struct s_sprite
 {
-	type				type;
-	door_state			door_state;
+	t_type				type;
+	t_door_state		door_state;
 	t_ray				ray;
 	t_spriteray			sprite_ray;
 	t_point				pos;
@@ -140,7 +160,6 @@ typedef struct s_sprite
 	int					animation_index;
 	double				old_time;
 	int					sprite_animation_index;
-	// int					**text;
 	int					already_print;
 	int					hit_flag;
 	int					dist;
@@ -257,7 +276,12 @@ void					ft_init_elements(t_player *p);
 
 // RAYCAST
 int						ft_refresh(t_player *p);
+void					ft_raycast(t_player *p);
 void					ft_raycast_walls(t_player *p);
+void					ft_find_door_hit(t_player *p, t_sprite *sprite);
+void					ft_get_door_size(t_player *p, t_ray *ray);
+void					ft_get_door_text(t_player *p, t_sprite *door,
+							t_ray *ray, int x);
 
 // MOVEMENTS
 void					ft_mlx_events(t_player *p);
@@ -272,16 +296,9 @@ void					ft_go_right(t_player *p);
 void					ft_turn_left(t_player *p);
 void					ft_turn_right(t_player *p);
 int						ft_hit(t_player *p, int x, int y);
-
-void					ft_draw_line(int x_start, int y_start, int x_end,
-							int y_end, t_image *img);
-void					ft_draw_tile(t_image *img, int start_x, int start_y,
-							int size, int color);
-int						ft_refresh(t_player *p);
 void					ft_draw_vertical_line(int x_val, int start, int end,
-							t_image *img, long color);
+							t_image *img);
 void					ft_get_wall_size(t_player *p, t_ray *ray);
-void					ft_raycast_elem(t_player *p);
 void					ft_calcul_dda(t_player *p, t_ray *ray);
 void					ft_find_walls(t_player *p);
 int						ft_get_text_index(t_ray *ray);
@@ -293,8 +310,11 @@ int						is_in_wall(t_player *p, double x, double y);
 
 // MINIMAP
 void					ft_minimap(t_player *p);
-void					ft_draw_mini_background(t_image *img, int x_start,
-							int x_end, int y_start, int y_end);
+void					ft_draw_tile(t_image *img, t_point start, int size,
+							int color);
+void					ft_draw_line(t_player *p, t_point start, t_point end);
+void					ft_draw_mini_background(t_image *img, t_point start,
+							t_point end);
 void					ft_player_render(t_player *p);
 void					ft_minimap_render(t_player *p, char **map);
 void					ft_init_minimap(t_player *p);
@@ -302,6 +322,11 @@ void					ft_countouring_render_00(t_player *p);
 
 // TEXTURES
 void					ft_init_textures(t_player *p);
+int						*ft_get_texture_pxl(t_player *p, char *text_name,
+							int size);
+int						**ft_init_sprite_text(t_player *p);
+int						**ft_init_doors_text(t_player *p);
+void					ft_init_wall_textures(t_player *p);
 void					ft_calcul_wall_text(t_player *p, int x);
 void					ft_color_background(t_image *img);
 int						ft_calc_dark(int color, double factor);
@@ -345,23 +370,20 @@ int						isplayer(char c);
 void					free_parsing(t_textures *textures, t_data *data);
 void					ft_init_ray(t_player *p, t_ray *ray, int x);
 void					ft_draw_horizontal_line(int y_val, int start, int end,
-							t_image *img, long color);
-void					ft_draw_alpha_tile(t_image *img, int start_x,
-							int start_y, int size, int color);
+							t_image *img);
+void					ft_escape_parsing(t_player *p, t_data *data,
+							t_textures *textures);
+int						ft_arrlen(char **array);
 
 // DEBUG
 void					print_map(char **map);
 
 // TIME_UTILS
 long					ft_get_usec_time(void);
-void					ft_print_fps(t_data *data);
 int						get_hexa_color(int r, int g, int b);
 
 // TESTING
 int						ft_escape(t_player *p);
-
-void					ft_free_all_struct(t_player *p);
-
 void					ft_sort_elem_by_dist(t_player *p, t_sprite *elem,
 							int nb);
 int						ft_find_closest_door(t_player *p, t_sprite *all_elem);
