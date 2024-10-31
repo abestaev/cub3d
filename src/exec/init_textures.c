@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:42:10 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 16:19:18 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:07:37 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	ft_init_xpm(t_player *p, t_image *img, char *text_name)
 	if (!img->addr)
 	{
 		printf("Error, no address\n");
-		exit(0);
+		ft_escape(p);
 	}
 }
 

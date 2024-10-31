@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 15:33:48 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:07:20 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	ft_init_minimap(t_player *p)
 	t_minimap	*mini;
 
 	mini = malloc(sizeof(t_minimap));
+	if (!mini)
+		ft_escape(p);
 	ft_memset(mini, 0, sizeof(t_minimap));
 	p->mini = mini;
 	p->mini->nb_tile = 10;
@@ -90,6 +92,8 @@ void	ft_player_init(t_player *p, t_data *data)
 {
 	p->ray = malloc(sizeof(t_ray));
 	p->ray_doors = malloc(sizeof(t_ray));
+	if (!p->ray || !p->ray_doors)
+		ft_escape(p);
 	ft_memset(p->ray, 0, sizeof(t_ray));
 	ft_memset(p->ray_doors, 0, sizeof(t_ray));
 	p->map = data->map;

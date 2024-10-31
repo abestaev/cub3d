@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 13:51:52 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 11:42:23 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:06:25 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	ft_escape_01(t_player *p)
 int	ft_escape(t_player *p)
 {
 	free_parsing(p->data->textures, p->data);
-	if (p->texture)
+	if (p && p->texture)
 		free_tab((char **)p->texture);
 	if (p->ray)
 		free(p->ray);
