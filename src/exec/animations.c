@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:08:50 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:10:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:08:04 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,11 @@ void	ft_handle_doors(t_player *p, t_sprite *all_elem)
 	i = ft_find_closest_door(p, all_elem);
 	if (all_elem[i].door_state == IS_OPENING)
 	{
-		if (all_elem[i].animation_index < 5)
+		curr_time = ft_get_usec_time();
+		if (curr_time - old_time > 100)
 		{
-			curr_time = ft_get_usec_time();
-			if (curr_time - old_time > 100)
-			{
-				all_elem[i].animation_index++;
-				old_time = curr_time;
-			}
+			all_elem[i].animation_index++;
+			old_time = curr_time;
 		}
 		if (all_elem[i].animation_index == 5)
 		{

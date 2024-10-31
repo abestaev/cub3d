@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:29:50 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:08:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:24:10 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ int	ft_inside_doors(t_player *p, int x, int y)
 	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
 	{
 		if (p->map[y][x] == 'P' && p->all_elem[i].door_state == CLOSE)
+		{
 			return (1);
+		}
 	}
 	return (0);
 }
@@ -47,7 +49,7 @@ int	ft_inside_wall(t_player *p, int x, int y)
 	return (0);
 }
 
-int	is_in_wall(t_player *p, double x, double y)
+int	hit_box(t_player *p, double x, double y)
 {
 	return (ft_collision(p, x - HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p,
 			x + HITBOX_SIZE, y - HITBOX_SIZE) || ft_collision(p, x

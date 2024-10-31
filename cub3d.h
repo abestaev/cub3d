@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 18:37:40 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:32:34 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@
 # define DOOR_TEXT_SIZE 256
 # define SPRITE_TEXT_SIZE 32
 
-# define S_WIDTH 1000
-# define S_HEIGHT 1000
-# define SPEED 0.02
+# define S_WIDTH 50
+# define S_HEIGHT 10
+# define SPEED 0.03
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
-# define HITBOX_SIZE 0.1
+# define HITBOX_SIZE 0.2
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
 # define K_RIGHT 0x64 // 'd' key
@@ -306,7 +306,7 @@ int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
 int						ft_collision(t_player *p, int x, int y);
-int						is_in_wall(t_player *p, double x, double y);
+int						hit_box(t_player *p, double x, double y);
 
 // MINIMAP
 void					ft_minimap(t_player *p);
