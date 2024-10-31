@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 18:37:40 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:03:44 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,6 +374,7 @@ void					ft_draw_horizontal_line(int y_val, int start, int end,
 void					ft_escape_parsing(t_player *p, t_data *data,
 							t_textures *textures);
 int						ft_arrlen(char **array);
+void					read_until_end(t_textures *textures);
 
 // DEBUG
 void					print_map(char **map);

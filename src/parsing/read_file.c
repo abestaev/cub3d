@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 11:43:52 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:03:24 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ int	parse_line(char *str, t_textures *textures)
 		if (ft_count_tab(tab) != 2)
 		{
 			printf("Error\nInvalid line content number\n");
+			read_until_end(textures);
 			free_tab(tab);
 			return (1);
 		}
 		if (compare_texture_line(tab[0], tab[1], textures) == 1)
 		{
+			read_until_end(textures);
 			free_tab(tab);
 			return (1);
 		}
@@ -97,7 +99,7 @@ int	read_file(t_textures *textures)
 			if (textures->i++ < 6)
 			{
 				if (parse_line(line, textures))
-					return (free(line), 1);
+					return (free(line), close(textures->fd), 1);
 			}
 			else
 				get_map_line(line, textures);

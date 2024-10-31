@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 11:42:09 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:04:55 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,16 @@ int	get_map_line(char *str, t_textures *textures)
 		textures->map_str_tmp = ft_strjoin_free(textures->map_str_tmp, tmp);
 	free(tmp);
 	return (0);
+}
+
+void	read_until_end(t_textures *textures)
+{
+	char	*str;
+
+	str = get_next_line(textures->fd);
+	while (str)
+	{
+		free(str);
+		str = get_next_line(textures->fd);
+	}
 }
