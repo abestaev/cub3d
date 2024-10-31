@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 12:32:34 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:48:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@
 # define DOOR_TEXT_SIZE 256
 # define SPRITE_TEXT_SIZE 32
 
-# define S_WIDTH 50
-# define S_HEIGHT 10
+# define S_WIDTH 1280
+# define S_HEIGHT 920
 # define SPEED 0.03
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
@@ -82,6 +82,7 @@ typedef enum s_door_state
 	CLOSE,
 	OPEN,
 	IS_OPENING,
+	IS_CLOSING,
 }						t_door_state;
 
 typedef struct s_point
@@ -374,6 +375,7 @@ void					ft_draw_horizontal_line(int y_val, int start, int end,
 void					ft_escape_parsing(t_player *p, t_data *data,
 							t_textures *textures);
 int						ft_arrlen(char **array);
+void					read_until_end(t_textures *textures);
 
 // DEBUG
 void					print_map(char **map);

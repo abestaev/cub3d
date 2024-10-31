@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   free_parsing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 11:42:09 by albestae         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:44:15 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	read_until_end(t_textures *textures)
+{
+	char	*str;
+
+	str = get_next_line(textures->fd);
+	while (str)
+	{
+		free(str);
+		str = get_next_line(textures->fd);
+	}
+}
 
 void	free_parsing(t_textures *textures, t_data *data)
 {

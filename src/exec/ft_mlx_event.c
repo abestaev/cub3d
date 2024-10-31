@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:02:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 16:21:43 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:59:31 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	key_press(int keycode, t_player *p)
 		i = ft_find_closest_door(p, p->all_elem);
 		if (p->all_elem[i].door_state == CLOSE)
 			p->all_elem[i].door_state = IS_OPENING;
+		if(p->all_elem[i].door_state == OPEN)
+			p->all_elem[i].door_state = IS_CLOSING;
 	}
 	return (0);
 }

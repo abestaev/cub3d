@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 12:32:23 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:44:12 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@ int	arg_valid(int argc, char **argv)
 		printf("Error\nInvalid file extension\n");
 		return (1);
 	}
-	if ((S_HEIGHT < 500 || S_HEIGHT > 1080) && (S_WIDTH < 800 || S_WIDTH > 1921))
-    {
-        printf("Error\nWindow too small\n");
-        return (1);
-    }
+	if ((S_HEIGHT < 500 || S_HEIGHT > 1080) && (S_WIDTH < 800
+			|| S_WIDTH > 1921))
+	{
+		printf("Error\nWindow too small\n");
+		return (1);
+	}
 	return (0);
 }
 
