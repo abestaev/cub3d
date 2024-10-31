@@ -3,160 +3,125 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 12:46:17 by melmarti          #+#    #+#             */
-/*   Updated: 2024/06/12 15:36:40 by melmarti         ###   ########.fr       */
+/*   Created: 2024/01/04 09:33:01 by albestae          #+#    #+#             */
+/*   Updated: 2024/10/31 11:32:08 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <fcntl.h>
+#include <stdio.h>
 
-void	clean_and_save(t_list **stash)
+char	*ft_get_line(char *save)
+{
+	int		i;
+	char	*str;
+
+	i = 0;
+	if (!save[i])
+		return (NULL);
+	while (save[i] && save[i] != '\n')
+		i++;
+	str = malloc(sizeof(char) * i + 2);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (save[i] && save[i] != '\n')
+	{
+		str[i] = save[i];
+		i++;
+	}
+	if (save[i] == '\n')
+	{
+		str[i] = save[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_save(char *save)
 {
 	int		i;
 	int		j;
-	t_list	*new_node;
-	t_list	*last;
+	char	*str;
 
-	new_node = malloc(sizeof(t_list));
-	if (!stash || !new_node)
-		return ;
-	new_node->next = NULL;
-	last = ft_lst_last(*stash);
 	i = 0;
-	while (last->content[i] && last->content[i] != '\n')
+	while (save[i] && save[i] != '\n')
 		i++;
-	if (last->content && last->content[i] == '\n')
-		i++;
-	new_node->content = malloc(sizeof(char) * ((ft_strlen(last->content) - i)
-				+ 1));
+	if (!save[i])
+	{
+		free(save);
+		return (NULL);
+	}
+	str = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
+	if (!str)
+		return (NULL);
+	i++;
 	j = 0;
-	while (last->content[i])
-		new_node->content[j++] = last->content[i++];
-	new_node->content[j] = '\0';
-	ft_free_gnl(*stash);
-	*stash = new_node;
+	while (save[i])
+		str[j++] = save[i++];
+	str[j] = '\0';
+	free(save);
+	return (str);
 }
 
-void	extract_line(t_list *stash, char **line)
+char	*ft_read_and_save(int fd, char *save)
 {
-	int	i;
-	int	j;
+	char	*buff;
+	int		bytes_read;
 
-	if (stash == NULL)
-		return ;
-	ft_malloc_line(stash, line);
-	if (!line)
-		return ;
-	j = 0;
-	while (stash)
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!buff)
+		return (NULL);
+	bytes_read = 1;
+	while (!gnl_strchr(save, '\n') && bytes_read != 0)
 	{
-		i = 0;
-		while (stash->content[i])
+		bytes_read = read(fd, buff, BUFFER_SIZE);
+		if (bytes_read == -1)
 		{
-			if (stash->content[i] == '\n')
-			{
-				(*line)[j++] = stash->content[i];
-				break ;
-			}
-			(*line)[j++] = stash->content[i++];
+			free(buff);
+			return (NULL);
 		}
-		stash = stash->next;
+		buff[bytes_read] = '\0';
+		save = gnl_strjoin(save, buff);
 	}
-	(*line)[j] = '\0';
-}
-
-void	add_to_lst_gnl(t_list **stash, char *buffer, int size)
-{
-	t_list	*new_node;
-	t_list	*last;
-	int		i;
-
-	new_node = malloc(sizeof(t_list));
-	if (!new_node)
-		return ;
-	new_node->next = NULL;
-	new_node->content = malloc(sizeof(char) * (size + 1));
-	if (!new_node->content)
-		return ;
-	i = 0;
-	while (buffer[i] && i < size)
-	{
-		new_node->content[i] = buffer[i];
-		i++;
-	}
-	new_node->content[i] = '\0';
-	if (*stash == NULL)
-	{
-		*stash = new_node;
-		return ;
-	}
-	last = ft_lst_last(*stash);
-	last->next = new_node;
-}
-
-void	read_and_add(t_list **stash, int fd)
-{
-	char	*buffer;
-	int		nread;
-
-	nread = 1;
-	while (!is_end(*stash) && nread != 0)
-	{
-		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!buffer)
-			return ;
-		nread = (int)read(fd, buffer, BUFFER_SIZE);
-		if ((!*stash && nread == 0) || nread == -1)
-		{
-			free(buffer);
-			return ;
-		}
-		buffer[nread] = '\0';
-		add_to_lst_gnl(stash, buffer, nread);
-		free(buffer);
-	}
+	free(buff);
+	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_list	*stash = NULL;
-	char			*line;
+	char		*line;
+	static char	*save = NULL;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &line, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	line = NULL;
-	read_and_add(&stash, fd);
-	if (stash == NULL)
+	save = ft_read_and_save(fd, save);
+	if (!save)
 		return (NULL);
-	extract_line(stash, &line);
-	clean_and_save(&stash);
-	if (line[0] == '\0')
-	{
-		ft_free_gnl(stash);
-		stash = NULL;
-		free(line);
-		return (NULL);
-	}
+	line = ft_get_line(save);
+	save = ft_save(save);
+	if (save == NULL)
+		free(save);
 	return (line);
 }
 
-//  int	main(void)
+// int main(void)
 // {
-// 	int fd;
-// 	char *line;
+//     int     fd;
+//     char    *line;
 
-// 	fd = open("text.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (1);
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	close(fd);
-// 	return (0);
-// } 
+//     fd = open("exemple.txt", O_RDONLY);
+//     while (1)
+//     {
+//         line = get_next_line(fd);
+//         if (line == NULL)
+//             break ;
+//         printf("%s", line);
+//         free(line);
+//     }
+//     return (0);
+// }

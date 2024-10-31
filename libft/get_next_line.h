@@ -3,25 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/04 12:46:25 by melmarti          #+#    #+#             */
-/*   Updated: 2024/07/29 13:22:58 by melmarti         ###   ########.fr       */
+/*   Created: 2023/12/13 13:56:55 by albestae          #+#    #+#             */
+/*   Updated: 2024/10/31 11:32:35 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 2
-# endif
-
-# include <fcntl.h>
-# include <limits.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 typedef struct s_list
 {
@@ -29,15 +26,10 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-char				*get_next_line(int fd);
-void				read_and_add(t_list **stash, int fd);
-int					is_end(t_list *stash);
-void				add_to_lst_gnl(t_list **stash, char *buffer, int size);
-t_list				*ft_lst_last(t_list *stash);
-void				extract_line(t_list *stash, char **line);
-void				ft_malloc_line(t_list *stash, char **line);
-void				clean_and_save(t_list **stash);
-void				ft_free_gnl(t_list *new_node);
-size_t				ft_strlen(const char *s);
-
+size_t	ft_strlen(const char *str);
+char	*gnl_strchr(const char *s, int c);
+char	*gnl_strjoin(char *s1, char *s2);
+char	*get_next_line(int fd);
+char	*gnl_strdup(char *s);
+size_t	gnl_strlen(const char *str);
 #endif
