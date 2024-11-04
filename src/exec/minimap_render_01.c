@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 16:12:24 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:05:50 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	ft_draw_tile(t_image *img, t_point start, int size, int color)
 	int	y;
 
 	x = start.x;
-	while (x < (start.x - 1) + size && x < 20 * img->p->mini->tile_size + S_WIDTH / 25)
+	while (x < (start.x - 1) + size && x < 20 * img->p->mini->tile_size
+		+ S_WIDTH / 25)
 	{
 		y = start.y;
 		while (y < (start.y - 1) + size && y < (S_HEIGHT * 5 / 6) + 10
@@ -42,8 +43,7 @@ void	ft_draw_tile(t_image *img, t_point start, int size, int color)
 	}
 }
 
-void	ft_draw_mini_background(t_image *img, t_point start,
-		t_point end)
+void	ft_draw_mini_background(t_image *img, t_point start, t_point end)
 {
 	double	x;
 	double	y;
@@ -70,14 +70,16 @@ static void	ft_countouring_render_01(t_player *p)
 	while (thickness < 5)
 	{
 		ft_draw_horizontal_line((S_HEIGHT * 5 / 6) - 10 * p->mini->tile_size
-			+ thickness, S_WIDTH / 25, 20 * p->mini->tile_size + S_WIDTH / 25, p->img);
+			+ thickness, S_WIDTH / 25, 20 * p->mini->tile_size + S_WIDTH / 25,
+			p->img);
 		thickness++;
 	}
 	thickness = 0;
 	while (thickness < 5)
 	{
 		ft_draw_horizontal_line((S_HEIGHT * 5 / 6) + 10 * p->mini->tile_size
-			+ thickness, S_WIDTH / 25, 20 * p->mini->tile_size + S_WIDTH / 25 + thickness, p->img);
+			+ thickness, S_WIDTH / 25, 20 * p->mini->tile_size + S_WIDTH / 25
+			+ thickness, p->img);
 		thickness++;
 	}
 }

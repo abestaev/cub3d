@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 16:52:09 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:03:14 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.1
-# define K_LEFT 0x61  // 'a' key
-# define K_UP 0x77    // 'w' key
-# define K_RIGHT 0x64 // 'd' key
-# define K_DOWN 0x73  // 's' key
-# define K_ESC 0xFF1B // ESC key
-# define K_O 0x6F     // 'o' key
-#define K_C 0x63 // Touche 'c'
+# define K_LEFT 0x61         // 'a' key
+# define K_UP 0x77           // 'w' key
+# define K_RIGHT 0x64        // 'd' key
+# define K_DOWN 0x73         // 's' key
+# define K_ESC 0xFF1B        // ESC key
+# define K_O 0x6F            // 'o' key
+# define K_C 0x63            // Touche 'c'
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
@@ -252,6 +252,7 @@ typedef struct textures
 	int					**doors;
 	struct s_player		*p;
 	int					text_size;
+	int					nl_flag;
 }						t_textures;
 
 typedef struct s_data
@@ -372,6 +373,7 @@ void					ft_escape_parsing(t_player *p, t_data *data,
 							t_textures *textures);
 int						ft_arrlen(char **array);
 void					read_until_end(t_textures *textures);
+int						check_newline(char *str);
 
 // DEBUG
 void					print_map(char **map);

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:29:56 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 16:22:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:05:30 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,21 @@ int	ft_arrlen(char **array)
 	while (array[i])
 		i++;
 	return (i);
+}
+
+int	check_newline(char *str)
+{
+	int	i;
+
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] == '\n' && str[i - 1] == '\n')
+		{
+			printf("Error\nNewLine inside or at the end of map\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 12:44:15 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:05:38 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,12 @@ int	get_map_line(char *str, t_textures *textures)
 	char	*tmp;
 	size_t	i;
 
+	if (str[0] == '\n' && textures->nl_flag == 0)
+		return (0);
+	textures->nl_flag = 1;
 	textures->nb_lines++;
 	i = ft_strlen(str) - 1;
-	while (str && (str[i] == ' ' || str[i] == '\n'))
+	while (str && i > 0 && (str[i] == ' ' || str[i] == '\n'))
 		i--;
 	tmp = malloc(sizeof(char) * (i + 3));
 	if (tmp == NULL)

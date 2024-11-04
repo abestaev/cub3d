@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 16:14:32 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:08:39 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_minimap(t_player *p)
 	ft_player_render(p);
 	start.x = p->mini->pos.x + 2.5 + S_WIDTH / 25;
 	start.y = p->mini->pos.y + 2.5;
-	end.x = p->mini->pos.x + + S_WIDTH / 25 + (p->p_dir_x * 15);
+	end.x = p->mini->pos.x + +S_WIDTH / 25 + (p->p_dir_x * 15);
 	end.y = p->mini->pos.y + (p->p_dir_y * 15);
 	ft_draw_line(p, start, end);
 	ft_countouring_render_00(p);

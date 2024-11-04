@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 12:44:12 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:12:40 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	init_parsing(t_textures *textures, char *str)
 	textures->col = 0;
 	textures->nb_lines = 0;
 	textures->i = 0;
+	textures->nl_flag = 0;
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 14:33:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:10:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	ft_mlx_init(t_player *p)
 	if (!p->img)
 		return ;
 	p->img->mlx_ptr = mlx_init();
-	p->img->win_ptr = mlx_new_window(p->img->mlx_ptr, S_WIDTH, S_HEIGHT, "Cub3D");
+	p->img->win_ptr = mlx_new_window(p->img->mlx_ptr, S_WIDTH, S_HEIGHT,
+			"Cub3D");
 	p->img->img_ptr = mlx_new_image(p->img->mlx_ptr, S_WIDTH, S_HEIGHT);
 	if (!p->img->img_ptr)
 		return ;
