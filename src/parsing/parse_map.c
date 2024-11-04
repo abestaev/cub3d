@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 17:38:02 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:18:54 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	parse_map(t_textures *textures, t_data *data)
 		i++;
 	}
 	data->map[i] = NULL;
+	if (check_newline(textures->map_str_tmp))
+		return (1);
 	textures->map_tab_tmp = ft_split(textures->map_str_tmp, "\n");
 	if (copy_and_check_walls(textures, data))
 		return (1);

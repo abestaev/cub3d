@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:34:50 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 17:04:20 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	ft_get_door_animation_text(t_player *p, t_ray *ray, t_sprite *door,
 	else if (door->door_state == OPEN)
 		ray->color = p->door_text[5][DOOR_TEXT_SIZE * ray->text_y
 			+ ray->text_x];
-	else if (door->door_state == IS_OPENING)
+	else if (door->door_state == IS_OPENING || door->door_state == IS_CLOSING)
 	{
 		ray->color = p->door_text[door->animation_index][DOOR_TEXT_SIZE
 			* ray->text_y + ray->text_x];

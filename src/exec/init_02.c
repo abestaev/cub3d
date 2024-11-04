@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:32:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 16:21:28 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:51:52 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ static void	ft_init_maps_door(t_player *p)
 	int	x;
 	int	i;
 
-	p->door = calloc(sizeof(t_sprite), ft_count_door(p->map));
-	ft_memset(p->door, 0, sizeof(t_sprite));
 	p->nb_door = ft_count_door(p->map);
+	p->door = calloc(sizeof(t_sprite), ft_count_door(p->map) + 1);
+	ft_memset(p->door, 0, sizeof(t_sprite));
 	i = 0;
 	y = -1;
-	while (p->map[++y])
+	while (p->map[++y] && p->nb_door)
 	{
 		x = -1;
 		while (p->map[y][++x])
@@ -90,15 +90,17 @@ static void	ft_init_maps_sprite(t_player *p)
 	int	x;
 	int	i;
 
+	p->nb_sprite = ft_count_sprite(p->map);
+	if (!p->nb_sprite)
+		return ;
 	p->sprite = calloc(sizeof(t_sprite), ft_count_sprite(p->map));
 	ft_memset(p->sprite, 0, sizeof(t_sprite));
-	p->nb_sprite = ft_count_sprite(p->map);
 	i = 0;
-	y = 0;
-	while (p->map[y])
+	y = -1;
+	while (p->map[++y])
 	{
-		x = 0;
-		while (p->map[y][x])
+		x = -1;
+		while (p->map[y][++x])
 		{
 			if (p->map[y][x] == 'V')
 			{
@@ -107,9 +109,7 @@ static void	ft_init_maps_sprite(t_player *p)
 				p->sprite[i].pos.x = x + 0.5;
 				p->sprite[i++].pos.y = y + 0.5;
 			}
-			x++;
 		}
-		y++;
 	}
 }
 

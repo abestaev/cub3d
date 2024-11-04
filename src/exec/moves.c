@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 19:35:17 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 11:29:19 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:18:21 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	ft_go_right(t_player *p)
 	perp_dir_y = -p->p_dir_x;
 	new_x = p->pos.x + perp_dir_x * p->plr_speed;
 	new_y = p->pos.y + perp_dir_y * p->plr_speed;
-	if (!is_in_wall(p, new_x, p->pos.y))
+	if (!hit_box(p, new_x, p->pos.y))
 		p->pos.x = new_x;
-	if (!is_in_wall(p, p->pos.x, new_y))
+	if (!hit_box(p, p->pos.x, new_y))
 		p->pos.y = new_y;
 }
 
@@ -40,9 +40,9 @@ void	ft_go_left(t_player *p)
 	perp_dir_y = p->p_dir_x;
 	new_x = p->pos.x + perp_dir_x * p->plr_speed;
 	new_y = p->pos.y + perp_dir_y * p->plr_speed;
-	if (!is_in_wall(p, new_x, p->pos.y))
+	if (!hit_box(p, new_x, p->pos.y))
 		p->pos.x = new_x;
-	if (!is_in_wall(p, p->pos.x, new_y))
+	if (!hit_box(p, p->pos.x, new_y))
 		p->pos.y = new_y;
 }
 

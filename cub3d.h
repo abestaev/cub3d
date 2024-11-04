@@ -6,7 +6,11 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 12:03:44 by albestae         ###   ########.fr       */
+<<<<<<< Updated upstream
+/*   Updated: 2024/11/04 15:06:38 by albestae         ###   ########.fr       */
+=======
+/*   Updated: 2024/11/04 14:52:46 by albestae         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +51,25 @@
 # define DOOR_TEXT_SIZE 256
 # define SPRITE_TEXT_SIZE 32
 
+<<<<<<< Updated upstream
+# define S_WIDTH 1280
+# define S_HEIGHT 920
+# define SPEED 0.03
+=======
 # define S_WIDTH 1000
 # define S_HEIGHT 1000
-# define SPEED 0.02
+# define SPEED 0.04
+>>>>>>> Stashed changes
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
-# define HITBOX_SIZE 0.1
+# define HITBOX_SIZE 0.2
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
 # define K_RIGHT 0x64 // 'd' key
 # define K_DOWN 0x73  // 's' key
 # define K_ESC 0xFF1B // ESC key
 # define K_O 0x6F     // 'o' key
-
+#define K_C 0x63 // Touche 'c'
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
@@ -82,6 +92,7 @@ typedef enum s_door_state
 	CLOSE,
 	OPEN,
 	IS_OPENING,
+	IS_CLOSING,
 }						t_door_state;
 
 typedef struct s_point
@@ -140,8 +151,8 @@ typedef struct s_spriteray
 
 typedef struct s_image
 {
-	void				*mlx;
-	void				*img;
+	void				*mlx_ptr;
+	void				*img_ptr;
 	void				*win_ptr;
 	char				*addr;
 	int					bits_per_pixel;
@@ -186,7 +197,6 @@ typedef struct s_player
 	double				plane_x;
 	double				plane_y;
 	double				tile_size;
-	double				plr_offset;
 	double				plr_speed;
 	double				speed_rot;
 	char				**map;
@@ -203,7 +213,6 @@ typedef struct s_player
 	int					move_right;
 	int					rotate_left;
 	int					rotate_right;
-	int					mouse_x;
 	int					nb_col;
 	int					nb_line;
 	int					nb_door;
@@ -253,14 +262,13 @@ typedef struct textures
 	int					**doors;
 	struct s_player		*p;
 	int					text_size;
+	int					nl_flag;
 }						t_textures;
 
 typedef struct s_data
 {
 	char				**map;
 	t_doors				*doors;
-	long				fps;
-	int					fps_flag;
 	long				old_time;
 	long				actual_time;
 	t_image				img;
@@ -306,7 +314,7 @@ int						ft_is_in_adjacent_cells(t_player *p, int x, int y,
 							char c);
 void					ft_get_doors_size(t_player *p, t_ray *ray);
 int						ft_collision(t_player *p, int x, int y);
-int						is_in_wall(t_player *p, double x, double y);
+int						hit_box(t_player *p, double x, double y);
 
 // MINIMAP
 void					ft_minimap(t_player *p);
@@ -375,6 +383,7 @@ void					ft_escape_parsing(t_player *p, t_data *data,
 							t_textures *textures);
 int						ft_arrlen(char **array);
 void					read_until_end(t_textures *textures);
+int						check_newline(char *str);
 
 // DEBUG
 void					print_map(char **map);

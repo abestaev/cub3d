@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 11:49:05 by albestae         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:03:14 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,13 @@ int	parse_rgb(t_textures *textures)
 	if (ft_arrlen(tmp1) != 3 || ft_arrlen(tmp2) != 3)
 		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
 			free_tab(tmp2), 1);
+		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
+			free_tab(tmp2), 1);
 	if (ft_strlen(tmp1[0]) > 4 || ft_strlen(tmp2[0]) > 4
 		|| ft_strlen(tmp1[1]) > 4 || ft_strlen(tmp2[1]) > 4
 		|| ft_strlen(tmp1[2]) > 4 || ft_strlen(tmp2[2]) > 4)
+		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
+			free_tab(tmp2), 1);
 		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
 			free_tab(tmp2), 1);
 	if (check_rgb_values(textures))
@@ -86,7 +90,7 @@ int	invalid_char(t_textures *t)
 
 	i = -1;
 	count = 0;
-	while (t->map_str_tmp[++i])
+	while (t->map_str_tmp && t->map_str_tmp[++i])
 	{
 		if (t->map_str_tmp[i] != ' ' && t->map_str_tmp[i] != '1'
 			&& t->map_str_tmp[i] != '0' && t->map_str_tmp[i] != '\n'

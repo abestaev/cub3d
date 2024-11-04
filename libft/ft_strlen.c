@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:10:23 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/16 11:56:26 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:37:30 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ size_t	ft_strlen(const char *s)
 	i = 0;
 	while (s[i])
 	{
-		
 		i++;
 	}
 	return (i);

@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:32:07 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 12:03:24 by albestae         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:11:02 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,19 +92,15 @@ int	read_file(t_textures *textures)
 		return (free(line), 1);
 	while (line)
 	{
-		if (line[0] == '\n')
-			free(line);
-		else
+		if (textures->i < 6 && line[0] != '\n')
 		{
-			if (textures->i++ < 6)
-			{
-				if (parse_line(line, textures))
-					return (free(line), close(textures->fd), 1);
-			}
-			else
-				get_map_line(line, textures);
-			free(line);
+			textures->i++;
+			if (parse_line(line, textures))
+				return (free(line), close(textures->fd), 1);
 		}
+		else if (textures->i == 6)
+			get_map_line(line, textures);
+		free(line);
 		line = get_next_line(textures->fd);
 	}
 	close(textures->fd);

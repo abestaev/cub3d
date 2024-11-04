@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/30 17:47:21 by melmarti         ###   ########.fr       */
+<<<<<<< Updated upstream
+/*   Updated: 2024/11/04 15:06:03 by albestae         ###   ########.fr       */
+=======
+/*   Updated: 2024/11/04 14:52:32 by albestae         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +26,16 @@ int	arg_valid(int argc, char **argv)
 	if (ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 4))
 	{
 		printf("Error\nInvalid file extension\n");
+		return (1);
+	}
+<<<<<<< Updated upstream
+	if ((S_HEIGHT < 500 || S_HEIGHT > 1080) && (S_WIDTH < 800
+			|| S_WIDTH > 1921))
+=======
+	if (S_HEIGHT < 500 && S_WIDTH < 800)
+>>>>>>> Stashed changes
+	{
+		printf("Error\nWindow too small\n");
 		return (1);
 	}
 	return (0);
@@ -63,6 +77,7 @@ int	init_parsing(t_textures *textures, char *str)
 	textures->col = 0;
 	textures->nb_lines = 0;
 	textures->i = 0;
+	textures->nl_flag = 0;
 	return (0);
 }
 

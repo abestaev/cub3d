@@ -30,7 +30,7 @@ int	shm_att_pb(Display *d,XErrorEvent *ev)
 
 
 /*
-**  Data malloc :  width+32 ( bitmap_pad=32 ),    *4 = *32 / 8bit
+**  Data  :  width+32 ( bitmap_pad=32 ),    *4 = *32 / 8bit
 */
 
 

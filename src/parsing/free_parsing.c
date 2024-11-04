@@ -6,11 +6,27 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-/*   Updated: 2024/10/31 12:04:55 by albestae         ###   ########.fr       */
+<<<<<<< Updated upstream
+/*   Updated: 2024/11/04 15:05:56 by albestae         ###   ########.fr       */
+=======
+/*   Updated: 2024/11/04 14:54:32 by albestae         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	read_until_end(t_textures *textures)
+{
+	char	*str;
+
+	str = get_next_line(textures->fd);
+	while (str)
+	{
+		free(str);
+		str = get_next_line(textures->fd);
+	}
+}
 
 void	free_parsing(t_textures *textures, t_data *data)
 {
@@ -25,14 +41,19 @@ void	free_parsing(t_textures *textures, t_data *data)
 	free_tab((void *)data->map);
 }
 
+
+
 int	get_map_line(char *str, t_textures *textures)
 {
 	char	*tmp;
 	size_t	i;
 
+	if (str[0] == '\n' && textures->nl_flag == 0)
+		return (0);
+	textures->nl_flag = 1;
 	textures->nb_lines++;
 	i = ft_strlen(str) - 1;
-	while (str && (str[i] == ' ' || str[i] == '\n'))
+	while (str && i > 0 && (str[i] == ' ' || str[i] == '\n'))
 		i--;
 	tmp = malloc(sizeof(char) * (i + 3));
 	if (tmp == NULL)
@@ -48,16 +69,4 @@ int	get_map_line(char *str, t_textures *textures)
 		textures->map_str_tmp = ft_strjoin_free(textures->map_str_tmp, tmp);
 	free(tmp);
 	return (0);
-}
-
-void	read_until_end(t_textures *textures)
-{
-	char	*str;
-
-	str = get_next_line(textures->fd);
-	while (str)
-	{
-		free(str);
-		str = get_next_line(textures->fd);
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:09:18 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 16:25:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:53:39 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	ft_hanle_sprite_animation(t_sprite *sprite, int i)
 	double	curr_time;
 
 	curr_time = ft_get_usec_time();
-	if (curr_time - sprite->old_time > 70 + i)
+	if (curr_time - sprite->old_time > i)
 	{
 		sprite->animation_index++;
 		sprite->old_time = curr_time;

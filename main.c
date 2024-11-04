@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/09 18:34:01 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 17:47:35 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 13:01:19 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main(int argc, char **argv)
 	if (!textures)
 		return (-1);
 	ft_memset(p, 0, sizeof(t_player));
-	ft_memset(textures, 0, sizeof(t_textures));
 	ft_memset(data, 0, sizeof(t_data));
+	ft_memset(textures, 0, sizeof(t_textures));
 	data->textures = textures;
 	if (parsing(argc, argv, data))
 		ft_escape_parsing(p, data, textures);

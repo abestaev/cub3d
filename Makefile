@@ -65,7 +65,6 @@ bonus: $(NAME_BONUS)
 $(NAME_BONUS): $(OBJ) $(MLXLIB) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME_BONUS) $(OBJ) $(MLXFLAGS) $(MLXLIB) $(LIBFLAGS)
 
-
 -include $(DEP)
 
 clean:
@@ -75,7 +74,6 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-	rm -f $(NAME_BONUS)
 
 re: fclean all
 
