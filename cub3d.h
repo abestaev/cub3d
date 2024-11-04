@@ -6,11 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/11/04 15:06:38 by albestae         ###   ########.fr       */
-=======
-/*   Updated: 2024/11/04 14:52:46 by albestae         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/11/04 15:12:13 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +47,9 @@
 # define DOOR_TEXT_SIZE 256
 # define SPRITE_TEXT_SIZE 32
 
-<<<<<<< Updated upstream
 # define S_WIDTH 1280
 # define S_HEIGHT 920
 # define SPEED 0.03
-=======
-# define S_WIDTH 1000
-# define S_HEIGHT 1000
-# define SPEED 0.04
->>>>>>> Stashed changes
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
 # define HITBOX_SIZE 0.2

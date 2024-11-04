@@ -6,7 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 05:34:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/11/04 15:03:14 by albestae         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:13:01 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,9 @@ int	parse_rgb(t_textures *textures)
 	if (ft_arrlen(tmp1) != 3 || ft_arrlen(tmp2) != 3)
 		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
 			free_tab(tmp2), 1);
-		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
-			free_tab(tmp2), 1);
 	if (ft_strlen(tmp1[0]) > 4 || ft_strlen(tmp2[0]) > 4
 		|| ft_strlen(tmp1[1]) > 4 || ft_strlen(tmp2[1]) > 4
 		|| ft_strlen(tmp1[2]) > 4 || ft_strlen(tmp2[2]) > 4)
-		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
-			free_tab(tmp2), 1);
 		return (printf("Error\nInvalid RGB format\n"), free_tab(tmp1),
 			free_tab(tmp2), 1);
 	if (check_rgb_values(textures))

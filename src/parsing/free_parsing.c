@@ -6,11 +6,7 @@
 /*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 00:41:29 by albestae          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/11/04 15:05:56 by albestae         ###   ########.fr       */
-=======
-/*   Updated: 2024/11/04 14:54:32 by albestae         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/11/04 15:13:09 by albestae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
