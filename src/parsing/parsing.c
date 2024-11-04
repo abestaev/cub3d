@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 14:05:18 by albestae          #+#    #+#             */
-/*   Updated: 2024/11/04 15:12:40 by albestae         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:25:33 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	arg_valid(int argc, char **argv)
+int	arg_valid(int argc, char **argv, t_data *data, t_player *p)
 {
+	data->textures->p = p;
 	if (argc != 2)
 	{
 		printf("Error\nInvalid number of arguments\n");
@@ -93,9 +94,9 @@ int	missing_textures(t_textures *textures)
 	return (0);
 }
 
-int	parsing(int argc, char **argv, t_data *data)
+int	parsing(int argc, char **argv, t_data *data, t_player *p)
 {
-	if (arg_valid(argc, argv))
+	if (arg_valid(argc, argv, data, p))
 		return (1);
 	init_parsing(data->textures, argv[1]);
 	if (data->textures->fd == -1)

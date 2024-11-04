@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 17:03:14 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:26:13 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,8 +343,8 @@ void					ft_handle_sprite_animation(t_sprite *sprite, int i);
 // PARSING FUNCTIONS
 int						check_file_valid(t_textures *t);
 int						is_door_valid(t_textures *textures, t_data *data);
-int						parsing(int argc, char **argv, t_data *data);
-int						arg_valid(int argc, char **argv);
+int						parsing(int argc, char **argv, t_data *data, t_player *p);
+int						arg_valid(int argc, char **argv, t_data *data, t_player *p);
 int						read_file(t_textures *textures);
 int						parse_line(char *str, t_textures *textures);
 int						compare_texture_line(char *s1, char *s2,

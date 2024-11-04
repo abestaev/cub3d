@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albestae <albestae@student.42.fr>          +#+  +:+       +#+        */
+/*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:10:14 by albestae          #+#    #+#             */
-/*   Updated: 2024/11/04 14:18:54 by albestae         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:27:03 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	parse_map(t_textures *textures, t_data *data)
 
 	data->map = (char **)malloc(sizeof(char *) * (textures->nb_lines + 1));
 	if (data->map == NULL)
-		return (1);
+		return (ft_escape(textures->p));
 	i = 0;
 	while (i < textures->nb_lines)
 	{
 		data->map[i] = (char *)malloc(sizeof(char) * (textures->col + 1));
 		if (data->map[i] == NULL)
-			return (1);
+			return (ft_escape(textures->p));
 		ft_memset(data->map[i], ' ', textures->col + 1);
 		data->map[i][textures->col] = '\0';
 		i++;
