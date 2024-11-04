@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 17:07:20 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:51:13 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_player_init(t_player *p, t_data *data)
 {
 	p->ray = malloc(sizeof(t_ray));
 	p->ray_doors = malloc(sizeof(t_ray));
-	if (!p->ray || !p->ray_doors)
+	if (!p->img || !p->img->img_ptr || !p->ray || !p->ray_doors)
 		ft_escape(p);
 	ft_memset(p->ray, 0, sizeof(t_ray));
 	ft_memset(p->ray_doors, 0, sizeof(t_ray));
@@ -112,5 +112,4 @@ void	ft_player_init(t_player *p, t_data *data)
 	p->rotate_right = 0;
 	p->data->old_time = 0;
 	p->data->actual_time = 0;
-	p->data->fps = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 16:48:44 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:51:29 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@
 # define K_DOWN 0x73  // 's' key
 # define K_ESC 0xFF1B // ESC key
 # define K_O 0x6F     // 'o' key
-
+#define K_C 0x63 // Touche 'c'
 # define K_LOOK_LEFT 0xFF51  // Left arrow key
 # define K_LOOK_RIGHT 0xFF53 // Right arrow key
 
@@ -141,8 +141,8 @@ typedef struct s_spriteray
 
 typedef struct s_image
 {
-	void				*mlx;
-	void				*img;
+	void				*mlx_ptr;
+	void				*img_ptr;
 	void				*win_ptr;
 	char				*addr;
 	int					bits_per_pixel;
@@ -187,7 +187,6 @@ typedef struct s_player
 	double				plane_x;
 	double				plane_y;
 	double				tile_size;
-	double				plr_offset;
 	double				plr_speed;
 	double				speed_rot;
 	char				**map;
@@ -204,7 +203,6 @@ typedef struct s_player
 	int					move_right;
 	int					rotate_left;
 	int					rotate_right;
-	int					mouse_x;
 	int					nb_col;
 	int					nb_line;
 	int					nb_door;
@@ -260,8 +258,6 @@ typedef struct s_data
 {
 	char				**map;
 	t_doors				*doors;
-	long				fps;
-	int					fps_flag;
 	long				old_time;
 	long				actual_time;
 	t_image				img;

@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:29:50 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/31 17:11:13 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 12:47:40 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ int	ft_inside_doors(t_player *p, int x, int y)
 	i = ft_find_closest_door(p, p->all_elem);
 	if (x > 0 && x < p->nb_col && y > 0 && y < p->nb_line)
 	{
-		if (p->map[y][x] == 'P' && p->all_elem[i].door_state == CLOSE && p->all_elem[i].door_state != IS_CLOSING)
-		{
+		if (p->map[y][x] == 'P' && p->all_elem[i].door_state == CLOSE)
 			return (1);
-		}
 	}
 	return (0);
 }

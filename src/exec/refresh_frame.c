@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:15:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:09:11 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:49:22 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ft_refresh(t_player *p)
 	ft_raycast_walls(p);
 	ft_raycast(p);
 	ft_minimap(p);
-	mlx_put_image_to_window(p->img->mlx, p->img->win_ptr, p->img->img, 0, 0);
+	mlx_string_put(p->img->mlx_ptr, p->img->win_ptr, 100, 100, 0xFFFFFF, "Hello, welcome to Cub3D !");
+	mlx_put_image_to_window(p->img->mlx_ptr, p->img->win_ptr, p->img->img_ptr, 0, 0);
 	return (0);
 }

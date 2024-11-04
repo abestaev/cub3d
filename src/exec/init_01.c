@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 16:24:51 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:08:43 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 14:33:44 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ void	ft_init_ray(t_player *p, t_ray *ray, int x)
 void	ft_mlx_init(t_player *p)
 {
 	p->img = malloc(sizeof(t_image));
-	p->img->mlx = mlx_init();
-	p->img->win_ptr = mlx_new_window(p->img->mlx, S_WIDTH, S_HEIGHT, "Cub3D");
-	p->img->img = mlx_new_image(p->img->mlx, S_WIDTH, S_HEIGHT);
-	if (!p->img->img)
+	if (!p->img)
 		return ;
-	p->img->addr = mlx_get_data_addr(p->img->img, &p->img->bits_per_pixel,
+	p->img->mlx_ptr = mlx_init();
+	p->img->win_ptr = mlx_new_window(p->img->mlx_ptr, S_WIDTH, S_HEIGHT, "Cub3D");
+	p->img->img_ptr = mlx_new_image(p->img->mlx_ptr, S_WIDTH, S_HEIGHT);
+	if (!p->img->img_ptr)
+		return ;
+	p->img->addr = mlx_get_data_addr(p->img->img_ptr, &p->img->bits_per_pixel,
 			&p->img->line_length, &p->img->endian);
 	p->img->p = p;
 }
