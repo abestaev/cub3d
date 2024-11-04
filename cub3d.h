@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:23:30 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 14:51:29 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:52:09 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@
 # define SPEED 0.03
 # define ROT_SPEED 0.01
 # define MOUSE_SPEED 20
-# define HITBOX_SIZE 0.2
+# define HITBOX_SIZE 0.1
 # define K_LEFT 0x61  // 'a' key
 # define K_UP 0x77    // 'w' key
 # define K_RIGHT 0x64 // 'd' key
@@ -336,8 +336,8 @@ void					ft_draw_sprites(t_player *p, t_spriteray *sprite_ray,
 							t_sprite *sprite);
 void					ft_calc_sprite_hight(t_spriteray *sprite_ray);
 void					ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray,
-							t_sprite *sprite, int i);
-void					ft_hanle_sprite_animation(t_sprite *sprite, int i);
+							t_sprite *sprite);
+void					ft_handle_sprite_animation(t_sprite *sprite, int i);
 
 // PARSING FUNCTIONS
 int						check_file_valid(t_textures *t);

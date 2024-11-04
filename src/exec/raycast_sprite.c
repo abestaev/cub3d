@@ -6,16 +6,15 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:09:18 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 14:53:39 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:40:53 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite,
-		int i)
+void	ft_calcul_sprite(t_player *p, t_spriteray *sprite_ray, t_sprite *sprite)
 {
-	ft_hanle_sprite_animation(sprite, i * 20);
+	ft_handle_sprite_animation(sprite, 90);
 	sprite_ray->vmove = 400;
 	sprite_ray->ray.x = sprite->pos.x - p->pos.x;
 	sprite_ray->ray.y = sprite->pos.y - p->pos.y;
@@ -75,7 +74,7 @@ void	ft_draw_sprite_pxl(t_player *p, t_sprite *sprite,
 	}
 }
 
-void	ft_hanle_sprite_animation(t_sprite *sprite, int i)
+void	ft_handle_sprite_animation(t_sprite *sprite, int i)
 {
 	double	curr_time;
 

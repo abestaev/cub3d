@@ -6,11 +6,26 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 11:15:59 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 14:49:22 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:21:43 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	ft_handle_message(t_player *p)
+{
+	if (ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P')
+		&& p->all_elem[ft_find_closest_door(p,
+			p->all_elem)].door_state == CLOSE)
+		mlx_string_put(p->img->mlx_ptr, p->img->win_ptr, 0.9 * S_WIDTH / 2, 5
+			* S_HEIGHT / 6, 0xFFFFFF, "Open door with \"O\"");
+	if (ft_is_in_adjacent_cells(p, p->pos.x, p->pos.y, 'P')
+		&& p->all_elem[ft_find_closest_door(p, p->all_elem)].door_state == OPEN)
+		mlx_string_put(p->img->mlx_ptr, p->img->win_ptr, 0.9 * S_WIDTH / 2, 5
+			* S_HEIGHT / 6, 0xFFFFFF, "Close door with \"C\"");
+	// mlx_string_put(p->img->mlx_ptr, p->img->win_ptr, 0.9 * S_WIDTH / 2, 5
+	// 	* S_HEIGHT / 6, 0xFFFFFF, "Hello, welcome to Cub3D !");
+}
 
 int	ft_refresh(t_player *p)
 {
@@ -21,7 +36,8 @@ int	ft_refresh(t_player *p)
 	ft_raycast_walls(p);
 	ft_raycast(p);
 	ft_minimap(p);
-	mlx_string_put(p->img->mlx_ptr, p->img->win_ptr, 100, 100, 0xFFFFFF, "Hello, welcome to Cub3D !");
-	mlx_put_image_to_window(p->img->mlx_ptr, p->img->win_ptr, p->img->img_ptr, 0, 0);
+	mlx_put_image_to_window(p->img->mlx_ptr, p->img->win_ptr, p->img->img_ptr,
+		0, 0);
+	ft_handle_message(p);
 	return (0);
 }

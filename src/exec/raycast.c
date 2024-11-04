@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:02:26 by melmarti          #+#    #+#             */
-/*   Updated: 2024/11/04 14:38:07 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:10:35 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_raycast(t_player *p)
 	{
 		if (p->all_elem[i].type == SPRITE)
 		{
-			ft_calcul_sprite(p, &p->all_elem[i].sprite_ray, &p->all_elem[i], i);
+			ft_calcul_sprite(p, &p->all_elem[i].sprite_ray, &p->all_elem[i]);
 			ft_calc_sprite_hight(&p->all_elem[i].sprite_ray);
 			ft_draw_sprites(p, &p->all_elem[i].sprite_ray, &p->all_elem[i]);
 		}

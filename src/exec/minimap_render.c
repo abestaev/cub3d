@@ -6,7 +6,7 @@
 /*   By: melmarti <melmarti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 13:21:24 by melmarti          #+#    #+#             */
-/*   Updated: 2024/10/30 14:55:36 by melmarti         ###   ########.fr       */
+/*   Updated: 2024/11/04 16:14:32 by melmarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ void	ft_minimap_render(t_player *p, char **map)
 	while (index_y < p->nb_line)
 	{
 		index_x = 0;
-		start.x = ft_get_mini_x_offset(p);
+		start.x = ft_get_mini_x_offset(p) + S_WIDTH / 25;
 		while (index_x < p->nb_col)
 		{
 			if (map[index_y][index_x] == '1')
 				ft_draw_tile(p->img, start, p->mini->tile_size, COLOR_CYAN);
+			if (map[index_y][index_x] == 'P')
+				ft_draw_tile(p->img, start, p->mini->tile_size, COLOR_PINK);
 			start.x += p->mini->tile_size;
 			index_x++;
 		}
@@ -51,16 +53,16 @@ void	ft_minimap(t_player *p)
 	t_point	start;
 	t_point	end;
 
-	start.x = 0;
-	end.x = 2 * p->mini->nb_tile * p->mini->tile_size;
+	start.x = S_WIDTH / 25;
+	end.x = 2 * p->mini->nb_tile * p->mini->tile_size + S_WIDTH / 25;
 	start.y = p->mini->pos.y - 10 * p->mini->tile_size;
 	end.y = p->mini->pos.y + p->mini->nb_tile * p->mini->tile_size;
 	ft_draw_mini_background(p->img, start, end);
 	ft_minimap_render(p, p->map);
 	ft_player_render(p);
-	start.x = p->mini->pos.x + 2.5;
+	start.x = p->mini->pos.x + 2.5 + S_WIDTH / 25;
 	start.y = p->mini->pos.y + 2.5;
-	end.x = p->mini->pos.x + (p->p_dir_x * 15);
+	end.x = p->mini->pos.x + + S_WIDTH / 25 + (p->p_dir_x * 15);
 	end.y = p->mini->pos.y + (p->p_dir_y * 15);
 	ft_draw_line(p, start, end);
 	ft_countouring_render_00(p);
